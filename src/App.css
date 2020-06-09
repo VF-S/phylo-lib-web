@@ -28,6 +28,12 @@
   color: #61dafb;
 }
 
+.Button {
+  color: #000000;
+  height: 5vh;
+  width: 10vh;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
