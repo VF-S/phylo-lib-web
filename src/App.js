@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
+import { Tree } from './ocaml_src/tree.bs';
 import './App.css';
 
 function App() {
@@ -11,17 +12,23 @@ function App() {
     return result;
   };
 
+  const printEmptyTree = () => {
+    Tree.print_tree(Tree.empty);
+  };
+
   const [num, setNum] = useState(0);
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Learn React and save to reload.
-        </p>
+        <p>Learn React and save to reload.</p>
         <p>Factorial: {num}</p>
         <div>
-          <input type="number" name="Factorial" onChange={(e) => setNum(factorial(e.target.value))}/>
+          <input
+            type="number"
+            name="Factorial"
+            onChange={(e) => setNum(factorial(e.target.value))}
+          />
         </div>
         <a
           className="App-link"
@@ -31,6 +38,7 @@ function App() {
         >
           Learn React
         </a>
+        <button title="Print Tree to Console" onClick={printEmptyTree} />
       </header>
     </div>
   );
