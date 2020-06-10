@@ -22,6 +22,16 @@ function App() {
     Tree.print_tree(SmallTree.dog_cat_mouse);
   };
 
+  const printFile = async () => {
+    try {
+      const file = document.getElementById('dnaFiles').files[0];
+      var text = await file.text();
+      console.log(text);
+    } catch (e) {
+      console.log('File printing failed');
+    }
+  };
+
   const [num, setNum] = useState(0);
   return (
     <div className="App">
@@ -36,6 +46,8 @@ function App() {
             onChange={(e) => setNum(factorial(e.target.value))}
           />
         </div>
+        <input type="file" id="dnaFiles" />
+        <button title="Print file contents" onClick={printFile} />
         <a
           className="App-link"
           href="https://reactjs.org"
