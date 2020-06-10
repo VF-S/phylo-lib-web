@@ -1,16 +1,14 @@
 module type TreeType = sig
   type clade_id = int
 
-  type t = Clade of clade_info | Leaf of leaf_info
-  and clade_info = {
+  type t = Clade of {
       clade_id : clade_id;
       children : t list;
       bootstrap : float option;
       rank : string option;
       id : string option;
       name : string option;
-    }
-   and leaf_info = {
+    } | Leaf of {
       scientific_name : string;
       id : string option;
       name : string option;
@@ -60,16 +58,14 @@ module Tree : TreeType = struct
   type clade_id = int
   exception UnknownClade of clade_id
 
-  type t = Clade of clade_info | Leaf of leaf_info
-  and clade_info = {
+  type t = Clade of {
       clade_id : clade_id;
       children : t list;
       bootstrap : float option;
       rank : string option;
       id : string option;
       name : string option;
-    }
-   and leaf_info = {
+    } | Leaf of {
       scientific_name : string;
       id : string option;
       name : string option;

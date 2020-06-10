@@ -12,12 +12,12 @@ var UnknownClade = Caml_exceptions.create("Tree-PhyloLibWeb.Tree.UnknownClade");
 function clade_ids(tree) {
   if (tree.tag) {
     return /* [] */0;
+  } else {
+    return /* :: */[
+            tree[/* clade_id */0],
+            List.flatten(List.map(clade_ids, tree[/* children */1]))
+          ];
   }
-  var info = tree[0];
-  return /* :: */[
-          info.clade_id,
-          List.flatten(List.map(clade_ids, info.children))
-        ];
 }
 
 function clade_ids_uniq(t) {
@@ -37,48 +37,46 @@ var counter = {
   contents: 0
 };
 
-var empty = /* Clade */Block.__(0, [{
-      clade_id: (counter.contents = counter.contents + 1 | 0, counter.contents),
-      children: /* [] */0,
-      bootstrap: undefined,
-      rank: undefined,
-      id: undefined,
-      name: undefined
-    }]);
+var empty_000 = /* clade_id */(counter.contents = counter.contents + 1 | 0, counter.contents);
+
+var empty = /* Clade */Block.__(0, [
+    empty_000,
+    /* children : [] */0,
+    /* bootstrap */undefined,
+    /* rank */undefined,
+    /* id */undefined,
+    /* name */undefined
+  ]);
 
 function is_empty(info) {
-  if (info.tag) {
+  if (info.tag || !(info[/* children */1] === /* [] */0 && info[/* bootstrap */2] === undefined && info[/* rank */3] === undefined && info[/* id */4] === undefined)) {
     return false;
-  }
-  var info$1 = info[0];
-  if (info$1.children === /* [] */0 && info$1.bootstrap === undefined && info$1.rank === undefined && info$1.id === undefined) {
-    return info$1.name === undefined;
   } else {
-    return false;
+    return info[/* name */5] === undefined;
   }
 }
 
 function leaf(sci_name, id, name) {
-  return /* Leaf */Block.__(1, [{
-              scientific_name: sci_name,
-              id: id,
-              name: name
-            }]);
+  return /* Leaf */Block.__(1, [
+            /* scientific_name */sci_name,
+            /* id */id,
+            /* name */name
+          ]);
 }
 
 function leaf_no_params(sci_name) {
-  return /* Leaf */Block.__(1, [{
-              scientific_name: sci_name,
-              id: undefined,
-              name: undefined
-            }]);
+  return /* Leaf */Block.__(1, [
+            /* scientific_name */sci_name,
+            /* id */undefined,
+            /* name */undefined
+          ]);
 }
 
 function size_helper(tree, size) {
   if (tree.tag) {
     return size + 1 | 0;
   }
-  var match = tree[0].children;
+  var match = tree[/* children */1];
   if (match) {
     return 1 + List.fold_left((function (acc, x) {
                   return acc + size_helper(x, size) | 0;
@@ -99,50 +97,50 @@ function zip(trees, bootstrap, rank, parsed_id, name) {
   if (empty.tag) {
     return Pervasives.failwith("Representation invariant broken");
   } else {
-    return rep_ok(/* Clade */Block.__(0, [{
-                    clade_id: (counter.contents = counter.contents + 1 | 0, counter.contents),
-                    children: trees,
-                    bootstrap: bootstrap,
-                    rank: rank,
-                    id: parsed_id,
-                    name: name
-                  }]));
+    return rep_ok(/* Clade */Block.__(0, [
+                  /* clade_id */(counter.contents = counter.contents + 1 | 0, counter.contents),
+                  /* children */trees,
+                  /* bootstrap */bootstrap,
+                  /* rank */rank,
+                  /* id */parsed_id,
+                  /* name */name
+                ]));
   }
 }
 
 function zip_no_params(trees) {
   if (empty.tag) {
     return Pervasives.failwith("Representation invariant broken");
+  } else {
+    return rep_ok(/* Clade */Block.__(0, [
+                  /* clade_id */(counter.contents = counter.contents + 1 | 0, counter.contents),
+                  /* children */trees,
+                  /* bootstrap */undefined,
+                  /* rank */undefined,
+                  /* id */undefined,
+                  /* name */undefined
+                ]));
   }
-  var x = empty[0];
-  return rep_ok(/* Clade */Block.__(0, [{
-                  clade_id: (counter.contents = counter.contents + 1 | 0, counter.contents),
-                  children: trees,
-                  bootstrap: x.bootstrap,
-                  rank: x.rank,
-                  id: x.id,
-                  name: x.name
-                }]));
 }
 
 function hierarchy(a, b) {
   if (a.tag) {
     if (b.tag) {
-      return Caml_primitive.caml_string_compare(a[0].scientific_name, b[0].scientific_name);
+      return Caml_primitive.caml_string_compare(a[/* scientific_name */0], b[/* scientific_name */0]);
     } else {
       return -1;
     }
   } else if (b.tag) {
     return 1;
   } else {
-    return Caml_primitive.caml_int_compare(a[0].clade_id, b[0].clade_id);
+    return Caml_primitive.caml_int_compare(a[/* clade_id */0], b[/* clade_id */0]);
   }
 }
 
 function is_equal(a, b) {
   if (a.tag) {
     if (b.tag) {
-      return a[0].scientific_name === b[0].scientific_name;
+      return a[/* scientific_name */0] === b[/* scientific_name */0];
     } else {
       return false;
     }
@@ -150,8 +148,8 @@ function is_equal(a, b) {
   if (b.tag) {
     return false;
   }
-  var s1 = List.sort(hierarchy, a[0].children);
-  var s2 = List.sort(hierarchy, b[0].children);
+  var s1 = List.sort(hierarchy, a[/* children */1]);
+  var s2 = List.sort(hierarchy, b[/* children */1]);
   var _a = s1;
   var _b = s2;
   var _acc = true;
@@ -181,7 +179,7 @@ function is_equal(a, b) {
 
 function mem(s, t) {
   if (t.tag) {
-    return t[0].scientific_name === s;
+    return t[/* scientific_name */0] === s;
   } else {
     return List.fold_left((function (acc, tree) {
                   if (acc) {
@@ -189,7 +187,7 @@ function mem(s, t) {
                   } else {
                     return mem(s, tree);
                   }
-                }), false, t[0].children);
+                }), false, t[/* children */1]);
   }
 }
 
@@ -258,7 +256,7 @@ function print_tree_helper(_t_lst, d, ds) {
       if (ds !== /* [] */0) {
         print_branch(ds);
       }
-      console.log(h[0].scientific_name);
+      console.log(h[/* scientific_name */0]);
       _t_lst = t;
       continue ;
     }
@@ -281,7 +279,7 @@ function print_tree_helper(_t_lst, d, ds) {
       print_branch(ds);
     }
     Pervasives.print_string("C\n");
-    print_tree_helper(h[0].children, d + 1 | 0, new_ds);
+    print_tree_helper(h[/* children */1], d + 1 | 0, new_ds);
     _t_lst = t;
     continue ;
   };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import { Tree } from './ocaml_src/tree.bs';
+import { SmallTree } from './ocaml_src/small_tree.bs';
 import './App.css';
 
 function App() {
@@ -14,6 +15,11 @@ function App() {
 
   const printEmptyTree = () => {
     Tree.print_tree(Tree.empty);
+  };
+
+  const printSmallTree = () => {
+    Tree.print_tree(SmallTree.dog_cat);
+    Tree.print_tree(SmallTree.dog_cat_mouse);
   };
 
   const [num, setNum] = useState(0);
@@ -39,6 +45,7 @@ function App() {
           Learn React
         </a>
         <button title="Print Tree to Console" onClick={printEmptyTree} />
+        <button title="Print Small Tree to Console" onClick={printSmallTree} />
       </header>
     </div>
   );
