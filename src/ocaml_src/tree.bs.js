@@ -7,7 +7,7 @@ import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Caml_primitive from "bs-platform/lib/es6/caml_primitive.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
 
-var UnknownClade = Caml_exceptions.create("Tree-PhyloLibWeb.Tree.UnknownClade");
+var UnknownClade = Caml_exceptions.create("Tree-PhyloLibWeb.UnknownClade");
 
 function clade_ids(tree) {
   if (tree.tag) {
@@ -292,22 +292,18 @@ function print_tree(t) {
             ], 0, /* [] */0);
 }
 
-var Tree = {
-  UnknownClade: UnknownClade,
-  empty: empty,
-  is_empty: is_empty,
-  leaf: leaf,
-  leaf_no_params: leaf_no_params,
-  size: size,
-  zip: zip,
-  zip_no_params: zip_no_params,
-  mem: mem,
-  is_equal: is_equal,
-  print_tree: print_tree
-};
-
 export {
-  Tree ,
+  UnknownClade ,
+  empty ,
+  is_empty ,
+  leaf ,
+  leaf_no_params ,
+  size ,
+  zip ,
+  zip_no_params ,
+  mem ,
+  is_equal ,
+  print_tree ,
   
 }
 /* empty Not a pure module */

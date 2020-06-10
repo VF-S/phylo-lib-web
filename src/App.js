@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
-import { Tree } from './ocaml_src/tree.bs';
+import * as Tree from './ocaml_src/tree.bs';
 import { SmallTree } from './ocaml_src/small_tree.bs';
 import './App.css';
 

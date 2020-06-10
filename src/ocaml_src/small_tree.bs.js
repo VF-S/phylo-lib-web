@@ -2,13 +2,13 @@
 
 import * as Tree$PhyloLibWeb from "./tree.bs.js";
 
-var dog = Tree$PhyloLibWeb.Tree.leaf_no_params("dog");
+var dog = Tree$PhyloLibWeb.leaf_no_params("dog");
 
-var cat = Tree$PhyloLibWeb.Tree.leaf_no_params("cat");
+var cat = Tree$PhyloLibWeb.leaf_no_params("cat");
 
-var mouse = Tree$PhyloLibWeb.Tree.leaf_no_params("mouse");
+var mouse = Tree$PhyloLibWeb.leaf_no_params("mouse");
 
-var dog_cat = Tree$PhyloLibWeb.Tree.zip_no_params(/* :: */[
+var dog_cat = Tree$PhyloLibWeb.zip_no_params(/* :: */[
       dog,
       /* :: */[
         cat,
@@ -16,7 +16,7 @@ var dog_cat = Tree$PhyloLibWeb.Tree.zip_no_params(/* :: */[
       ]
     ]);
 
-var dog_cat_mouse = Tree$PhyloLibWeb.Tree.zip_no_params(/* :: */[
+var dog_cat_mouse = Tree$PhyloLibWeb.zip_no_params(/* :: */[
       dog_cat,
       /* :: */[
         mouse,
@@ -24,7 +24,7 @@ var dog_cat_mouse = Tree$PhyloLibWeb.Tree.zip_no_params(/* :: */[
       ]
     ]);
 
-var z = Tree$PhyloLibWeb.Tree.zip_no_params(/* :: */[
+var z = Tree$PhyloLibWeb.zip_no_params(/* :: */[
       mouse,
       /* :: */[
         dog_cat,
