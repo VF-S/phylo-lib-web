@@ -1,23 +1,23 @@
 {
   "files": {
     "main.css": "/phylo-lib-web/static/css/main.d2e443ec.chunk.css",
-    "main.js": "/phylo-lib-web/static/js/main.f93f43ad.chunk.js",
-    "main.js.map": "/phylo-lib-web/static/js/main.f93f43ad.chunk.js.map",
+    "main.js": "/phylo-lib-web/static/js/main.ba1b4e31.chunk.js",
+    "main.js.map": "/phylo-lib-web/static/js/main.ba1b4e31.chunk.js.map",
     "runtime-main.js": "/phylo-lib-web/static/js/runtime-main.9eea7029.js",
     "runtime-main.js.map": "/phylo-lib-web/static/js/runtime-main.9eea7029.js.map",
-    "static/js/2.3a161e99.chunk.js": "/phylo-lib-web/static/js/2.3a161e99.chunk.js",
-    "static/js/2.3a161e99.chunk.js.map": "/phylo-lib-web/static/js/2.3a161e99.chunk.js.map",
+    "static/js/2.4673992b.chunk.js": "/phylo-lib-web/static/js/2.4673992b.chunk.js",
+    "static/js/2.4673992b.chunk.js.map": "/phylo-lib-web/static/js/2.4673992b.chunk.js.map",
     "index.html": "/phylo-lib-web/index.html",
-    "precache-manifest.bde74f77fd107f5ad6c6d5791ed14e65.js": "/phylo-lib-web/precache-manifest.bde74f77fd107f5ad6c6d5791ed14e65.js",
+    "precache-manifest.3231f191fe4942d3b4947a778aa60643.js": "/phylo-lib-web/precache-manifest.3231f191fe4942d3b4947a778aa60643.js",
     "service-worker.js": "/phylo-lib-web/service-worker.js",
     "static/css/main.d2e443ec.chunk.css.map": "/phylo-lib-web/static/css/main.d2e443ec.chunk.css.map",
-    "static/js/2.3a161e99.chunk.js.LICENSE.txt": "/phylo-lib-web/static/js/2.3a161e99.chunk.js.LICENSE.txt",
+    "static/js/2.4673992b.chunk.js.LICENSE.txt": "/phylo-lib-web/static/js/2.4673992b.chunk.js.LICENSE.txt",
     "static/media/logo.svg": "/phylo-lib-web/static/media/logo.5d5d9eef.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.9eea7029.js",
-    "static/js/2.3a161e99.chunk.js",
+    "static/js/2.4673992b.chunk.js",
     "static/css/main.d2e443ec.chunk.css",
-    "static/js/main.f93f43ad.chunk.js"
+    "static/js/main.ba1b4e31.chunk.js"
   ]
 }
