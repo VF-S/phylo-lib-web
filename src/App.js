@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import logo from './logo.svg';
+import Tree from './bucklescript/tree';
 import './App.css';
 
 function App() {
@@ -10,6 +11,10 @@ function App() {
     }
     return result;
   };
+
+  const printEmptyTree = () => {
+    Tree.print_tree(Tree.empty);
+  }
 
   const [num, setNum] = useState(0);
   return (
@@ -31,6 +36,7 @@ function App() {
         >
           Learn React
         </a>
+        <button title="Print Tree to Console" onClick={printEmptyTree}/>
       </header>
     </div>
   );
