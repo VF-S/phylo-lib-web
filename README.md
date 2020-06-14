@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can find it running [here](https://shiyuan-huang-23.github.io/phylo-lib-web/).
+This is a demo of our OCaml phylogenetic tree library. This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can find it running [here](https://shiyuan-huang-23.github.io/phylo-lib-web/).
 
 ## Available Scripts
 
