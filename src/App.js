@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { Row, Col, Button, Layout } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
@@ -8,16 +8,28 @@ const Header = ({ useBack }) => {
   return (
     <header class="site-header">
       <a class="site-title" href="index.html">
-        {useBack ? <ArrowLeftOutlined style={{ paddingRight: "10px" }} /> : null}
+        {useBack ? (
+          <ArrowLeftOutlined style={{ paddingRight: '10px' }} />
+        ) : null}
         Phylo
       </a>
     </header>
   );
 };
 
+const PhyloXML = () => (
+  <div>
+    <Header useBack={true} />
+  </div>
+);
+
 const HomeContents = () => {
   const i = 'Welcome to Phylo';
-  return (
+
+  const [changeScreen, setChangeScreen] = useState(false);
+  const screen = changeScreen ? (
+    <PhyloXML />
+  ) : (
     <Content justify="center">
       <Row className="intro" justify="center" gutter={[16, 16]}>
         <div>
@@ -30,7 +42,9 @@ const HomeContents = () => {
       <Row justify="center" gutter={[16, 40]}>
         <Col lg={6} md={8} xs={12}>
           <div class="wrap">
-            <button class="offset">Work with .FASTA files</button>
+            <button class="offset" onClick={() => setChangeScreen(true)}>
+              Work with .FASTA files
+            </button>
           </div>
         </Col>
         <Col lg={6} md={8} xs={12}>
@@ -41,12 +55,8 @@ const HomeContents = () => {
       </Row>
     </Content>
   );
+  return screen;
 };
-const PhyloXML = () => (
-  <div>
-    <Header useBack={true} />
-  </div>
-);
 
 const App = () => (
   <div>
