@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
 import { Row, Col, Button, Layout } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 const { h, f, s, Content } = Layout;
 
-const Header = () => {
+const Header = ({ useBack }) => {
   return (
     <header class="site-header">
       <a class="site-title" href="index.html">
+        {useBack ? <ArrowLeftOutlined style={{ paddingRight: "10px" }} /> : null}
         Phylo
       </a>
     </header>
@@ -40,10 +42,15 @@ const HomeContents = () => {
     </Content>
   );
 };
+const PhyloXML = () => (
+  <div>
+    <Header useBack={true} />
+  </div>
+);
 
 const App = () => (
   <div>
-    <Header />
+    <Header useBack={false} />
     <HomeContents />
   </div>
 );
