@@ -1,66 +1,57 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import * as Tree from './ocaml_src/tree.bs';
-import { SmallTree } from './ocaml_src/small_tree.bs';
+import React from 'react';
 import './App.css';
+import { Row, Col, Button, Layout } from 'antd';
+const { h, f, s, Content } = Layout;
 
-function App() {
-  const factorial = (n) => {
-    let result = 1;
-    for (let i = 2; i <= n; i++) {
-      result *= i;
-    }
-    return result;
-  };
 
-  const printEmptyTree = () => {
-    Tree.print_tree(Tree.empty);
-  };
-
-  const printSmallTree = () => {
-    Tree.print_tree(SmallTree.dog_cat);
-    Tree.print_tree(SmallTree.dog_cat_mouse);
-  };
-
-  const printFile = async () => {
-    try {
-      const file = document.getElementById('dnaFiles').files[0];
-      var text = await file.text();
-      console.log(text);
-    } catch (e) {
-      console.log('File printing failed');
-    }
-  };
-
-  const [num, setNum] = useState(0);
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Learn React and save to reload.</p>
-        <p>Factorial: {num}</p>
-        <div>
-          <input
-            type="number"
-            name="Factorial"
-            onChange={(e) => setNum(factorial(e.target.value))}
-          />
-        </div>
-        <input type="file" id="dnaFiles" />
-        <button title="Print file contents" onClick={printFile} />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button title="Print Tree to Console" onClick={printEmptyTree} />
-        <button title="Print Small Tree to Console" onClick={printSmallTree} />
+class Header extends React.Component {
+  render() {
+    return (
+      <header class="site-header">
+        <a class="site-title" href="index.html">Phylo</a>
       </header>
-    </div>
-  );
+    );
+  }
 }
+class HomeContents extends React.Component {
+  render() {
+    const i = "Welcome to Phylo";
+    return (
+      <Content justify="center">
+        <Row className="intro" justify="center" gutter={[16, 16]}>
+          <div>
+            <h1>
+              {i}
+            </h1>
+            <p><h2>A phylogenetic library written in OCaml.</h2></p>
+
+          </div>
+
+        </Row>
+        <Row justify="center" gutter={[16, 40]}>
+          <Col lg={6} md={8} xs={12}>
+            <div class="wrap">
+              <button class="offset">Work with .FASTA files</button>
+            </div>
+
+          </Col>
+          <Col lg={6} md={8} xs={12}>
+            <div class="wrap">
+              <button class="offset">Work with PhyloXML files</button>
+            </div>
+          </Col>
+        </Row>
+      </Content>
+    );
+  }
+}
+const App = () => (
+  <div>
+    <Header>
+    </Header>
+    <HomeContents>
+    </HomeContents>
+  </div>
+);
 
 export default App;
