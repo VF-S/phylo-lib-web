@@ -23,13 +23,26 @@ const PhyloXML = () => (
   </div>
 );
 
+
+const PhyloContents = () => {
+  const heading = "Visualize a phylogenetic tree from a PhyloXML file";
+  return (
+    <Content justify="center">
+      <Row className="intro" justify="center" gutter={[16, 16]}>
+        <div>
+          <h1>{heading}</h1>
+          <p>
+            <h2>A phylogenetic library written in OCaml.</h2>
+          </p>
+        </div>
+      </Row>
+    </Content>
+  )
+}
+
 const HomeContents = () => {
   const i = 'Welcome to Phylo';
-
-  const [changeScreen, setChangeScreen] = useState(false);
-  const screen = changeScreen ? (
-    <PhyloXML />
-  ) : (
+  return (
     <Content justify="center">
       <Row className="intro" justify="center" gutter={[16, 16]}>
         <div>
@@ -42,7 +55,7 @@ const HomeContents = () => {
       <Row justify="center" gutter={[16, 40]}>
         <Col lg={6} md={8} xs={12}>
           <div class="wrap">
-            <button class="offset" onClick={() => setChangeScreen(true)}>
+            <button class="offset">
               Work with .FASTA files
             </button>
           </div>
@@ -54,9 +67,20 @@ const HomeContents = () => {
         </Col>
       </Row>
     </Content>
-  );
-  return screen;
-};
+  )
+}
+
+// const Contents = () => {
+//   const i = 'Welcome to Phylo';
+
+//   const [changeScreen, setChangeScreen] = useState(false);
+//   const screen = changeScreen ? (
+//     <PhyloXML />
+//   ) : (
+//       <HomeContents />
+//     );
+//   return screen;
+// };
 
 const App = () => (
   <div>
