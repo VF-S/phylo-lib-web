@@ -1,23 +1,25 @@
 {
   "files": {
-    "main.css": "/phylo-lib-web/static/css/main.d2e443ec.chunk.css",
-    "main.js": "/phylo-lib-web/static/js/main.4ed9a1cb.chunk.js",
-    "main.js.map": "/phylo-lib-web/static/js/main.4ed9a1cb.chunk.js.map",
-    "runtime-main.js": "/phylo-lib-web/static/js/runtime-main.9eea7029.js",
-    "runtime-main.js.map": "/phylo-lib-web/static/js/runtime-main.9eea7029.js.map",
-    "static/js/2.4673992b.chunk.js": "/phylo-lib-web/static/js/2.4673992b.chunk.js",
-    "static/js/2.4673992b.chunk.js.map": "/phylo-lib-web/static/js/2.4673992b.chunk.js.map",
+    "main.css": "/phylo-lib-web/static/css/main.52c76d25.chunk.css",
+    "main.js": "/phylo-lib-web/static/js/main.c3679176.chunk.js",
+    "main.js.map": "/phylo-lib-web/static/js/main.c3679176.chunk.js.map",
+    "runtime-main.js": "/phylo-lib-web/static/js/runtime-main.cfbdd8df.js",
+    "runtime-main.js.map": "/phylo-lib-web/static/js/runtime-main.cfbdd8df.js.map",
+    "static/css/2.f47422e6.chunk.css": "/phylo-lib-web/static/css/2.f47422e6.chunk.css",
+    "static/js/2.e0651c9b.chunk.js": "/phylo-lib-web/static/js/2.e0651c9b.chunk.js",
+    "static/js/2.e0651c9b.chunk.js.map": "/phylo-lib-web/static/js/2.e0651c9b.chunk.js.map",
     "index.html": "/phylo-lib-web/index.html",
-    "precache-manifest.942ee453101ce01cb353d0605306be19.js": "/phylo-lib-web/precache-manifest.942ee453101ce01cb353d0605306be19.js",
+    "precache-manifest.5268a5d80df4f2b8c447c8899a474877.js": "/phylo-lib-web/precache-manifest.5268a5d80df4f2b8c447c8899a474877.js",
     "service-worker.js": "/phylo-lib-web/service-worker.js",
-    "static/css/main.d2e443ec.chunk.css.map": "/phylo-lib-web/static/css/main.d2e443ec.chunk.css.map",
-    "static/js/2.4673992b.chunk.js.LICENSE.txt": "/phylo-lib-web/static/js/2.4673992b.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/phylo-lib-web/static/media/logo.5d5d9eef.svg"
+    "static/css/2.f47422e6.chunk.css.map": "/phylo-lib-web/static/css/2.f47422e6.chunk.css.map",
+    "static/css/main.52c76d25.chunk.css.map": "/phylo-lib-web/static/css/main.52c76d25.chunk.css.map",
+    "static/js/2.e0651c9b.chunk.js.LICENSE.txt": "/phylo-lib-web/static/js/2.e0651c9b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.9eea7029.js",
-    "static/js/2.4673992b.chunk.js",
-    "static/css/main.d2e443ec.chunk.css",
-    "static/js/main.4ed9a1cb.chunk.js"
+    "static/js/runtime-main.cfbdd8df.js",
+    "static/css/2.f47422e6.chunk.css",
+    "static/js/2.e0651c9b.chunk.js",
+    "static/css/main.52c76d25.chunk.css",
+    "static/js/main.c3679176.chunk.js"
   ]
 }
