@@ -23,18 +23,18 @@ const Header = ({ useBack }) => {
 };
 
 const App = () => {
-  const [screen, setScreen] = useState(0);
+  const [screen, setScreen] = useState('HOME');
 
   const context = React.useMemo(
     () => ({
       goHome: () => {
-        setScreen(0);
+        setScreen('HOME');
       },
       goVisualizePhylo: () => {
-        setScreen(1);
+        setScreen('VISUALIZE_PHYLO');
       },
       goGeneratePhylo: () => {
-        setScreen(2);
+        setScreen('GENERATE_PHYLO');
       },
     }),
     [],
@@ -42,11 +42,11 @@ const App = () => {
 
   const CurrScreen = () => {
     switch (screen) {
-      case 0:
+      case 'HOME':
         return <HomeContent />;
-      case 1:
+      case 'VISUALIZE_PHYLO':
         return <VisualizePhyloContent />;
-      case 2:
+      case 'GENERATE_PHYLO':
         return <GeneratePhyloContent />;
       default:
         return null;
@@ -56,7 +56,7 @@ const App = () => {
   return (
     <Context.Provider value={context}>
       <div>
-        <Header useBack={screen !== 0} />
+        <Header useBack={screen !== 'HOME'} />
         <CurrScreen />
       </div>
     </Context.Provider>
