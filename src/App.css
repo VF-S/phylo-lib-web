@@ -41,7 +41,7 @@
 /**
  * Site header
  */
- .site-header {
+.site-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,13 +54,20 @@
 }
 
 .site-title {
+  align-content: center;
+  background-color: white;
+  border: none;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  float: left;
   font-weight: 700;
   letter-spacing: -1px;
   margin-bottom: 0;
-  float: left;
-  color: black;
   text-decoration: none;
+  width: min-content;
 }
+
 .site-title:hover {
   color: black;
 }
@@ -70,8 +77,8 @@
   align-items: center;
   justify-content: center;
   min-height: 90vh;
-
 }
+
 .intro {
   padding-top: 20vh;
   padding-bottom: 10vh;
@@ -79,8 +86,6 @@
   text-align: center;
   color: black;
 }
-
-
 
 .offset {
   border: 1px solid rgb(68, 150, 122);
@@ -90,13 +95,16 @@
   background-color: white;
   font-size: 16px;
 }
+
 .offset:hover {
   background-color: hsl(160, 38%, 93%);
-  box-shadow: .2em .1em 0 0 rgb(68, 150, 122);
+  box-shadow: 0.2em 0.1em 0 0 rgb(68, 150, 122);
 }
+
 .offset:focus {
-  outline:0;
+  outline: 0;
 }
+
 .wrap {
   width: 100%;
   text-align: center;
@@ -108,5 +116,5 @@
 }
 
 .intro h2 {
-  font-weight: 300
+  font-weight: 300;
 }

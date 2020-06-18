@@ -1,92 +1,66 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Row, Col, Button, Layout } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-const { h, f, s, Content } = Layout;
+import Context from './components/Context';
+import HomeContent from './components/HomeContent';
+import GeneratePhyloContent from './components/GeneratePhyloContent';
+import VisualizePhyloContent from './components/VisualizePhyloContent';
 
 const Header = ({ useBack }) => {
+  const { goHome } = React.useContext(Context);
   return (
     <header class="site-header">
-      <a class="site-title" href="index.html">
+      <button class="site-title" onClick={goHome}>
         {useBack ? (
-          <ArrowLeftOutlined style={{ paddingRight: '10px' }} />
+          <ArrowLeftOutlined
+            style={{ alignSelf: 'center', paddingRight: '10px' }}
+          />
         ) : null}
         Phylo
-      </a>
+      </button>
     </header>
   );
 };
 
-const PhyloXML = () => (
-  <div>
-    <Header useBack={true} />
-  </div>
-);
+const App = () => {
+  const [screen, setScreen] = useState(0);
 
+  const context = React.useMemo(
+    () => ({
+      goHome: () => {
+        setScreen(0);
+      },
+      goVisualizePhylo: () => {
+        setScreen(1);
+      },
+      goGeneratePhylo: () => {
+        setScreen(2);
+      },
+    }),
+    [],
+  );
 
-const PhyloContents = () => {
-  const heading = "Visualize a phylogenetic tree from a PhyloXML file";
+  const CurrScreen = () => {
+    switch (screen) {
+      case 0:
+        return <HomeContent />;
+      case 1:
+        return <VisualizePhyloContent />;
+      case 2:
+        return <GeneratePhyloContent />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <Content justify="center">
-      <Row className="intro" justify="center" gutter={[16, 16]}>
-        <div>
-          <h1>{heading}</h1>
-          <p>
-            <h2>A phylogenetic library written in OCaml.</h2>
-          </p>
-        </div>
-      </Row>
-    </Content>
-  )
-}
-
-const HomeContents = () => {
-  const i = 'Welcome to Phylo';
-  return (
-    <Content justify="center">
-      <Row className="intro" justify="center" gutter={[16, 16]}>
-        <div>
-          <h1>{i}</h1>
-          <p>
-            <h2>A phylogenetic library written in OCaml.</h2>
-          </p>
-        </div>
-      </Row>
-      <Row justify="center" gutter={[16, 40]}>
-        <Col lg={6} md={8} xs={12}>
-          <div class="wrap">
-            <button class="offset">
-              Work with .FASTA files
-            </button>
-          </div>
-        </Col>
-        <Col lg={6} md={8} xs={12}>
-          <div class="wrap">
-            <button class="offset">Work with PhyloXML files</button>
-          </div>
-        </Col>
-      </Row>
-    </Content>
-  )
-}
-
-// const Contents = () => {
-//   const i = 'Welcome to Phylo';
-
-//   const [changeScreen, setChangeScreen] = useState(false);
-//   const screen = changeScreen ? (
-//     <PhyloXML />
-//   ) : (
-//       <HomeContents />
-//     );
-//   return screen;
-// };
-
-const App = () => (
-  <div>
-    <Header useBack={false} />
-    <HomeContents />
-  </div>
-);
+    <Context.Provider value={context}>
+      <div>
+        <Header useBack={screen !== 0} />
+        <CurrScreen />
+      </div>
+    </Context.Provider>
+  );
+};
 
 export default App;
