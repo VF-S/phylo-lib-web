@@ -5,7 +5,7 @@ import Context from './Context';
 const { Content } = Layout;
 
 export default function HomeContents() {
-  const i = 'Welcome to Phylo';
+  const i = 'Welcome to PhyloCaml';
   const { goVisualizePhylo, goGeneratePhylo } = React.useContext(Context);
   return (
     <Content justify="center">
@@ -13,6 +13,7 @@ export default function HomeContents() {
         <div>
           <h1>{i}</h1>
           <h2>A phylogenetic library written in OCaml.</h2>
+          <h2>Inferring Evolutionary History through modern genetic simularity.</h2>
         </div>
       </Row>
       <Row justify="center" gutter={[16, 40]}>
