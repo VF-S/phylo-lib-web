@@ -9,8 +9,8 @@ import VisualizePhyloContent from './components/VisualizePhyloContent';
 const Header = ({ useBack }) => {
   const { goHome } = React.useContext(Context);
   return (
-    <header class="site-header">
-      <button class="site-title" onClick={goHome}>
+    <header className="site-header">
+      <button className="site-title" onClick={goHome}>
         {useBack ? (
           <ArrowLeftOutlined
             style={{ alignSelf: 'center', paddingRight: '10px' }}

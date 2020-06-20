@@ -105,6 +105,11 @@
   outline: 0;
 }
 
+.upload {
+  justify-content: center;
+  width: 100%;
+}
+
 .wrap {
   width: 100%;
   text-align: center;
