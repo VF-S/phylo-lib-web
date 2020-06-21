@@ -139,6 +139,16 @@ let rec mem s t =
   | Clade {children} -> 
     List.fold_left (fun acc tree -> acc || (mem s tree)) false children
 
+(** Points to the string representation of the tree that is currently 
+  being printed. *)
+let print_output = ref ""
+
+let print_char c = print_output := !print_output ^ Char.escaped c
+
+let print_string s = print_output := !print_output ^ s
+
+let print_endline s = print_string (s ^ "\n")
+
 (** [print_spaces n] prints [n] spaces to the console. *)
 let print_spaces (n : int) : unit =
   for x = 1 to n do print_char ' ' done
@@ -204,5 +214,7 @@ let rec print_tree_helper (t_lst : t list) (d : int) (ds : int list): unit =
         end;
     end
 
-let print_tree (t : t) : unit = 
-  print_tree_helper [t] 0 []
+let to_string (t : t) : string = 
+  print_output := "";
+  let _ = print_tree_helper [t] 0 [] in 
+  !print_output

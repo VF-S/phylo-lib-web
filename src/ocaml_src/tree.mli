@@ -49,5 +49,5 @@ val mem : string -> t -> bool
     the order of the children. *)
 val is_equal : t -> t -> bool
 
-(** [print_tree t] prints an ASCII-art [t] to console semi-prettily. *)
-val print_tree : t -> unit
+(** [to_string t] returns an ASCII-art string representation of [t]. *)
+val to_string : t -> string

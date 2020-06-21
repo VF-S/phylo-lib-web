@@ -18,7 +18,7 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -41,26 +41,34 @@
 /**
  * Site header
  */
- .site-header {
+.site-header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   padding-left: 5%;
   padding-right: 5%;
-  /* border-bottom: 1px solid black; */
   font-size: 26px;
   min-height: 2em;
   position: relative;
 }
 
 .site-title {
+  align-content: center;
+  background-color: white;
+  border: none;
+  color: black;
+  display: flex;
+  flex-direction: row;
+  float: left;
   font-weight: 700;
   letter-spacing: -1px;
   margin-bottom: 0;
-  float: left;
-  color: black;
   text-decoration: none;
+  width: min-content;
+  outline: none;
 }
+
 .site-title:hover {
   color: black;
 }
@@ -70,17 +78,50 @@
   align-items: center;
   justify-content: center;
   min-height: 90vh;
-
 }
-.intro {
-  padding-top: 20vh;
+
+.intro, .page{
+  padding-top: 5vh;
   padding-bottom: 10vh;
   width: 100%;
   text-align: center;
   color: black;
 }
 
+.page{
+  padding-left: 5%;
+  padding-right: 5%;
+}
 
+.main {
+  display: flex;
+  min-height: 90vh;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10%;
+}
+
+.intro h1 {
+  font-size: 9vmin;
+  font-weight: 700;
+}
+
+.intro h2, .page h2 {
+  font-weight: 300;
+}
+
+.page h2 {
+  font-size: 3vmin;
+}
+
+.page h1 {
+  font-size: 6vmin;
+  font-weight: 700;
+}
+
+button.offset {
+  width: 100%
+}
 
 .offset {
   border: 1px solid rgb(68, 150, 122);
@@ -90,23 +131,43 @@
   background-color: white;
   font-size: 16px;
 }
+
 .offset:hover {
   background-color: hsl(160, 38%, 93%);
-  box-shadow: .2em .1em 0 0 rgb(68, 150, 122);
+  box-shadow: 0.2em 0.1em 0 0 rgb(68, 150, 122);
 }
+
 .offset:focus {
-  outline:0;
+  outline: 0;
 }
+
+.upload {
+  justify-content: center;
+  width: 100%;
+}
+
 .wrap {
   width: 100%;
   text-align: center;
 }
 
-.intro h1 {
-  font-size: 9vmin;
-  font-weight: 700;
+.wrapper {
+  padding: 0 10%;
 }
 
-.intro h2 {
-  font-weight: 300
+.ant-col {
+  width: 80%
+}
+
+.tooltip {
+  float: right;
+  justify-self: flex-end;
+  position: absolute; 
+  right: 5%;
+  font-weight: 300;
+  font-size: 2.7vmin;
+}
+
+a.tooltip {
+  color: black;
 }
