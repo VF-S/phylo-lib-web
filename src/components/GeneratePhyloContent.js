@@ -40,19 +40,18 @@ export default function GeneratePhyloContent() {
               infer their species' evolutionary history through time. Begin by
               uploading .FASTA files that contain DNA sequences, or use our
               example DNA sequences.
-          </h2>
+            </h2>
           </div>
         </Row>
         <Row className="upload">
           <Upload {...fastaUploadProps}>
             <Button>
-              <UploadOutlined /> Upload DNA sequences in .FASTA format
-          </Button>
+              <UploadOutlined /> Upload .FASTA files
+            </Button>
           </Upload>
           {/* <Button onClick={() => parseDNA()}> Generate tree </Button> */}
         </Row>
       </Content>
     </div>
   );
-
 }
