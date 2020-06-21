@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/phylo-lib-web/precache-manifest.5268a5d80df4f2b8c447c8899a474877.js"
+  "/phylo-lib-web/precache-manifest.fe234b2d2a288ebd023184f7ffc7f225.js"
 );
 
 self.addEventListener('message', (event) => {
