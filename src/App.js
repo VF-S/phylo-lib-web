@@ -25,10 +25,18 @@ const Header = ({ useBack }) => {
         ) : null}
         Phylo
       </button>
-      <Popover content={content} className="tooltip" title="Title" trigger="click">
-        <a class="tooltip"> <InfoCircleOutlined style={{ paddingRight: '0.5em' }} />Confused by all the terms?</a>
+      <Popover
+        content={content}
+        className="tooltip"
+        title="Title"
+        trigger="click"
+      >
+        <a className="tooltip">
+          {' '}
+          <InfoCircleOutlined style={{ paddingRight: '0.5em' }} />
+          Confused by all the terms?
+        </a>
       </Popover>
-
     </header>
   );
 };
