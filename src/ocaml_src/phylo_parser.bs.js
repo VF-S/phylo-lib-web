@@ -34,9 +34,7 @@ function empty_start_tag(t) {
   };
 }
 
-function print_debug(s) {
-  console.log(s);
-}
+function print_debug(s) {}
 
 var peek = {
   contents: function (param) {
@@ -225,7 +223,6 @@ function parse_start_tag(param) {
   while (true) {
     var tag = _tag;
     var x$1 = Curry._1(peek.contents, undefined);
-    console.log(x$1);
     if (Lexer$PhyloLibWeb.is_word(x$1)) {
       consume(x$1);
       consume(/* Eq */ 13);
@@ -274,7 +271,6 @@ function parse_name(param) {
   }
   var name = parse_words('');
   consume_end_tag(/* Name */ 1);
-  console.log(name);
   return name;
 }
 

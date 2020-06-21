@@ -6,10 +6,9 @@ import * as Dna from '../ocaml_src/dna.bs';
 import '../App.css';
 const { Content } = Layout;
 
-const reader = new FileReader();
-
 const parseDNA = async (file) => {
   try {
+    const reader = new FileReader();
     reader.onload = () => {
       console.log(Dna.to_string(Dna.from_string(reader.result)));
     };
@@ -21,7 +20,11 @@ const parseDNA = async (file) => {
 };
 
 const fastaUploadProps = {
-  accept: '.FASTA, .text, .fasta',
+  accept: '.FASTA, .txt, .fasta',
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  headers: {
+    authorization: 'authorization-text',
+  },
   multiple: true,
   transformFile(file) {
     parseDNA(file);
