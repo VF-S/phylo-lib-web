@@ -20,7 +20,6 @@ const parseDNA = async (file) => {
     reader.onload = () => {
       const dna = Dna.from_string(reader.result);
       dnaArr.push(dna);
-      console.log(Dna.to_string(Dna.from_string(reader.result)));
     };
     reader.readAsText(file);
   } catch (e) {
@@ -29,24 +28,16 @@ const parseDNA = async (file) => {
   }
 };
 
-const pairwiseAlign = () => {
-  if (dnaArr.length < 2) {
-    alert("Not enough DNA sequences to perform pairwise alignment")
-  }
-  else {
-    const pair = Pairwise.align_pair(dnaArr[0], dnaArr[1], 1, -1, -1);
-    Pairwise.print_alignment(dnaArr[0], dnaArr[1]);
-
-  }
-}
 
 const generateTree = () => {
+  // if (dnaArr.length < 2) {
+  //   alert("Not enough DNA sequences to perform pairwise alignment")
+  // }
 
   const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
   const virus_names = placeholder;
   const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
   console.log(Tree.to_string(tree));
-
 }
 
 const fastaUploadProps = {
@@ -56,9 +47,6 @@ const fastaUploadProps = {
     authorization: 'authorization-text',
   },
   multiple: true,
-  transformFile(file) {
-    parseDNA(file);
-  },
 };
 
 export default function GeneratePhyloContent() {
