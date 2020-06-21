@@ -2,12 +2,17 @@ import React from 'react';
 import { Button, Row, Layout, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
+import * as Tree from '../ocaml_src/tree.bs'
 import * as Pairwise from '../ocaml_src/pairwise.bs';
+import * as Msa from "../ocaml_src/msa.bs"
+import * as Distance from "../ocaml_src/distance.bs"
+import * as PhyloAlgo from "../ocaml_src/phylo_algo.bs"
 
 import '../App.css';
 const { Content } = Layout;
 
 const dnaArr = [];
+const placeholder = ["1", "2", "3"];
 
 const parseDNA = async (file) => {
   try {
@@ -33,6 +38,15 @@ const pairwiseAlign = () => {
     Pairwise.print_alignment(dnaArr[0], dnaArr[1]);
 
   }
+}
+
+const generateTree = () => {
+
+  const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
+  const virus_names = placeholder;
+  const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
+  console.log(Tree.to_string(tree));
+
 }
 
 const fastaUploadProps = {
@@ -68,7 +82,7 @@ export default function GeneratePhyloContent() {
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button onClick={() => pairwiseAlign()}> Generate tree </Button>
+          <Button onClick={() => generateTree()}> Generate tree </Button>
         </Row>
       </Content>
     </div>
