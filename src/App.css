@@ -18,7 +18,7 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -43,11 +43,11 @@
  */
 .site-header {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
   padding-left: 5%;
   padding-right: 5%;
-  /* border-bottom: 1px solid black; */
   font-size: 26px;
   min-height: 2em;
   position: relative;
@@ -157,4 +157,17 @@ button.offset {
 
 .ant-col {
   width: 80%
+}
+
+.tooltip {
+  float: right;
+  justify-self: flex-end;
+  position: absolute; 
+  right: 5%;
+  font-weight: 300;
+  font-size: 2.7vmin;
+}
+
+a.tooltip {
+  color: black;
 }
