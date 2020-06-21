@@ -13,7 +13,9 @@ export default function HomeContents() {
         <div>
           <h1>{i}</h1>
           <h2>A phylogenetic library written in OCaml.</h2>
-          <h2>Inferring Evolutionary History through modern genetic simularity.</h2>
+          <h2>
+            Inferring Evolutionary History through modern genetic similarity.
+          </h2>
         </div>
       </Row>
       <Row justify="center" gutter={[16, 40]}>
