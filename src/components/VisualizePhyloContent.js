@@ -35,21 +35,23 @@ const uploadProps = {
 export default function VisualizePhyloContent() {
   const heading = 'Visualize PhyloXML';
   return (
-    <Content justify="center">
-      <Row className="intro" justify="center" gutter={[16, 16]}>
-        <div>
-          <h1>{heading}</h1>
-          <h2>A phylogenetic library written in OCaml.</h2>
-        </div>
-      </Row>
-      <Row className="upload">
-        <Upload {...uploadProps}>
-          <Button>
-            <UploadOutlined />
+    <div class="wrapper">
+      <Content justify="center">
+        <Row className="page" justify="center" gutter={[16, 16]}>
+          <div>
+            <h1>{heading}</h1>
+            <h2>Visualize an existing phylogenetic tree. Begin by uploading a PhyloXML file, or use our example files.</h2>
+          </div>
+        </Row>
+        <Row className="upload">
+          <Upload {...uploadProps}>
+            <Button>
+              <UploadOutlined />
             Upload PhyloXML Files Here
           </Button>
-        </Upload>
-      </Row>
-    </Content>
+          </Upload>
+        </Row>
+      </Content>
+    </div>
   );
 }

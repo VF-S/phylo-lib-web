@@ -55,10 +55,8 @@ const App = () => {
 
   return (
     <Context.Provider value={context}>
-      <div>
-        <Header useBack={screen !== 'HOME'} />
-        <CurrScreen />
-      </div>
+      <Header useBack={screen !== 'HOME'} />
+      <CurrScreen />
     </Context.Provider>
   );
 };
