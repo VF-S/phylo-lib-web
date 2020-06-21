@@ -110,19 +110,6 @@
   width: 100%;
 }
 
-.custom-upload {
-  overflow: hidden;
-  display: inline-block;
-  justify-content: center;
-}
-
-input[type='file'] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  opacity: 0;
-}
-
 .wrap {
   width: 100%;
   text-align: center;

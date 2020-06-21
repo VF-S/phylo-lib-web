@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React from 'react';
 import { Button, Layout, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import '../App.css';
-import * as Dna from '../ocaml_src/dna.bs';
+import * as Tree from '../ocaml_src/tree.bs';
+import * as PhyloParser from '../ocaml_src/phylo_parser.bs';
 const { Content } = Layout;
 
 const reader = new FileReader();
@@ -10,7 +11,8 @@ const reader = new FileReader();
 const printFile = async (file) => {
   try {
     reader.onload = () => {
-      console.log(reader.result);
+      const phylo = PhyloParser.from_phylo(reader.result);
+      console.log(Tree.to_string(phylo.tree));
     };
     reader.readAsText(file);
   } catch (e) {
@@ -31,58 +33,6 @@ const uploadProps = {
 };
 
 export default function VisualizePhyloContent() {
-  const [fileList, setFileList] = useState([]);
-  const input = useRef(null);
-
-  const updateFileList = () => {
-    console.log('hi');
-    console.log(fileList);
-  };
-
-  useEffect(() => {
-    setFileList(input.current.files);
-    console.log(fileList);
-  }, [input, fileList]);
-
-  const printFiles = () => {
-    if (fileList !== undefined && fileList instanceof FileList) {
-      const dnaReader = new FileReader();
-      dnaReader.onload = () => {
-        console.log(Dna.to_string(Dna.from_string(reader.result)));
-      };
-      for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        console.log('index');
-        console.log(i);
-        try {
-          dnaReader.readAsText(file);
-        } catch (e) {
-          console.log(e);
-          console.log('File printing failed');
-          console.log('index');
-          console.log(i);
-        }
-      }
-    }
-  };
-  useEffect(() => {
-    console.log('hi again');
-    if (fileList !== undefined && fileList instanceof FileList) {
-      for (let i = 0; i < fileList.length; i++) {
-        const file = fileList[i];
-        try {
-          reader.onload = () => {
-            console.log(Dna.to_string(Dna.from_string(reader.result)));
-          };
-          reader.readAsText(fileList[i]);
-        } catch (e) {
-          console.log(e);
-          console.log('File printing failed');
-        }
-      }
-    }
-  }, [fileList, fileList.length]);
-
   const heading = 'Visualize PhyloXML';
   return (
     <Content justify="center">
@@ -99,22 +49,6 @@ export default function VisualizePhyloContent() {
             Upload PhyloXML Files Here
           </Button>
         </Upload>
-      </Row>
-      <Row className="upload">
-        <div className="custom-upload">
-          <Button>
-            <UploadOutlined />
-            Upload Multiple PhyloXML Files Here
-            <input
-              type="file"
-              name="dnaFiles"
-              accept=".fasta,.FASTA,.txt"
-              multiple
-              ref={input}
-              onInput={printFiles}
-            />
-          </Button>
-        </div>
       </Row>
     </Content>
   );
