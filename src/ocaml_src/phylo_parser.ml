@@ -144,14 +144,12 @@ let rec add_attr (tag : start_tag) (attr : string): start_tag =
           {tag with bool_attr = add_assoc tag.bool_attr (attr, true)}
         | False -> consume False;
           {tag with bool_attr = add_assoc tag.bool_attr (attr, false)}
-        | _ -> print_debug "add_attr
-       attribute error"; raise SyntaxError
+        | _ -> print_debug "add_attr attribute error"; raise SyntaxError
       end
     in consume Quote; return_tag
   | Num x -> consume (Num x);
     {tag with num_attr = add_assoc tag.num_attr (attr, x)}
-  | _ -> print_debug "add_attr
- match failure"; raise SyntaxError
+  | _ -> print_debug "add_attr match failure"; raise SyntaxError
 
 (** [parse_attr tag] parses tag attributes in the file currently being processed
     and adds those attributes to [tag]. 

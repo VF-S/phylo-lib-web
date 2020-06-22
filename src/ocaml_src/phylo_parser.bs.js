@@ -161,7 +161,7 @@ function add_attr(tag, attr) {
       if (typeof match === "number") {
         if (match !== 15) {
           if (match !== 16) {
-            print_debug("add_attr\n       attribute error");
+            print_debug("add_attr attribute error");
             throw $$SyntaxError;
           }
           consume(/* False */16);
@@ -201,11 +201,11 @@ function add_attr(tag, attr) {
       consume(/* Quote */12);
       return return_tag;
     }
-    print_debug("add_attr\n match failure");
+    print_debug("add_attr match failure");
     throw $$SyntaxError;
   } else {
     if (x.tag) {
-      print_debug("add_attr\n match failure");
+      print_debug("add_attr match failure");
       throw $$SyntaxError;
     }
     var x$1 = x[0];
