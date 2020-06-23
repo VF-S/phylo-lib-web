@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Layout, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import '../App.css';
@@ -9,6 +9,8 @@ import * as d3 from 'd3';
 const { Content } = Layout;
 
 export default function VisualizePhyloContent() {
+  const [asciiPhylo, setasciiPhylo] = useState('');
+
   const reader = new FileReader();
 
   const printFile = async (file) => {
@@ -18,6 +20,7 @@ export default function VisualizePhyloContent() {
         const phylo = PhyloParser.from_phylo(reader.result);
         const str = Tree.to_string(phylo.tree);
         console.log(str);
+        setasciiPhylo(str);
       };
       reader.readAsText(file);
     } catch (e) {
@@ -58,7 +61,11 @@ export default function VisualizePhyloContent() {
             </Button>
           </Upload>
         </Row>
-        <p>Example paragraph.</p>
+        <Row justify="center">
+          <div className="ascii-phylo-container">
+            <p className="ascii-phylo">{asciiPhylo}</p>
+          </div>
+        </Row>
         <svg id="phylo-container" name="phylo-container" />
       </Content>
     </div>

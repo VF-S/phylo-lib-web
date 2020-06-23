@@ -98,10 +98,33 @@ Hashtbl.add(word_token_map, "true", /* True */15);
 
 Hashtbl.add(word_token_map, "false", /* False */16);
 
+function get_next_line(s, _acc) {
+  while(true) {
+    var acc = _acc;
+    var c = Stream.peek(s);
+    if (c !== undefined) {
+      Stream.junk(s);
+      if (c === 10) {
+        return acc;
+      }
+      if (c === 13) {
+        return acc;
+      }
+      _acc = acc + Char.escaped(c);
+      continue ;
+    }
+    if (acc === "") {
+      throw Caml_builtin_exceptions.end_of_file;
+    }
+    return acc;
+  };
+}
+
 function stream_of_file(f) {
+  var char_stream = Stream.of_string(f);
   var stream = Stream.from((function (param) {
           try {
-            return f;
+            return get_next_line(char_stream, "");
           }
           catch (exn){
             if (exn === Caml_builtin_exceptions.end_of_file) {

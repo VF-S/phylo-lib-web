@@ -64,10 +64,25 @@ let is_token (s : string) : bool =
 let string_to_token (s : string) : token =
   Hashtbl.find word_token_map s
 
+(** [get_next_line s acc] reads characters from [s] until '\n' or '\r' is 
+    reached, then returns the string representing the characters read, appended
+    to [acc]. *)
+let rec get_next_line (s : char Stream.t) (acc : string) : string = 
+  match Stream.peek s with 
+  | Some c ->
+    Stream.junk s;
+    begin
+      match c with 
+      | '\n' | '\r' -> acc
+      | _ -> get_next_line s (acc ^ (Char.escaped c))
+    end
+  | None -> if acc = "" then raise End_of_file else acc
+
 let stream_of_file (f : string) : string Stream.t =
+  let char_stream = Stream.of_string f in 
   let stream = 
     Stream.from (fun _ ->
-        try Some f with End_of_file -> None)
+        try Some (get_next_line char_stream "") with End_of_file -> None)
   in 
   match Stream.peek stream with
   | Some s -> 
