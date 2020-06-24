@@ -5,7 +5,7 @@ import Context from './Context';
 const { Content } = Layout;
 
 export default function HomeContents() {
-  const i = 'Welcome to PhyloCaml';
+  const i = 'Welcome to PhyloML';
   const { goVisualizePhylo, goGeneratePhylo } = React.useContext(Context);
   return (
     <div className="wrapper main">
@@ -23,14 +23,14 @@ export default function HomeContents() {
           <Col lg={7} md={10} sm={12}>
             <div className="wrap">
               <button className="offset" onClick={goGeneratePhylo}>
-                Work with .FASTA files
+                Generate Phylogenetic Trees
               </button>
             </div>
           </Col>
           <Col lg={7} md={10} sm={12}>
             <div className="wrap">
               <button className="offset" onClick={goVisualizePhylo}>
-                Work with PhyloXML files
+                Visualize Phylogenetic Trees
               </button>
             </div>
           </Col>

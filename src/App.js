@@ -4,8 +4,8 @@ import { Popover } from 'antd';
 import { ArrowLeftOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import Context from './components/Context';
 import HomeContent from './components/HomeContent';
-import GeneratePhyloContent from './components/GeneratePhyloContent';
-import VisualizePhyloContent from './components/VisualizePhyloContent';
+import Generate from './components/Generate';
+import Visualize from './components/Visualize';
 
 const Header = ({ useBack }) => {
   const { goHome } = React.useContext(Context);
@@ -23,7 +23,7 @@ const Header = ({ useBack }) => {
             style={{ alignSelf: 'center', paddingRight: '10px' }}
           />
         ) : null}
-        Phylo
+        PhyloML
       </button>
       <Popover
         content={content}
@@ -64,9 +64,9 @@ const App = () => {
       case 'HOME':
         return <HomeContent />;
       case 'VISUALIZE_PHYLO':
-        return <VisualizePhyloContent />;
+        return <Visualize />;
       case 'GENERATE_PHYLO':
-        return <GeneratePhyloContent />;
+        return <Generate />;
       default:
         return null;
     }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Layout, Row, Upload } from 'antd';
+import { Button, Layout, Radio, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import '../App.css';
 import * as Tree from '../ocaml_src/tree.bs';
@@ -8,7 +8,7 @@ import * as d3 from 'd3';
 
 const { Content } = Layout;
 
-export default function VisualizePhyloContent() {
+export default function Visualize() {
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [asciiPhylo, setasciiPhylo] = useState('');
 
@@ -42,6 +42,28 @@ export default function VisualizePhyloContent() {
     },
   };
 
+  function changeFile(e) {
+    switch (e.target.value) {
+      case "a":
+        console.log("Amphibians");
+        printFile("./defaults/PhyloXML/frog.xml");
+        break;
+      case "b":
+        console.log("TOL");
+        printFile("./defaults/PhyloXML/tol_156.xml");
+        break;
+      case "c":
+        console.log("Protein");
+        printFile("./defaults/PhyloXML/apaf.xml");
+        break;
+      case "d":
+        printFile("./defaults/PhyloXML/small_tree.xml");
+        console.log("Small Tree");
+        break;
+    }
+
+  }
+
   const heading = 'Visualize PhyloXML';
   return (
     <div class="wrapper">
@@ -55,6 +77,7 @@ export default function VisualizePhyloContent() {
             </h2>
           </div>
         </Row>
+
         <Row className="upload">
           <Upload {...uploadProps}>
             <Button>
@@ -62,6 +85,14 @@ export default function VisualizePhyloContent() {
               Upload PhyloXML Files
             </Button>
           </Upload>
+        </Row>
+        <Row className="FileOptions" alignItems="right" justify="right">
+          <Radio.Group onChange={changeFile} defaultValue="example 1">
+            <Radio.Button value="a">Amphibians Example</Radio.Button>
+            <Radio.Button value="b">A Tree of Life Example</Radio.Button>
+            <Radio.Button value="c">Protein Example</Radio.Button>
+            <Radio.Button value="d">Small Tree</Radio.Button>
+          </Radio.Group>
         </Row>
         {phyloVisible ? (
           <Row justify="center">
@@ -72,6 +103,6 @@ export default function VisualizePhyloContent() {
         ) : null}
         <svg id="phylo-container" name="phylo-container" />
       </Content>
-    </div>
+    </div >
   );
 }

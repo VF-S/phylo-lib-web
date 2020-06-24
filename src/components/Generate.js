@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Row, Layout, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
@@ -29,30 +29,35 @@ const parseDNA = async (file) => {
 };
 
 
-const generateTree = () => {
-  // if (dnaArr.length < 2) {
-  //   alert("Not enough DNA sequences to perform pairwise alignment")
-  // }
 
-  const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
-  const virus_names = placeholder;
-  const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
-  console.log(Tree.to_string(tree));
-}
 
-const fastaUploadProps = {
-  accept: '.FASTA, .txt, .fasta',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  multiple: true,
-  transformFile(file) {
-    parseDNA(file);
+
+export default function Generate() {
+  const [uploadDisabled, setUploadDisabled] = useState(false);
+  const generateTree = () => {
+    setUploadDisabled(true);
+    // if (dnaArr.length < 2) {
+    //   alert("Not enough DNA sequences to perform pairwise alignment")
+    // }
+
+    const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
+    const virus_names = placeholder;
+    const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
+    console.log(Tree.to_string(tree));
   }
-};
 
-export default function GeneratePhyloContent() {
+  const fastaUploadProps = {
+    accept: '.FASTA, .txt, .fasta',
+    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    disabled: uploadDisabled,
+    headers: {
+      authorization: 'authorization-text',
+    },
+    multiple: true,
+    transformFile(file) {
+      parseDNA(file);
+    }
+  };
   return (
     <div class="wrapper">
       <Content justify="center">
@@ -67,7 +72,7 @@ export default function GeneratePhyloContent() {
             </h2>
           </div>
         </Row>
-        <Row className="upload">
+        <Row className="upload" >
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
