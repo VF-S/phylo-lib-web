@@ -47,6 +47,9 @@ const fastaUploadProps = {
     authorization: 'authorization-text',
   },
   multiple: true,
+  transformFile(file) {
+    parseDNA(file);
+  }
 };
 
 export default function GeneratePhyloContent() {
