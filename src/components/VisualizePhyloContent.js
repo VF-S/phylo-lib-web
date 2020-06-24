@@ -9,6 +9,7 @@ import * as d3 from 'd3';
 const { Content } = Layout;
 
 export default function VisualizePhyloContent() {
+  const [phyloVisible, setPhyloVisible] = useState(false);
   const [asciiPhylo, setasciiPhylo] = useState('');
 
   const reader = new FileReader();
@@ -21,6 +22,7 @@ export default function VisualizePhyloContent() {
         const str = Tree.to_string(phylo.tree);
         console.log(str);
         setasciiPhylo(str);
+        setPhyloVisible(true);
       };
       reader.readAsText(file);
     } catch (e) {
@@ -61,11 +63,13 @@ export default function VisualizePhyloContent() {
             </Button>
           </Upload>
         </Row>
-        <Row justify="center">
-          <div className="ascii-phylo-container">
-            <p className="ascii-phylo">{asciiPhylo}</p>
-          </div>
-        </Row>
+        {phyloVisible ? (
+          <Row justify="center">
+            <div className="ascii-phylo-container">
+              <p className="ascii-phylo">{asciiPhylo}</p>
+            </div>
+          </Row>
+        ) : null}
         <svg id="phylo-container" name="phylo-container" />
       </Content>
     </div>

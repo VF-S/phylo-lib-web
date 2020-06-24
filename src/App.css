@@ -175,14 +175,15 @@ a.tooltip {
 }
 
 .ascii-phylo {
+  margin: 1vmin;
   font-family: monospace;
-  white-space: pre-line;
+  white-space: pre;
 }
 
 .ascii-phylo-container {
   background-color: #eeeeee;
-  width: 100vmin;
-  height: 100vmin;
+  max-width: 100vmin;
+  max-height: 100vmin;
   overflow-x: auto;
   overflow-y: auto;
   margin-top: 5vmin;
