@@ -7,6 +7,7 @@ import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as Stream from "bs-platform/lib/es6/stream.js";
 import * as $$String from "bs-platform/lib/es6/string.js";
 import * as Hashtbl from "bs-platform/lib/es6/hashtbl.js";
+import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Caml_format from "bs-platform/lib/es6/caml_format.js";
 import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
 import * as Caml_builtin_exceptions from "bs-platform/lib/es6/caml_builtin_exceptions.js";
@@ -120,26 +121,42 @@ function get_next_line(s, _acc) {
   };
 }
 
-function stream_of_file(f) {
-  var char_stream = Stream.of_string(f);
-  var stream = Stream.from((function (param) {
-          try {
-            return get_next_line(char_stream, "");
-          }
-          catch (exn){
-            if (exn === Caml_builtin_exceptions.end_of_file) {
-              return ;
+function make_stream_helper(s, is_file) {
+  var stream;
+  if (is_file) {
+    var in_channel = Pervasives.open_in(s);
+    stream = Stream.from((function (param) {
+            try {
+              return Pervasives.input_line(in_channel);
             }
-            throw exn;
-          }
-        }));
-  var s = Stream.peek(stream);
-  if (s === undefined) {
+            catch (exn){
+              if (exn === Caml_builtin_exceptions.end_of_file) {
+                return ;
+              }
+              throw exn;
+            }
+          }));
+  } else {
+    var char_stream = Stream.of_string(s);
+    stream = Stream.from((function (param) {
+            try {
+              return get_next_line(char_stream, "");
+            }
+            catch (exn){
+              if (exn === Caml_builtin_exceptions.end_of_file) {
+                return ;
+              }
+              throw exn;
+            }
+          }));
+  }
+  var s$1 = Stream.peek(stream);
+  if (s$1 === undefined) {
     return stream;
   }
   var val;
   try {
-    val = $$String.sub(s, 0, 5);
+    val = $$String.sub(s$1, 0, 5);
   }
   catch (raw_exn){
     var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
@@ -153,6 +170,14 @@ function stream_of_file(f) {
   }
   Stream.junk(stream);
   return stream;
+}
+
+function stream_of_string(s) {
+  return make_stream_helper(s, false);
+}
+
+function stream_of_file(f) {
+  return make_stream_helper(f, true);
 }
 
 function stream_of_line(stream) {
@@ -412,6 +437,7 @@ export {
   is_word ,
   to_string ,
   stream_of_file ,
+  stream_of_string ,
   tokenize_next_line ,
   token_function_builder ,
   

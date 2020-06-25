@@ -143,11 +143,6 @@ button.offset {
   outline: 0;
 }
 
-.upload {
-  justify-content: center;
-  width: 100%;
-}
-
 .wrap {
   width: 100%;
   text-align: center;
@@ -187,4 +182,9 @@ a.tooltip {
   overflow-x: auto;
   overflow-y: auto;
   margin-top: 5vmin;
+}
+
+.centered-content {
+  justify-content: center;
+  width: 100%;
 }

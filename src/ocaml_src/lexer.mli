@@ -19,6 +19,9 @@ val to_string : token -> string
     [f]. Requires [f] to be a valid file. *)
 val stream_of_file : string -> string Stream.t
 
+(** [stream_of_string s] is a stream of lines from [s]. *)
+val stream_of_string : string -> string Stream.t
+
 (** [tokenize_next_line stream] is a list of tokens represented by the 
     first element of [stream].
     Effects: Removes the first element in [stream]. 

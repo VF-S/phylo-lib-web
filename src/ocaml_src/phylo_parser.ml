@@ -431,5 +431,8 @@ let rec from_phylo_helper (f : string Stream.t )=
   | LAngle -> let tag = parse_start_tag () in parse_phylo_tag tag
   | _ -> print_debug "from_phylo_helper error"; raise SyntaxError
 
+let from_phylo_str s = 
+  s |> stream_of_string |> from_phylo_helper
+
 let from_phylo f = 
   f |> stream_of_file |> from_phylo_helper

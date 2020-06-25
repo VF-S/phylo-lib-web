@@ -567,9 +567,8 @@ function parse_phylogeny(_acc) {
   };
 }
 
-function from_phylo(f) {
-  var f$1 = Lexer$PhyloLibWeb.stream_of_file(f);
-  var tokenizer = Lexer$PhyloLibWeb.token_function_builder(f$1);
+function from_phylo_helper(f) {
+  var tokenizer = Lexer$PhyloLibWeb.token_function_builder(f);
   peek.contents = Curry._1(tokenizer, true);
   consume_token.contents = Curry._1(tokenizer, false);
   var match = Curry._1(peek.contents, undefined);
@@ -613,8 +612,17 @@ function from_phylo(f) {
   throw $$SyntaxError;
 }
 
+function from_phylo_str(s) {
+  return from_phylo_helper(Lexer$PhyloLibWeb.stream_of_string(s));
+}
+
+function from_phylo(f) {
+  return from_phylo_helper(Lexer$PhyloLibWeb.stream_of_file(f));
+}
+
 export {
   $$SyntaxError ,
+  from_phylo_str ,
   from_phylo ,
   
 }

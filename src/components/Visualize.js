@@ -4,7 +4,6 @@ import { UploadOutlined } from '@ant-design/icons';
 import '../App.css';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as PhyloParser from '../ocaml_src/phylo_parser.bs';
-import * as d3 from 'd3';
 
 const { Content } = Layout;
 
@@ -14,13 +13,11 @@ export default function Visualize() {
 
   const reader = new FileReader();
 
-  const printFile = async (file) => {
-    d3.selectAll('p').style('color', 'blue');
+  const displayPhyloFile = (file) => {
     try {
       reader.onload = () => {
-        const phylo = PhyloParser.from_phylo(reader.result);
+        const phylo = PhyloParser.from_phylo_str(reader.result);
         const str = Tree.to_string(phylo.tree);
-        console.log(str);
         setasciiPhylo(str);
         setPhyloVisible(true);
       };
@@ -38,47 +35,31 @@ export default function Visualize() {
       authorization: 'authorization-text',
     },
     transformFile(file) {
-      printFile(file);
+      displayPhyloFile(file);
     },
   };
 
-  function changeFile(e) {
-    switch (e.target.value) {
-      case "a":
-        console.log("Amphibians");
-        printFile("./defaults/PhyloXML/frog.xml");
-        break;
-      case "b":
-        console.log("TOL");
-        printFile("./defaults/PhyloXML/tol_156.xml");
-        break;
-      case "c":
-        console.log("Protein");
-        printFile("./defaults/PhyloXML/apaf.xml");
-        break;
-      case "d":
-        printFile("./defaults/PhyloXML/small_tree.xml");
-        console.log("Small Tree");
-        break;
-    }
+  const changeExamples = (e) => {
+    const filePath =
+      process.env.PUBLIC_URL + '/examples/phyloXML/' + e.target.value + '.xml';
+    fetch(filePath)
+      .then((response) => response.blob())
+      .then((blob) => displayPhyloFile(blob));
+  };
 
-  }
-
-  const heading = 'Visualize PhyloXML';
   return (
-    <div class="wrapper">
+    <div className="wrapper">
       <Content justify="center">
         <Row className="page" justify="center" gutter={[16, 16]}>
           <div>
-            <h1>{heading}</h1>
+            <h1>Visualize PhyloXML</h1>
             <h2>
               Visualize an existing phylogenetic tree. Begin by uploading a
               PhyloXML file, or use our example files.
             </h2>
           </div>
         </Row>
-
-        <Row className="upload">
+        <Row className="centered-content">
           <Upload {...uploadProps}>
             <Button>
               <UploadOutlined />
@@ -86,13 +67,32 @@ export default function Visualize() {
             </Button>
           </Upload>
         </Row>
-        <Row className="FileOptions" alignItems="right" justify="right">
-          <Radio.Group onChange={changeFile} defaultValue="example 1">
-            <Radio.Button value="a">Amphibians Example</Radio.Button>
-            <Radio.Button value="b">A Tree of Life Example</Radio.Button>
-            <Radio.Button value="c">Protein Example</Radio.Button>
-            <Radio.Button value="d">Small Tree</Radio.Button>
+        <Row className="centered-content">
+          <p>or see some examples</p>
+        </Row>
+        <Row className="centered-content">
+          <Radio.Group
+            onChange={changeExamples}
+            defaultValue="phyloXML examples"
+          >
+            <Radio.Button value="frog">Amphibian Phylogeny</Radio.Button>
+            <Radio.Button value="tol_156">The Tree of Life</Radio.Button>
+            <Radio.Button value="apaf">Apaf-1 Gene Family Tree</Radio.Button>
+            <Radio.Button value="small_tree">Small Amphibian Tree</Radio.Button>
           </Radio.Group>
+        </Row>
+        <Row className="centered-content">
+          <p>
+            Example files obtained from{' '}
+            <a
+              href="http://phyloxml.org/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              this website
+            </a>
+            .
+          </p>
         </Row>
         {phyloVisible ? (
           <Row justify="center">
@@ -103,6 +103,6 @@ export default function Visualize() {
         ) : null}
         <svg id="phylo-container" name="phylo-container" />
       </Content>
-    </div >
+    </div>
   );
 }
