@@ -192,18 +192,39 @@ function mem(s, t) {
   }
 }
 
+var printing = {
+  contents: true
+};
+
 var print_output = {
   contents: ""
 };
 
 function print_char(c) {
-  print_output.contents = print_output.contents + Char.escaped(c);
-  
+  if (printing.contents) {
+    return Pervasives.print_char(c);
+  } else {
+    print_output.contents = print_output.contents + Char.escaped(c);
+    return ;
+  }
 }
 
 function print_string(s) {
-  print_output.contents = print_output.contents + s;
-  
+  if (printing.contents) {
+    return Pervasives.print_string(s);
+  } else {
+    print_output.contents = print_output.contents + s;
+    return ;
+  }
+}
+
+function print_endline(s) {
+  if (printing.contents) {
+    console.log(s);
+    return ;
+  } else {
+    return print_string(s + "\n");
+  }
 }
 
 function print_spaces(n) {
@@ -242,7 +263,7 @@ function print_vert_helper(_ds, _pos, end_str) {
 
 function print_verts(ds) {
   print_vert_helper(List.rev(ds), 0, "|");
-  return print_string("\n");
+  return print_endline("");
 }
 
 function print_branch(ds) {
@@ -270,7 +291,12 @@ function print_tree_helper(_t_lst, d, ds) {
       if (ds !== /* [] */0) {
         print_branch(ds);
       }
-      print_string(h[/* scientific_name */0] + "\n");
+      var n = h[/* name */2];
+      if (n !== undefined && h[/* scientific_name */0] === "Unnamed") {
+        print_endline(n);
+      } else {
+        print_endline(h[/* scientific_name */0]);
+      }
       _t_lst = t;
       continue ;
     }
@@ -301,11 +327,20 @@ function print_tree_helper(_t_lst, d, ds) {
 
 function to_string(t) {
   print_output.contents = "";
+  printing.contents = false;
   print_tree_helper(/* :: */[
         t,
         /* [] */0
       ], 0, /* [] */0);
   return print_output.contents;
+}
+
+function print_tree(t) {
+  printing.contents = true;
+  return print_tree_helper(/* :: */[
+              t,
+              /* [] */0
+            ], 0, /* [] */0);
 }
 
 export {
@@ -320,6 +355,7 @@ export {
   mem ,
   is_equal ,
   to_string ,
+  print_tree ,
   
 }
 /* empty Not a pure module */

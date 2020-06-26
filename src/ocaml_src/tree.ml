@@ -139,15 +139,25 @@ let rec mem s t =
   | Clade {children} -> 
     List.fold_left (fun acc tree -> acc || (mem s tree)) false children
 
-(** Points to the string representation of the tree that is currently 
-  being printed. *)
+(** Whether the tree printing helpers print to the console or append to 
+    a string ref. *)
+let printing = ref true
+
+(** Points to the string representation of the tree that is being processed
+    by [to_string]. *)
 let print_output = ref ""
 
-let print_char c = print_output := !print_output ^ Char.escaped c
+let print_char c = 
+  if !printing then print_char c
+  else print_output := !print_output ^ Char.escaped c
 
-let print_string s = print_output := !print_output ^ s
+let print_string s = 
+  if !printing then print_string s
+  else print_output := !print_output ^ s
 
-let print_endline s = print_string (s ^ "\n")
+let print_endline s = 
+  if !printing then print_endline s
+  else print_string (s ^ "\n")
 
 (** [print_spaces n] prints [n] spaces to the console. *)
 let print_spaces (n : int) : unit =
@@ -196,7 +206,13 @@ let rec print_tree_helper (t_lst : t list) (d : int) (ds : int list): unit =
       | Leaf info -> begin
           if ds <> [] then print_verts ds else print_newline ();
           if ds <> [] then print_branch ds;
-          info.scientific_name |> print_endline;
+          begin
+            match info.name with 
+            | Some n -> 
+              if info.scientific_name = "Unnamed" then print_endline n
+              else print_endline info.scientific_name
+            | None -> info.scientific_name |> print_endline
+          end;
           print_tree_helper t d ds
         end
       | Clade info -> 
@@ -216,5 +232,10 @@ let rec print_tree_helper (t_lst : t list) (d : int) (ds : int list): unit =
 
 let to_string (t : t) : string = 
   print_output := "";
+  printing := false;
   let _ = print_tree_helper [t] 0 [] in 
   !print_output
+
+let print_tree (t : t) : unit = 
+  printing := true;
+  print_tree_helper [t] 0 []
