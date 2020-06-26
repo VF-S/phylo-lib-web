@@ -169,6 +169,8 @@ a.tooltip {
   color: black;
 }
 
+/* Visualize */
+
 .ascii-phylo {
   margin: 4vmin;
   font-family: monospace;
@@ -185,6 +187,15 @@ a.tooltip {
 }
 
 .centered-content {
+  align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.phylo-example-credits {
+  padding-left: 2vmin;
+}
+
+.phylo-example-text {
+  margin-top: 2vmin;
 }

@@ -102,11 +102,11 @@ let make_stream_helper (s : string) (is_file : bool) : string Stream.t =
     end 
   | None -> stream
 
-let stream_of_string (s : string) : string Stream.t = 
-  make_stream_helper s false
-
 let stream_of_file (f : string) : string Stream.t =
   make_stream_helper f true
+
+let stream_of_string (s : string) : string Stream.t = 
+  make_stream_helper s false
 
 (** [stream_of_line stream] is a character stream of the next line of 
     string stream [stream]. 

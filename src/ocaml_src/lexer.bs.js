@@ -172,12 +172,12 @@ function make_stream_helper(s, is_file) {
   return stream;
 }
 
-function stream_of_string(s) {
-  return make_stream_helper(s, false);
-}
-
 function stream_of_file(f) {
   return make_stream_helper(f, true);
+}
+
+function stream_of_string(s) {
+  return make_stream_helper(s, false);
 }
 
 function stream_of_line(stream) {
