@@ -179,8 +179,8 @@ a.tooltip {
 
 .ascii-phylo-container {
   background-color: #eeeeee;
-  max-width: 100vmin;
-  max-height: 100vmin;
+  max-width: 150vw;
+  max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
   margin-top: 5vmin;
