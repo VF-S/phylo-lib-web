@@ -12,14 +12,15 @@ import '../App.css';
 const { Content } = Layout;
 
 const dnaArr = [];
-const placeholder = ["1", "2", "3"];
+const names = [];
 
-const parseDNA = async (file) => {
+const parseDNA = async (file, filename) => {
   try {
     const reader = new FileReader();
     reader.onload = () => {
       const dna = Dna.from_string(reader.result);
       dnaArr.push(dna);
+      names.push(filename)
     };
     reader.readAsText(file);
   } catch (e) {
@@ -27,8 +28,6 @@ const parseDNA = async (file) => {
     console.log('File printing failed');
   }
 };
-
-
 
 
 
@@ -41,7 +40,7 @@ export default function Generate() {
     // }
 
     const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
-    const virus_names = placeholder;
+    const virus_names = names;
     const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
     console.log(Tree.to_string(tree));
   }
@@ -55,11 +54,12 @@ export default function Generate() {
     },
     multiple: true,
     transformFile(file) {
-      parseDNA(file);
+      var file_name = file.name.split('.').slice(0, -1).join('.').toUpperCase()
+      parseDNA(file, file_name)
     }
   };
   return (
-    <div class="wrapper">
+    <div className="wrapper">
       <Content justify="center">
         <Row className="page" justify="center">
           <div>
@@ -78,9 +78,9 @@ export default function Generate() {
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button onClick={() => generateTree()}> Generate tree </Button>
+          < Button onClick={() => generateTree()}> Generate tree </Button>
         </Row>
       </Content>
-    </div>
+    </div >
   );
 }
