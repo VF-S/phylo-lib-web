@@ -57,7 +57,7 @@ export default function Visualize() {
             <h1>Visualize PhyloXML</h1>
             <h2>
               Visualize an existing phylogenetic tree. Begin by uploading a
-              PhyloXML file, or use our example files.
+              phyloXML file, or use our example files.
             </h2>
           </div>
         </Row>
@@ -99,9 +99,11 @@ export default function Visualize() {
                     See the phyloXML source for the current tree{' '}
                     <a
                       href={
-                        'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
-                        currPhylo +
-                        '.xml'
+                        currPhylo !== 'adh'
+                          ? 'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
+                            currPhylo +
+                            '.xml'
+                          : 'http://www.phyloxml.org/examples/adh.xml'
                       }
                       target="_blank"
                       rel="noopener noreferrer"
