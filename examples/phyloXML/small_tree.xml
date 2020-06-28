@@ -1,0 +1,14 @@
+<phyloxml>
+  <phylogeny rooted="false">
+    <clade>
+      <name>Amphibians</name>
+      <clade>
+        <name>Frogs</name>
+      </clade>
+      <clade>
+        <name>Salamanders</name>
+      </clade>
+    </clade>
+  </phylogeny>
+</phyloxml>
+
