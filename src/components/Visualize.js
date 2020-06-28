@@ -70,7 +70,7 @@ export default function Visualize() {
           </Upload>
         </Row>
         <Row className="centered-content">
-          <p className="phylo-example-text">or see some examples</p>
+          <p className="phylo-example-text">or see our examples</p>
         </Row>
         <Row className="centered-content">
           <Radio.Group
@@ -91,7 +91,7 @@ export default function Visualize() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  this website
+                  phyloxml.org
                 </a>
                 .
                 {currPhylo !== '' ? (
@@ -101,8 +101,8 @@ export default function Visualize() {
                       href={
                         currPhylo !== 'adh'
                           ? 'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
-                            currPhylo +
-                            '.xml'
+                          currPhylo +
+                          '.xml'
                           : 'http://www.phyloxml.org/examples/adh.xml'
                       }
                       target="_blank"
