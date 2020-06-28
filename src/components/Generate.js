@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Row, Layout, Upload } from 'antd';
+import { Button, Radio, Row, Layout, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs'
-import * as Pairwise from '../ocaml_src/pairwise.bs';
-import * as Msa from "../ocaml_src/msa.bs"
 import * as Distance from "../ocaml_src/distance.bs"
 import * as PhyloAlgo from "../ocaml_src/phylo_algo.bs"
 
@@ -13,6 +11,7 @@ const { Content } = Layout;
 
 const dnaArr = [];
 const names = [];
+
 
 const parseDNA = async (file, filename) => {
   try {
@@ -29,20 +28,54 @@ const parseDNA = async (file, filename) => {
   }
 };
 
+const getFile = (filename) => {
+  return process.env.PUBLIC_URL + '/examples/FASTA/' + filename + '.fasta';
+}
+
+
+const changeGenerateExamples = (e) => {
+
+  switch (e.target.value) {
+
+    case "Influenza A Viruses":
+      break;
+
+    case "Coronaviruses":
+      break;
+
+    case "Example 1":
+      break;
+
+    case "Example 2":
+      break;
+  }
+
+  // const filePath =
+  //   process.env.PUBLIC_URL + '/examples/FASTA/' + e.target.value + '.fasta';
+  // setCurrPhylo(e.target.value);
+  // fetch(filePath)
+  //   .then((response) => response.blob())
+  //   .then((blob) => displayPhyloFile(blob));
+
+}
 
 
 export default function Generate() {
+
+  const [currPhylo, setCurrPhylo] = useState([]);
   const [uploadDisabled, setUploadDisabled] = useState(false);
+  const [PhyloTree, setPhyloTree] = useState('');
+  const [phyloVisible, setPhyloVisible] = useState(false);
+
   const generateTree = () => {
     setUploadDisabled(true);
-    // if (dnaArr.length < 2) {
-    //   alert("Not enough DNA sequences to perform pairwise alignment")
-    // }
 
     const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
     const virus_names = names;
     const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
     console.log(Tree.to_string(tree));
+    setPhyloTree(Tree.to_string(tree));
+    setPhyloVisible(true);
   }
 
   const fastaUploadProps = {
@@ -72,7 +105,7 @@ export default function Generate() {
             </h2>
           </div>
         </Row>
-        <Row className="upload" >
+        <Row className="centered-content" >
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
@@ -81,6 +114,27 @@ export default function Generate() {
           < Button onClick={() => generateTree()}> Generate tree </Button>
         </Row>
       </Content>
-    </div >
+      <Row className="centered-content">
+        <p className="phylo-example-text"> See our examples: </p>
+      </Row>
+      <Row className="centered-content">
+        <Radio.Group
+          onChange={changeGenerateExamples}
+          defaultValue="phyloXML examples"
+        >
+          <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
+          <Radio.Button value="Influenza A Viruses">Influenza A Viruses</Radio.Button>
+          <Radio.Button value="Example 1">Apaf-1 Gene Family Tree</Radio.Button>
+          <Radio.Button value="Example 2">Alcohol Dehydrogenases</Radio.Button>
+        </Radio.Group>
+      </Row>
+      {phyloVisible ? (
+        <Row justify="center">
+          <div className="ascii-phylo-container">
+            <p className="ascii-phylo">{PhyloTree}</p>
+          </div>
+        </Row>
+      ) : null}
+    </div>
   );
 }

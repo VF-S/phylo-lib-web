@@ -70,7 +70,7 @@ export default function Visualize() {
           </Upload>
         </Row>
         <Row className="centered-content">
-          <p className="phylo-example-text"> See our examples</p>
+          <p className="phylo-example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
           <Radio.Group
