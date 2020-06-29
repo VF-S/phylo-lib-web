@@ -6,7 +6,9 @@ const { Content } = Layout;
 
 export default function HomeContents() {
   const i = 'Welcome to PhyloML';
-  const { goVisualizePhylo, goGeneratePhylo } = React.useContext(Context);
+  const { goVisualizePhylo, goGeneratePhylo, goPairwise } = React.useContext(
+    Context,
+  );
   return (
     <div className="wrapper main">
       <Content justify="center">
@@ -31,6 +33,13 @@ export default function HomeContents() {
             <div className="wrap">
               <button className="offset" onClick={goVisualizePhylo}>
                 Visualize Phylogenetic Trees
+              </button>
+            </div>
+          </Col>
+          <Col lg={7} md={10} sm={12}>
+            <div className="wrap">
+              <button className="offset" onClick={goPairwise}>
+                Visualize Pairwise DNA Alignments
               </button>
             </div>
           </Col>

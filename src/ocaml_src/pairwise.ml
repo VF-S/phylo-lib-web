@@ -123,7 +123,23 @@ let diff d1 d2 align misalign indel=
   done;
   !diff
 
-let print_alignment d1 d2 =
+(** Whether the alignment printing helpers print to the console or append to 
+    a string ref. *)
+let printing = ref true
+
+(** Points to the string representation of the alignment that is being processed
+    by [to_string]. *)
+let print_output = ref ""
+
+let print_char c = 
+  if !printing then print_char c
+  else print_output := !print_output ^ Char.escaped c
+
+let print_endline s = 
+  if !printing then print_endline s
+  else print_output := !print_output ^ s ^ "\n"
+
+let print_alignment_helper d1 d2 = 
   let n = Dna.length d1 in
   for i = 0 to (n - 1) / 80 do
     print_endline (Dna.string_of_range d1 (80 * i) (min n (80 * (i + 1))));
@@ -135,7 +151,17 @@ let print_alignment d1 d2 =
       else 
         print_char '|'
     done;
-    print_newline ();
+    print_endline "";
     print_endline (Dna.string_of_range d2 (80 * i) (min n (80 * (i + 1))));
-    print_newline ();
+    print_endline "";
   done
+
+let print_alignment d1 d2 =
+  printing := true;
+  print_alignment_helper d1 d2
+
+let to_string d1 d2 = 
+  print_output := "";
+  printing := false;
+  print_alignment_helper d1 d2;
+  !print_output

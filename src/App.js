@@ -6,6 +6,7 @@ import Context from './components/Context';
 import HomeContent from './components/HomeContent';
 import Generate from './components/Generate';
 import Visualize from './components/Visualize';
+import DisplayPairwise from './components/DisplayPairwise';
 
 const Header = ({ useBack }) => {
   const { goHome } = React.useContext(Context);
@@ -55,6 +56,9 @@ const App = () => {
       goGeneratePhylo: () => {
         setScreen('GENERATE_PHYLO');
       },
+      goPairwise: () => {
+        setScreen('PAIRWISE');
+      },
     }),
     [],
   );
@@ -67,6 +71,8 @@ const App = () => {
         return <Visualize />;
       case 'GENERATE_PHYLO':
         return <Generate />;
+      case 'PAIRWISE':
+        return <DisplayPairwise />;
       default:
         return null;
     }

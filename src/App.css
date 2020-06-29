@@ -149,7 +149,7 @@ button.offset {
 }
 
 .wrapper {
-  padding: 0 10%;
+  padding: 2%;
 }
 
 .ant-col {
@@ -179,7 +179,7 @@ a.tooltip {
 
 .ascii-phylo-container {
   background-color: #eeeeee;
-  max-width: 150vw;
+  max-width: 125vw;
   max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
@@ -189,6 +189,15 @@ a.tooltip {
 .centered-content {
   align-items: center;
   justify-content: center;
+  padding-top: 1vmin;
+  padding-bottom: 1vmin;
+  width: 100%;
+}
+
+.horizontally-centered {
+  justify-content: center;
+  padding-top: 1vmin;
+  padding-bottom: 1vmin;
   width: 100%;
 }
 
