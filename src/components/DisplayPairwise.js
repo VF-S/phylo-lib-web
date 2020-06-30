@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Layout, Row, Upload } from 'antd';
+import { Button, Layout, Radio, Row, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import '../App.css';
 import * as Dna from '../ocaml_src/dna.bs';
@@ -10,23 +10,20 @@ const { Content } = Layout;
 export default function DisplayPairwise() {
   const [displayVisible, setDisplayVisible] = useState(false);
   const [alignment, setAlignment] = useState('');
-  const [alignExample, setAlignExample] = useState('');
+  const [exampleArr, setExampleArr] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [dnaArr, setDnaArr] = useState([]);
-  const [names, setNames] = useState([]);
 
-  const parseDNA = async (file, filename) => {
+  const parseDNA = (file, arr, displayOnFinish) => {
     try {
       const reader = new FileReader();
       reader.onload = () => {
-        const dna = Dna.from_string(reader.result);
-        dnaArr.push(dna);
-        names.push(filename);
+        arr.push(Dna.from_string(reader.result));
         if (dnaArr.length > 2) {
           setDnaArr(dnaArr.slice(-2));
         }
-        if (names.length > 2) {
-          setNames(names.slice(-2));
+        if (arr.length == 2 && displayOnFinish) {
+          displayAlignment(arr);
         }
       };
       reader.readAsText(file);
@@ -36,11 +33,11 @@ export default function DisplayPairwise() {
     }
   };
 
-  const displayAlignment = () => {
-    if (dnaArr.length < 2) {
+  const displayAlignment = (arr) => {
+    if (arr.length < 2) {
       alert('Not enough DNA sequences to perform pairwise alignment');
     } else {
-      const [pair] = Pairwise.align_pair(dnaArr[0], dnaArr[1], 1, -1, -1);
+      const [pair] = Pairwise.align_pair(arr[0], arr[1], 1, -1, -1);
       const str = Pairwise.to_string(pair[0], pair[1]);
       setAlignment(str.trim());
       setDisplayVisible(true);
@@ -56,15 +53,22 @@ export default function DisplayPairwise() {
     },
     multiple: true,
     transformFile(file) {
+      parseDNA(file, dnaArr, false);
       fileList.push(file);
       setFileList(fileList.slice(-2));
-      const file_name = file.name
-        .split('.')
-        .slice(0, -1)
-        .join('.')
-        .toUpperCase();
-      parseDNA(file, file_name);
     },
+  };
+
+  const changeExamples = (e) => {
+    setExampleArr([]);
+    const files = e.target.value.split(',');
+    files.map((file) => {
+      const filePath =
+        process.env.PUBLIC_URL + '/examples/FASTA/' + file + '.fasta';
+      fetch(filePath)
+        .then((response) => response.blob())
+        .then((blob) => parseDNA(blob, exampleArr, true));
+    });
   };
 
   return (
@@ -75,7 +79,7 @@ export default function DisplayPairwise() {
             <h1>Visualize Pairwise DNA Alignments</h1>
             <h2>
               Visualize an alignment of two DNA sequences. Begin by uploading
-              two .FASTA files.
+              two .FASTA files, or use our example files.
             </h2>
           </div>
         </Row>
@@ -86,7 +90,19 @@ export default function DisplayPairwise() {
               Upload .FASTA Files
             </Button>
           </Upload>
-          <Button onClick={displayAlignment}>Display Alignment</Button>
+          <Button onClick={() => displayAlignment(dnaArr)}>
+            Display Alignment
+          </Button>
+        </Row>
+        <Row className="centered-content">
+          <p className="phylo-example-text"> See our examples: </p>
+        </Row>
+        <Row className="centered-content">
+          <Radio.Group onChange={changeExamples}>
+            <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
+            <Radio.Button value="h3n2,h5n1">H5N1 vs H7N7</Radio.Button>
+            <Radio.Button value="mers,sars">SARS vs MERS</Radio.Button>
+          </Radio.Group>
         </Row>
         {displayVisible ? (
           <Row justify="center">
