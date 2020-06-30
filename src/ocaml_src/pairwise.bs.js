@@ -123,30 +123,70 @@ function diff(d1, d2, align, misalign, indel) {
   return diff$1;
 }
 
-function print_alignment(d1, d2) {
+var printing = {
+  contents: true
+};
+
+var print_output = {
+  contents: ""
+};
+
+function print_char(c) {
+  if (printing.contents) {
+    return Pervasives.print_char(c);
+  } else {
+    print_output.contents = print_output.contents + Char.escaped(c);
+    return ;
+  }
+}
+
+function print_endline(s) {
+  if (printing.contents) {
+    console.log(s);
+    return ;
+  } else {
+    print_output.contents = print_output.contents + (s + "\n");
+    return ;
+  }
+}
+
+function print_alignment_helper(d1, d2) {
   var n = Dna$PhyloLibWeb.length(d1);
   for(var i = 0 ,i_finish = (n - 1 | 0) / 80 | 0; i <= i_finish; ++i){
-    console.log(Dna$PhyloLibWeb.string_of_range(d1, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
+    print_endline(Dna$PhyloLibWeb.string_of_range(d1, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
     for(var j = Caml_int32.imul(80, i) ,j_finish = Caml_primitive.caml_int_min(n - 1 | 0, Caml_int32.imul(80, i + 1 | 0) - 1 | 0); j <= j_finish; ++j){
       if (Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d1, j), Dna$PhyloLibWeb.get(d2, j))) {
-        Pervasives.print_char(/* "*" */42);
+        print_char(/* "*" */42);
       } else if (Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d1, j), /* "_" */95) || Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d2, j), /* "_" */95)) {
-        Pervasives.print_char(/* " " */32);
+        print_char(/* " " */32);
       } else {
-        Pervasives.print_char(/* "|" */124);
+        print_char(/* "|" */124);
       }
     }
-    Pervasives.print_newline(undefined);
-    console.log(Dna$PhyloLibWeb.string_of_range(d2, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
-    Pervasives.print_newline(undefined);
+    print_endline("");
+    print_endline(Dna$PhyloLibWeb.string_of_range(d2, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
+    print_endline("");
   }
   
+}
+
+function print_alignment(d1, d2) {
+  printing.contents = true;
+  return print_alignment_helper(d1, d2);
+}
+
+function to_string(d1, d2) {
+  print_output.contents = "";
+  printing.contents = false;
+  print_alignment_helper(d1, d2);
+  return print_output.contents;
 }
 
 export {
   align_pair ,
   diff ,
   print_alignment ,
+  to_string ,
   
 }
 /* No side effect */

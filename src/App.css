@@ -121,35 +121,33 @@
   font-weight: 700;
 }
 
-button.offset {
-  width: 100%;
-}
-
 .offset {
-  border: 1px solid rgb(68, 150, 122);
-  transition: all 0.1s ease-in-out;
-  padding: 0.5em 1em;
-  color: black;
   background-color: white;
+  border: 1px solid rgb(68, 150, 122);
+  color: black;
+  display: flex;
+  justify-content: center;
+  flex: 1;
   font-size: 16px;
+  padding: 0.5em 1em;
+  text-align: center;
+  transition: all 0.1s ease-in-out;
+  width: 100%;
 }
 
 .offset:hover {
   background-color: hsl(160, 38%, 93%);
   box-shadow: 0.2em 0.1em 0 0 rgb(68, 150, 122);
+  color: inherit;
+  text-decoration: none;
 }
 
 .offset:focus {
   outline: 0;
 }
 
-.wrap {
-  width: 100%;
-  text-align: center;
-}
-
 .wrapper {
-  padding: 0 10%;
+  padding: 2%;
 }
 
 .ant-col {
@@ -179,7 +177,7 @@ a.tooltip {
 
 .ascii-phylo-container {
   background-color: #eeeeee;
-  max-width: 150vw;
+  max-width: 125vw;
   max-height: 100vh;
   overflow-x: auto;
   overflow-y: auto;
@@ -189,6 +187,15 @@ a.tooltip {
 .centered-content {
   align-items: center;
   justify-content: center;
+  padding-top: 1vmin;
+  padding-bottom: 1vmin;
+  width: 100%;
+}
+
+.horizontally-centered {
+  justify-content: center;
+  padding-top: 1vmin;
+  padding-bottom: 1vmin;
   width: 100%;
 }
 

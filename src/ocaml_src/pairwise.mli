@@ -29,3 +29,8 @@ val diff :  Dna.t -> Dna.t -> int -> int -> int -> int
     Requires: [d1] and [d2] are of the same length.
     The viewing screen is at least 80 characters wide. *)
 val print_alignment : Dna.t -> Dna.t -> unit
+
+(** [to_string d1 d2] generates a string representation of the alignment of 
+    [d1] and [d2]. 
+    Requires: [d1] and [d2] are of the same length. *)
+val to_string : Dna.t -> Dna.t -> string

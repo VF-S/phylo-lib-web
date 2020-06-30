@@ -11,6 +11,7 @@ export default function Visualize() {
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [asciiPhylo, setasciiPhylo] = useState('');
   const [currPhylo, setCurrPhylo] = useState('');
+  const [fileList, setFileList] = useState([]);
 
   const reader = new FileReader();
 
@@ -32,10 +33,12 @@ export default function Visualize() {
   const uploadProps = {
     accept: '.xml',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    fileList: fileList,
     headers: {
       authorization: 'authorization-text',
     },
     transformFile(file) {
+      setFileList([file]);
       displayPhyloFile(file);
     },
   };
@@ -73,10 +76,7 @@ export default function Visualize() {
           <p className="phylo-example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
-          <Radio.Group
-            onChange={changeExamples}
-            defaultValue="phyloXML examples"
-          >
+          <Radio.Group onChange={changeExamples}>
             <Radio.Button value="amphi_frost">Amphibian Phylogeny</Radio.Button>
             <Radio.Button value="tol_156">The Tree of Life</Radio.Button>
             <Radio.Button value="apaf">Apaf-1 Gene Family Tree</Radio.Button>
@@ -101,8 +101,8 @@ export default function Visualize() {
                       href={
                         currPhylo !== 'adh'
                           ? 'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
-                          currPhylo +
-                          '.xml'
+                            currPhylo +
+                            '.xml'
                           : 'http://www.phyloxml.org/examples/adh.xml'
                       }
                       target="_blank"
@@ -130,7 +130,6 @@ export default function Visualize() {
             </div>
           </Row>
         ) : null}
-        <svg id="phylo-container" name="phylo-container" />
       </Content>
     </div>
   );

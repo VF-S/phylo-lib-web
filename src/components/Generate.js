@@ -16,14 +16,13 @@ const { Content } = Layout;
 const dnaArr = [];
 const names = [];
 
-
 const parseDNA = async (file, filename) => {
   try {
     const reader = new FileReader();
     reader.onload = () => {
       const dna = Dna.from_string(reader.result);
       dnaArr.push(dna);
-      names.push(filename)
+      names.push(filename);
     };
     reader.readAsText(file);
   } catch (e) {
@@ -36,7 +35,6 @@ const parseDNA = async (file, filename) => {
 
 
 export default function Generate() {
-
   const [currPhylo, setCurrPhylo] = useState([]);
   const [uploadDisabled, setUploadDisabled] = useState(false);
   const [PhyloTree, setPhyloTree] = useState('');
@@ -45,13 +43,13 @@ export default function Generate() {
   const generateTree = () => {
     setUploadDisabled(true);
 
-    const dist_matrix = Distance.dist_dna(dnaArr, 1, (-1), (-1));
+    const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
     const virus_names = names;
     const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
     console.log(Tree.to_string(tree));
     setPhyloTree(Tree.to_string(tree));
     setPhyloVisible(true);
-  }
+  };
 
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
@@ -62,9 +60,13 @@ export default function Generate() {
     },
     multiple: true,
     transformFile(file) {
-      var file_name = file.name.split('.').slice(0, -1).join('.').toUpperCase()
-      parseDNA(file, file_name)
-    }
+      const file_name = file.name
+        .split('.')
+        .slice(0, -1)
+        .join('.')
+        .toUpperCase();
+      parseDNA(file, file_name);
+    },
   };
   return (
     <div className="wrapper">
@@ -80,13 +82,13 @@ export default function Generate() {
             </h2>
           </div>
         </Row>
-        <Row className="centered-content" >
+        <Row className="centered-content">
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          < Button onClick={() => generateTree()}> Generate tree </Button>
+          <Button onClick={generateTree}> Generate tree </Button>
         </Row>
       </Content>
       <Row className="centered-content">
@@ -98,7 +100,9 @@ export default function Generate() {
           defaultValue="phyloXML examples"
         >
           <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
-          <Radio.Button value="Influenza A Viruses">Influenza A Viruses</Radio.Button>
+          <Radio.Button value="Influenza A Viruses">
+            Influenza A Viruses
+          </Radio.Button>
           <Radio.Button value="Example 1">Apaf-1 Gene Family Tree</Radio.Button>
           <Radio.Button value="Example 2">Alcohol Dehydrogenases</Radio.Button>
         </Radio.Group>

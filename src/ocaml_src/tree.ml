@@ -233,7 +233,7 @@ let rec print_tree_helper (t_lst : t list) (d : int) (ds : int list): unit =
 let to_string (t : t) : string = 
   print_output := "";
   printing := false;
-  let _ = print_tree_helper [t] 0 [] in 
+  print_tree_helper [t] 0 [];
   !print_output
 
 let print_tree (t : t) : unit = 
