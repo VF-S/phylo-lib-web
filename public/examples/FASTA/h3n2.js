@@ -1,3 +1,4 @@
+const h3n2 = `
 >H3N2 PB-2 Genome
 agcgaaagcaggtcaaatatattcaatatggagagaataaaagaactaagagatttgatgtcgcagtctcgcactcgcga
 gatactgacaaaaaccactgtggaccatatggccataatcaagaaatatacgtcaggaagacaggagaagaaccctgctc
@@ -29,3 +30,6 @@ gagtggagtctgcagtattaagaggatttctaattctgggcaaagaagacaaaagatatggaccagcattgagcatcaac
 gaattgagcaatcttgcgaaaggggagaaggctaatgtgttgatagggcaaggagacgtggtgttggtaatgaaacggaa
 acgggactctagcatacttactgacagccagacagcgaccaaaagaattcggatggccatcaattagtgtcgaattgttt
 aaaaacgaccttgtttctact
+`
+
+export default h3n2;

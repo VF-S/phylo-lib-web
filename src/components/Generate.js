@@ -5,6 +5,10 @@ import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs'
 import * as Distance from "../ocaml_src/distance.bs"
 import * as PhyloAlgo from "../ocaml_src/phylo_algo.bs"
+import * as h1n1 from "../../public/examples/FASTA/h1n1.js"
+import * as h3n2 from "../../public/examples/FASTA/h3n2.js"
+import * as h5n1 from "../../public/examples/FASTA/h5n1.js"
+
 
 import '../App.css';
 const { Content } = Layout;
@@ -28,36 +32,7 @@ const parseDNA = async (file, filename) => {
   }
 };
 
-const getFile = (filename) => {
-  return process.env.PUBLIC_URL + '/examples/FASTA/' + filename + '.fasta';
-}
 
-
-const changeGenerateExamples = (e) => {
-
-  switch (e.target.value) {
-
-    case "Influenza A Viruses":
-      break;
-
-    case "Coronaviruses":
-      break;
-
-    case "Example 1":
-      break;
-
-    case "Example 2":
-      break;
-  }
-
-  // const filePath =
-  //   process.env.PUBLIC_URL + '/examples/FASTA/' + e.target.value + '.fasta';
-  // setCurrPhylo(e.target.value);
-  // fetch(filePath)
-  //   .then((response) => response.blob())
-  //   .then((blob) => displayPhyloFile(blob));
-
-}
 
 
 export default function Generate() {
