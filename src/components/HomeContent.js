@@ -19,17 +19,17 @@ export default function HomeContents() {
         </Row>
         <Row justify="center" gutter={[16, 40]}>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/generate">
+            <Link className="offset" to="/phylo-lib-web/generate">
               Generate Phylogenetic Trees
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/visualize">
+            <Link className="offset" to="/phylo-lib-web/visualize">
               Visualize Phylogenetic Trees
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/pairwise">
+            <Link className="offset" to="/phylo-lib-web/pairwise">
               Visualize Pairwise DNA Alignments
             </Link>
           </Col>

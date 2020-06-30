@@ -17,7 +17,7 @@ const Header = () => {
   );
   return (
     <header className="site-header">
-      <Link className="site-title" to="/">
+      <Link className="site-title" to="/phylo-lib-web/">
         PhyloML
       </Link>
       <Popover
@@ -42,14 +42,17 @@ export default function App() {
       <div>
         <Header />
         <Switch>
-          <Route path="/generate">
+          <Route path="/phylo-lib-web/generate">
             <Generate />
           </Route>
-          <Route path="/visualize">
+          <Route path="/phylo-lib-web/visualize">
             <Visualize />
           </Route>
-          <Route path="/pairwise">
+          <Route path="/phylo-lib-web/pairwise">
             <DisplayPairwise />
+          </Route>
+          <Route path="/phylo-lib-web/">
+            <HomeContent />
           </Route>
           <Route path="/">
             <HomeContent />
