@@ -121,31 +121,29 @@
   font-weight: 700;
 }
 
-button.offset {
-  width: 100%;
-}
-
 .offset {
-  border: 1px solid rgb(68, 150, 122);
-  transition: all 0.1s ease-in-out;
-  padding: 0.5em 1em;
-  color: black;
   background-color: white;
+  border: 1px solid rgb(68, 150, 122);
+  color: black;
+  display: flex;
+  justify-content: center;
+  flex: 1;
   font-size: 16px;
+  padding: 0.5em 1em;
+  text-align: center;
+  transition: all 0.1s ease-in-out;
+  width: 100%;
 }
 
 .offset:hover {
   background-color: hsl(160, 38%, 93%);
   box-shadow: 0.2em 0.1em 0 0 rgb(68, 150, 122);
+  color: inherit;
+  text-decoration: none;
 }
 
 .offset:focus {
   outline: 0;
-}
-
-.wrap {
-  width: 100%;
-  text-align: center;
 }
 
 .wrapper {

@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import './App.css';
 import { Popover } from 'antd';
-import { ArrowLeftOutlined, InfoCircleOutlined } from '@ant-design/icons';
-import Context from './components/Context';
+import { InfoCircleOutlined } from '@ant-design/icons';
 import HomeContent from './components/HomeContent';
 import Generate from './components/Generate';
 import Visualize from './components/Visualize';
 import DisplayPairwise from './components/DisplayPairwise';
 
-const Header = ({ useBack }) => {
-  const { goHome } = React.useContext(Context);
+const Header = () => {
   const content = (
     <div>
       <p>Content</p>
@@ -18,14 +17,9 @@ const Header = ({ useBack }) => {
   );
   return (
     <header className="site-header">
-      <button className="site-title" onClick={goHome}>
-        {useBack ? (
-          <ArrowLeftOutlined
-            style={{ alignSelf: 'center', paddingRight: '10px' }}
-          />
-        ) : null}
+      <Link className="site-title" to="/">
         PhyloML
-      </button>
+      </Link>
       <Popover
         content={content}
         className="tooltip"
@@ -42,48 +36,26 @@ const Header = ({ useBack }) => {
   );
 };
 
-const App = () => {
-  const [screen, setScreen] = useState('HOME');
-
-  const context = React.useMemo(
-    () => ({
-      goHome: () => {
-        setScreen('HOME');
-      },
-      goVisualizePhylo: () => {
-        setScreen('VISUALIZE_PHYLO');
-      },
-      goGeneratePhylo: () => {
-        setScreen('GENERATE_PHYLO');
-      },
-      goPairwise: () => {
-        setScreen('PAIRWISE');
-      },
-    }),
-    [],
-  );
-
-  const CurrScreen = () => {
-    switch (screen) {
-      case 'HOME':
-        return <HomeContent />;
-      case 'VISUALIZE_PHYLO':
-        return <Visualize />;
-      case 'GENERATE_PHYLO':
-        return <Generate />;
-      case 'PAIRWISE':
-        return <DisplayPairwise />;
-      default:
-        return null;
-    }
-  };
-
+export default function App() {
   return (
-    <Context.Provider value={context}>
-      <Header useBack={screen !== 'HOME'} />
-      <CurrScreen />
-    </Context.Provider>
+    <Router>
+      <div>
+        <Header />
+        <Switch>
+          <Route path="/generate">
+            <Generate />
+          </Route>
+          <Route path="/visualize">
+            <Visualize />
+          </Route>
+          <Route path="/pairwise">
+            <DisplayPairwise />
+          </Route>
+          <Route path="/">
+            <HomeContent />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
-};
-
-export default App;
+}

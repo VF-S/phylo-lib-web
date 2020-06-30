@@ -22,7 +22,7 @@ export default function DisplayPairwise() {
         if (dnaArr.length > 2) {
           setDnaArr(dnaArr.slice(-2));
         }
-        if (arr.length == 2 && displayOnFinish) {
+        if (arr.length === 2 && displayOnFinish) {
           displayAlignment(arr);
         }
       };
