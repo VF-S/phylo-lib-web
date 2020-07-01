@@ -8,7 +8,7 @@ export default function HomeContents() {
   return (
     <div className="wrapper main">
       <Content justify="center">
-        <Row className="intro" justify="center" gutter={[16, 16]}>
+        <Row className="intro" justify="center">
           <div>
             <h1>Welcome to PhyloML</h1>
             <h2>A phylogenetic library written in OCaml.</h2>

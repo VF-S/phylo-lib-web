@@ -11,7 +11,7 @@ import DisplayPairwise from './components/DisplayPairwise';
 const Header = () => {
   const content = (
     <div>
-      <p>Content</p>
+      <p>A <a>phylogenetic tree</a> is a tree that shows the evolutionary relationships between species. The structure of these trees can be stored in <a href="http://www.phyloxml.org/">XMl</a> files. To see visualizations of such trees, you can go to <a href="/visualize">Visualize Phylogenetic Trees </a></p>
       <p>Content</p>
     </div>
   );
@@ -20,10 +20,10 @@ const Header = () => {
       <Link className="site-title" to="/phylo-lib-web/">
         PhyloML
       </Link>
-      <Popover
+      <Popover className="clickable"
         content={content}
         className="tooltip"
-        title="Title"
+        // title="Title"
         trigger="click"
       >
         <a className="tooltip">

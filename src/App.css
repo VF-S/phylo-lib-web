@@ -206,3 +206,8 @@ a.tooltip {
 .phylo-example-text {
   margin-top: 2vmin;
 }
+
+.ant-popover-inner {
+  max-width: 35vw;
+  margin-right: 10%;
+}
