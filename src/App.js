@@ -11,8 +11,8 @@ import DisplayPairwise from './components/DisplayPairwise';
 const Header = () => {
   const content = (
     <div>
-      <p>A <a>phylogenetic tree</a> is a tree that shows the evolutionary relationships between species. The structure of these trees can be stored in <a href="http://www.phyloxml.org/">XMl</a> files. To see visualizations of such trees, you can click Visualize Phylogenetic Trees. We can also try to predict the structure of phylogenetic trees by looking at the similarities in the DNAs of different species. To know more, you can click Generate Phylogenetic Trees.</p>
-      <p>Content</p>
+      <p>A <a href="https://en.wikipedia.org/wiki/Phylogenetic_tree">phylogenetic tree</a> is a tree that shows the evolutionary relationships between species. The structure of these trees can be stored in <a href="http://www.phyloxml.org/">XML</a> files. To see visualizations of such trees, you can click Visualize Phylogenetic Trees.</p>
+      <p> We can also try to predict the structure of phylogenetic trees by looking at the similarities in the DNAs of different species. To know more, you can click Generate Phylogenetic Trees.</p>
     </div>
   );
   return (
