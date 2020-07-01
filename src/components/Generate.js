@@ -5,76 +5,65 @@ import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
 import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
+import influenza from '../ocaml_src/Examples/Influenza.js'
+
 
 import '../App.css';
+
 const { Content } = Layout;
 
-const dnaArr = [];
-const names = [];
-
-const parseDNA = async (file, filename) => {
-  try {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const dna = Dna.from_string(reader.result);
-      dnaArr.push(dna);
-      names.push(filename);
-    };
-    reader.readAsText(file);
-  } catch (e) {
-    console.log(e);
-    console.log('File printing failed');
-  }
-};
-
-const getFile = (filename) => {
-  return process.env.PUBLIC_URL + '/examples/FASTA/' + filename + '.fasta';
-};
-
-const changeGenerateExamples = (e) => {
-  switch (e.target.value) {
-    case 'Influenza A Viruses':
-      break;
-
-    case 'Coronaviruses':
-      break;
-
-    case 'Example 1':
-      break;
-
-    case 'Example 2':
-      break;
-  }
-
-  // const filePath =
-  //   process.env.PUBLIC_URL + '/examples/FASTA/' + e.target.value + '.fasta';
-  // setCurrPhylo(e.target.value);
-  // fetch(filePath)
-  //   .then((response) => response.blob())
-  //   .then((blob) => displayPhyloFile(blob));
-};
-
 export default function Generate() {
-  const [currPhylo, setCurrPhylo] = useState([]);
-  const [uploadDisabled, setUploadDisabled] = useState(false);
+
   const [PhyloTree, setPhyloTree] = useState('');
   const [phyloVisible, setPhyloVisible] = useState(false);
+  const [dnaArr, setDnaArr] = useState([]);
+  const [names, setNames] = useState([]);
+
+  const updateSeq = (dna, name) => {
+
+    setDnaArr(dnaArr => dnaArr.concat(dna));
+    setNames(names => names.concat(name));
+  }
+
+  const parseDNA = async (file, filename) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dna = Dna.from_string(reader.result);
+        updateSeq(dna, filename)
+      };
+      reader.readAsText(file);
+    } catch (e) {
+      console.log(e);
+      console.log('File printing failed');
+    }
+  };
+
+  const changeGenerateExamples = (e) => {
+
+    switch (e.target.value) {
+
+      case "Influenza A Viruses":
+        setPhyloVisible(true);
+        setPhyloTree(influenza)
+
+
+    }
+  };
 
   const generateTree = () => {
-    setUploadDisabled(true);
 
     const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
-    const virus_names = names;
-    const tree = PhyloAlgo.upgma(dist_matrix, virus_names);
-    console.log(Tree.to_string(tree));
-    setPhyloTree(Tree.to_string(tree));
+    const tree = PhyloAlgo.upgma(dist_matrix, names);
+    const output = Tree.to_string(tree);
+    console.log(output);
+    setPhyloTree(output);
     setPhyloVisible(true);
   };
 
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    disabled: uploadDisabled,
     headers: {
       authorization: 'authorization-text',
     },
@@ -88,6 +77,7 @@ export default function Generate() {
       parseDNA(file, file_name);
     },
   };
+
   return (
     <div className="wrapper">
       <Content justify="center">
@@ -117,7 +107,7 @@ export default function Generate() {
       <Row className="centered-content">
         <Radio.Group
           onChange={changeGenerateExamples}
-          defaultValue="phyloXML examples"
+
         >
           <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
           <Radio.Button value="Influenza A Viruses">
