@@ -4,10 +4,8 @@ import { UploadOutlined } from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
-import * as PhyloAlgo from "../ocaml_src/phylo_algo.bs";
-import h1n1 from '../ocaml_src/FASTA/h1n1.js'
-import h3n2 from '../ocaml_src/FASTA/h3n2.js'
-import h5n1 from '../ocaml_src/FASTA/h5n1.js'
+import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
+import influenza from '../ocaml_src/Examples/Influenza.js'
 
 
 import '../App.css';
@@ -27,22 +25,12 @@ export default function Generate() {
     setNames(names => names.concat(name));
   }
 
-  const cleanSeq = () => {
-
-    setDnaArr([])
-    setNames([])
-
-  }
-
   const parseDNA = async (file, filename) => {
     try {
       const reader = new FileReader();
       reader.onload = () => {
         const dna = Dna.from_string(reader.result);
-        setDnaArr(dnaArr => dnaArr.concat(dna));
-        console.log(dnaArr);
-        setNames(names => names.concat(filename));
-        console.log(names);
+        updateSeq(dna, filename)
       };
       reader.readAsText(file);
     } catch (e) {
@@ -53,29 +41,13 @@ export default function Generate() {
 
   const changeGenerateExamples = (e) => {
 
-
     switch (e.target.value) {
 
       case "Influenza A Viruses":
+        setPhyloVisible(true);
+        setPhyloTree(influenza)
 
-        console.log("Running influenza code")
-        cleanSeq()
-        updateSeq(h1n1, "H1N1")
-        updateSeq(h3n2, "H3N2")
-        updateSeq(h5n1, "H5N1")
 
-        console.log(dnaArr.length)
-
-        generateTree();
-
-      case "Coronaviruses":
-        break;
-
-      case "Example 1":
-        break;
-
-      case "Example 2":
-        break;
     }
   };
 
@@ -83,8 +55,9 @@ export default function Generate() {
 
     const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
     const tree = PhyloAlgo.upgma(dist_matrix, names);
-    console.log(Tree.to_string(tree));
-    setPhyloTree(Tree.to_string(tree));
+    const output = Tree.to_string(tree);
+    console.log(output);
+    setPhyloTree(output);
     setPhyloVisible(true);
   };
 
