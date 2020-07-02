@@ -138,7 +138,7 @@
 .offset:hover {
   background-color: hsl(160, 38%, 93%);
   box-shadow: 0.2em 0.1em 0 0 rgb(68, 150, 122);
-  color: inherit;
+  color: black;
   text-decoration: none;
 }
 
