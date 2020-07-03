@@ -48,10 +48,17 @@ export default function DisplayPairwise() {
     accept: '.FASTA, .fasta, .txt',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     fileList: fileList,
+    onChange(info) {
+      setFileList(info.fileList);
+    },
     headers: {
       authorization: 'authorization-text',
     },
     multiple: true,
+    onRemove(file) {
+      dnaArr.splice(fileList.indexOf(file));
+      setDnaArr(dnaArr);
+    },
     transformFile(file) {
       parseDNA(file, dnaArr, false);
       fileList.push(file);
@@ -68,6 +75,7 @@ export default function DisplayPairwise() {
       fetch(filePath)
         .then((response) => response.blob())
         .then((blob) => parseDNA(blob, exampleArr, true));
+      return undefined;
     });
   };
 
@@ -101,7 +109,7 @@ export default function DisplayPairwise() {
           <Radio.Group onChange={changeExamples}>
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
             <Radio.Button value="h3n2,h5n1">H5N1 vs H7N7</Radio.Button>
-            <Radio.Button value="mers,sars">SARS vs MERS</Radio.Button>
+            <Radio.Button value="mers,h7n9">MERS vs H7N9</Radio.Button>
           </Radio.Group>
         </Row>
         {displayVisible ? (

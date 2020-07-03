@@ -37,6 +37,9 @@ export default function Visualize() {
     headers: {
       authorization: 'authorization-text',
     },
+    onChange(info) {
+      setFileList(info.fileList);
+    },
     transformFile(file) {
       setFileList([file]);
       displayPhyloFile(file);

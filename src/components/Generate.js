@@ -5,32 +5,31 @@ import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
 import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
-import influenza from '../ocaml_src/Examples/Influenza.js'
-
+import * as PhyloPrinter from '../ocaml_src/phylo_printer.bs';
+import influenza from '../ocaml_src/Examples/Influenza.js';
 
 import '../App.css';
 
 const { Content } = Layout;
 
 export default function Generate() {
-
   const [PhyloTree, setPhyloTree] = useState('');
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [dnaArr, setDnaArr] = useState([]);
   const [names, setNames] = useState([]);
+  const [download, setDownload] = useState(undefined);
 
   const updateSeq = (dna, name) => {
-
-    setDnaArr(dnaArr => dnaArr.concat(dna));
-    setNames(names => names.concat(name));
-  }
+    setDnaArr((dnaArr) => dnaArr.concat(dna));
+    setNames((names) => names.concat(name));
+  };
 
   const parseDNA = async (file, filename) => {
     try {
       const reader = new FileReader();
       reader.onload = () => {
         const dna = Dna.from_string(reader.result);
-        updateSeq(dna, filename)
+        updateSeq(dna, filename);
       };
       reader.readAsText(file);
     } catch (e) {
@@ -40,25 +39,35 @@ export default function Generate() {
   };
 
   const changeGenerateExamples = (e) => {
-
     switch (e.target.value) {
-
-      case "Influenza A Viruses":
+      case 'Influenza A Viruses':
         setPhyloVisible(true);
-        setPhyloTree(influenza)
-
-
+        setPhyloTree(influenza);
     }
   };
 
   const generateTree = () => {
-
     const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
     const tree = PhyloAlgo.upgma(dist_matrix, names);
     const output = Tree.to_string(tree);
     console.log(output);
     setPhyloTree(output);
     setPhyloVisible(true);
+  };
+
+  const downloadTree = () => {
+    const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
+    const tree = PhyloAlgo.upgma(dist_matrix, names);
+    const treeXML = PhyloPrinter.xml_of_tree(tree);
+    const element = (
+      <a
+        href={'data:text/xml;charset=utf-8,' + encodeURIComponent(treeXML)}
+        download="tree.xml"
+      >
+        Click to Download
+      </a>
+    );
+    setDownload(element);
   };
 
   const fastaUploadProps = {
@@ -92,23 +101,26 @@ export default function Generate() {
             </h2>
           </div>
         </Row>
-        <Row className="centered-content">
+        <Row className="horizontally-centered">
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button onClick={generateTree}> Generate tree </Button>
+          <Button onClick={generateTree}>Generate tree</Button>
+          <div>
+            <Button onClick={downloadTree}>Save tree as phyloXML</Button>
+            {download !== undefined ? (
+              <Row className="centered-content">{download}</Row>
+            ) : null}
+          </div>
         </Row>
       </Content>
       <Row className="centered-content">
         <p className="phylo-example-text"> See our examples: </p>
       </Row>
       <Row className="centered-content">
-        <Radio.Group
-          onChange={changeGenerateExamples}
-
-        >
+        <Radio.Group onChange={changeGenerateExamples}>
           <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
           <Radio.Button value="Influenza A Viruses">
             Influenza A Viruses
