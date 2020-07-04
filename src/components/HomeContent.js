@@ -5,6 +5,7 @@ import '../App.css';
 const { Content } = Layout;
 
 export default function HomeContents() {
+  console.log(process.env.PUBLIC_URL);
   return (
     <div className="wrapper main">
       <Content justify="center">
@@ -19,17 +20,17 @@ export default function HomeContents() {
         </Row>
         <Row justify="center" gutter={[16, 40]}>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/phylo-lib-web/generate">
+            <Link className="offset" to="/generate">
               Generate Phylogenetic Trees
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/phylo-lib-web/visualize">
+            <Link className="offset" to="/visualize">
               Visualize Phylogenetic Trees
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/phylo-lib-web/pairwise">
+            <Link className="offset" to="/pairwise">
               Visualize Pairwise DNA Alignments
             </Link>
           </Col>

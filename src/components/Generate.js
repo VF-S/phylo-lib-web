@@ -56,6 +56,10 @@ export default function Generate() {
   };
 
   const downloadTree = () => {
+    if (dnaArr.length < 1) {
+      alert('At least one FASTA file must be uploaded for tree generation.');
+      return;
+    }
     const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
     const tree = PhyloAlgo.upgma(dist_matrix, names);
     const treeXML = PhyloPrinter.xml_of_tree(tree);

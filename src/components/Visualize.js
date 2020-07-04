@@ -12,6 +12,7 @@ export default function Visualize() {
   const [asciiPhylo, setasciiPhylo] = useState('');
   const [currPhylo, setCurrPhylo] = useState('');
   const [fileList, setFileList] = useState([]);
+  const [currFile, setCurrFile] = useState(undefined);
 
   const reader = new FileReader();
 
@@ -30,6 +31,16 @@ export default function Visualize() {
     }
   };
 
+  const handleVisualize = function () {
+    if (fileList.length < 1) {
+      alert(
+        'At least one phyloXML file must be uploaded for tree visualization.',
+      );
+      return;
+    }
+    displayPhyloFile(currFile);
+  };
+
   const uploadProps = {
     accept: '.xml',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -42,7 +53,7 @@ export default function Visualize() {
     },
     transformFile(file) {
       setFileList([file]);
-      displayPhyloFile(file);
+      setCurrFile(file);
     },
   };
 
@@ -67,13 +78,14 @@ export default function Visualize() {
             </h2>
           </div>
         </Row>
-        <Row className="centered-content">
+        <Row className="horizontally-centered">
           <Upload {...uploadProps}>
             <Button>
               <UploadOutlined />
               Upload PhyloXML Files
             </Button>
           </Upload>
+          <Button onClick={handleVisualize}>Visualize</Button>
         </Row>
         <Row className="centered-content">
           <p className="phylo-example-text"> See our examples: </p>
