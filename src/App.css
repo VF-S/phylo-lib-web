@@ -211,3 +211,13 @@ a.tooltip {
   max-width: 35vw;
   margin-right: 10%;
 }
+
+.generate-toggle {
+  margin-top: 0.5vmin;
+  margin-right: 1vmin;
+}
+
+.generate-info {
+  margin-top: 0.5vmin;
+  margin-left: 1vmin;
+}

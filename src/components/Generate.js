@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Button, Radio, Row, Layout, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Button, Radio, Row, Layout, Popover, Switch, Upload } from 'antd';
+import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
 import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
 import * as PhyloPrinter from '../ocaml_src/phylo_printer.bs';
 import influenza from '../ocaml_src/Examples/Influenza.js';
-
+import h1n1 from '../ocaml_src/Examples/h1n1.js';
+import h3n2 from '../ocaml_src/Examples/h3n2.js';
+import h5n1 from '../ocaml_src/Examples/h5n1.js';
 import '../App.css';
 
 const { Content } = Layout;
@@ -18,6 +20,27 @@ export default function Generate() {
   const [dnaArr, setDnaArr] = useState([]);
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
+  const [uploaded, setUploaded] = useState(false);
+  const defaultFileList = [
+    {
+      uid: '1',
+      name: 'h1n1.fasta',
+      status: 'done',
+      url: process.env.PUBLIC_URL + '/examples/FASTA/h1n1.fasta',
+    },
+    {
+      uid: '2',
+      name: 'h3n2.fasta',
+      status: 'done',
+      url: process.env.PUBLIC_URL + '/examples/FASTA/h3n2.fasta',
+    },
+    {
+      uid: '3',
+      name: 'h5n1.fasta',
+      status: 'done',
+      url: process.env.PUBLIC_URL + '/examples/FASTA/h5n1.fasta',
+    },
+  ];
 
   const updateSeq = (dna, name) => {
     setDnaArr((dnaArr) => dnaArr.concat(dna));
@@ -46,11 +69,16 @@ export default function Generate() {
     }
   };
 
-  const generateTree = () => {
-    const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
-    const tree = PhyloAlgo.upgma(dist_matrix, names);
+  const generateExamples = () => {
+    const dnaSeq = [h1n1, h3n2, h5n1];
+    const dnaNames = ['H1N1', 'H3N2', 'H5N1'];
+    generateTree(dnaSeq, dnaNames);
+  };
+
+  const generateTree = (dnas, dnaNames) => {
+    const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
+    const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
     const output = Tree.to_string(tree);
-    console.log(output);
     setPhyloTree(output);
     setPhyloVisible(true);
   };
@@ -77,11 +105,16 @@ export default function Generate() {
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    defaultFileList: defaultFileList,
     headers: {
       authorization: 'authorization-text',
     },
     multiple: true,
     transformFile(file) {
+      setUploaded(true);
+      while (defaultFileList.length > 0) {
+        defaultFileList.pop();
+      }
       const file_name = file.name
         .split('.')
         .slice(0, -1)
@@ -106,12 +139,35 @@ export default function Generate() {
           </div>
         </Row>
         <Row className="horizontally-centered">
+          <Switch
+            checkedChildren="Clustal"
+            unCheckedChildren="UPGMA"
+            className="generate-toggle"
+            defaultChecked
+          />
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button onClick={generateTree}>Generate tree</Button>
+          <Button
+            onClick={() => {
+              !uploaded ? generateExamples() : generateTree(dnaArr, names);
+            }}
+          >
+            Generate tree
+          </Button>
+          <Popover
+            content={<p>Information on Clustal and UPGMA</p>}
+            title="Info"
+            trigger="click"
+          >
+            <div className="generate-info">
+              <InfoCircleOutlined />
+            </div>
+          </Popover>
+        </Row>
+        <Row className="centered-content">
           <div>
             <Button onClick={downloadTree}>Save tree as phyloXML</Button>
             {download !== undefined ? (
