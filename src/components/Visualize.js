@@ -88,7 +88,7 @@ export default function Visualize() {
           <Button onClick={handleVisualize}>Visualize</Button>
         </Row>
         <Row className="centered-content">
-          <p className="phylo-example-text"> See our examples: </p>
+          <p className="example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
           <Radio.Group onChange={changeExamples}>
@@ -133,7 +133,7 @@ export default function Visualize() {
             title="Credits"
             trigger="click"
           >
-            <div className="phylo-example-credits">
+            <div className="example-credits">
               <InfoCircleOutlined />
             </div>
           </Popover>

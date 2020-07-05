@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Layout, Radio, Row, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
+import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Pairwise from '../ocaml_src/pairwise.bs';
@@ -11,6 +11,7 @@ export default function DisplayPairwise() {
   const [displayVisible, setDisplayVisible] = useState(false);
   const [alignment, setAlignment] = useState('');
   const [exampleArr, setExampleArr] = useState([]);
+  const [exampleFiles, setExampleFiles] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [dnaArr, setDnaArr] = useState([]);
 
@@ -69,6 +70,7 @@ export default function DisplayPairwise() {
   const changeExamples = (e) => {
     setExampleArr([]);
     const files = e.target.value.split(',');
+    setExampleFiles(files);
     files.map((file) => {
       const filePath =
         process.env.PUBLIC_URL + '/examples/FASTA/' + file + '.fasta';
@@ -98,19 +100,90 @@ export default function DisplayPairwise() {
               Upload .FASTA Files
             </Button>
           </Upload>
-          <Button onClick={() => displayAlignment(dnaArr)}>
+          <Button
+            onClick={() => {
+              displayAlignment(dnaArr);
+              if (dnaArr.length >= 2) {
+                setExampleArr([]);
+                setExampleFiles([]);
+              }
+            }}
+          >
             Display Alignment
           </Button>
         </Row>
         <Row className="centered-content">
-          <p className="phylo-example-text"> See our examples: </p>
+          <p className="example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
           <Radio.Group onChange={changeExamples}>
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
-            <Radio.Button value="h3n2,h5n1">H5N1 vs H7N7</Radio.Button>
+            <Radio.Button value="h5n1,h7n7">H5N1 vs H7N7</Radio.Button>
             <Radio.Button value="mers,h7n9">MERS vs H7N9</Radio.Button>
           </Radio.Group>
+          <Popover
+            content={
+              <div>
+                <p>
+                  The pairwise alignment shown is a globally optimum alignment
+                  obtained via the Needleman-Wunch algorithm.
+                </p>
+                <p>
+                  Base pair matches, mismatches and gaps are visualized. A star
+                  indicates a pair match, a bar indicates a mismatch, and a
+                  blank space indicates a gap.
+                </p>
+                <p>
+                  Example files obtained from{' '}
+                  <a
+                    href="https://www.ncbi.nlm.nih.gov/nuccore/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    NCBI Nucleotide
+                  </a>
+                  .
+                  {exampleFiles.length === 2 ? (
+                    <p>
+                      See the sources for the current alignment:{' '}
+                      <a
+                        href={
+                          process.env.PUBLIC_URL +
+                          '/examples/FASTA/' +
+                          exampleFiles[0] +
+                          '.fasta'
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {exampleFiles[0] + '.fasta'}
+                      </a>{' '}
+                      and{' '}
+                      <a
+                        href={
+                          process.env.PUBLIC_URL +
+                          '/examples/FASTA/' +
+                          exampleFiles[1] +
+                          '.fasta'
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {exampleFiles[1] + '.fasta'}
+                      </a>
+                      .
+                    </p>
+                  ) : null}
+                </p>
+              </div>
+            }
+            title="Information and Credits"
+            trigger="click"
+          >
+            <div className="example-credits">
+              <InfoCircleOutlined />
+            </div>
+          </Popover>
         </Row>
         {displayVisible ? (
           <Row justify="center">

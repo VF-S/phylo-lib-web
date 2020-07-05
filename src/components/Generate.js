@@ -121,7 +121,7 @@ export default function Generate() {
         </Row>
       </Content>
       <Row className="centered-content">
-        <p className="phylo-example-text"> See our examples: </p>
+        <p className="example-text"> See our examples: </p>
       </Row>
       <Row className="centered-content">
         <Radio.Group onChange={changeGenerateExamples}>

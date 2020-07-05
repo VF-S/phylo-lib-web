@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "PhyloML",
+  "name": "PhyloML- Generating and Visualizing Phylogenies",
   "icons": [
     {
       "src": "favicon.ico",
