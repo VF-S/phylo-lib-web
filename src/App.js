@@ -57,10 +57,10 @@ export default function App() {
       <div>
         <Header />
         <Switch>
-          <Route path="/generate" exact component={() => <Generate />} />
-          <Route path="/visualize" exact component={() => <Visualize />} />
-          <Route path="/pairwise" exact component={() => <DisplayPairwise />} />
-          <Route path="/" exact component={() => <HomeContent />} />
+          <Route path="/generate" component={() => <Generate />} />
+          <Route path="/visualize" component={() => <Visualize />} />
+          <Route path="/pairwise" component={() => <DisplayPairwise />} />
+          <Route path="/" component={() => <HomeContent />} />
         </Switch>
       </div>
     </Router>
