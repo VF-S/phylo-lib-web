@@ -212,6 +212,8 @@ a.tooltip {
   margin-right: 10%;
 }
 
+/* Generate */
+
 .generate-toggle {
   margin-top: 0.5vmin;
   margin-right: 1vmin;
@@ -220,4 +222,8 @@ a.tooltip {
 .generate-info {
   margin-top: 0.5vmin;
   margin-left: 1vmin;
+}
+
+.hide-download {
+  margin-left: 0.5vmin;
 }

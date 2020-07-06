@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
-import { Button, Radio, Row, Layout, Popover, Switch, Upload } from 'antd';
-import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Layout,
+  Popover,
+  Radio,
+  Row,
+  Switch,
+  Tooltip,
+  Upload,
+} from 'antd';
+import {
+  DeleteOutlined,
+  InfoCircleOutlined,
+  UploadOutlined,
+} from '@ant-design/icons';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
@@ -21,6 +34,10 @@ export default function Generate() {
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
   const [uploaded, setUploaded] = useState(false);
+
+  const exampleDnas = [h1n1, h3n2, h5n1];
+  const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
+
   const defaultFileList = [
     {
       uid: '1',
@@ -69,13 +86,11 @@ export default function Generate() {
     }
   };
 
-  const generateExamples = () => {
-    const dnaSeq = [h1n1, h3n2, h5n1];
-    const dnaNames = ['H1N1', 'H3N2', 'H5N1'];
-    generateTree(dnaSeq, dnaNames);
-  };
+  const generateTree = () => {
+    // use default files if no other files have been uploaded
+    const dnas = uploaded ? dnaArr : exampleDnas;
+    const dnaNames = uploaded ? names : exampleNames;
 
-  const generateTree = (dnas, dnaNames) => {
     const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
     const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
     const output = Tree.to_string(tree);
@@ -84,12 +99,15 @@ export default function Generate() {
   };
 
   const downloadTree = () => {
-    if (dnaArr.length < 1) {
+    if (uploaded && dnaArr.length < 1) {
       alert('At least one FASTA file must be uploaded for tree generation.');
       return;
     }
-    const dist_matrix = Distance.dist_dna(dnaArr, 1, -1, -1);
-    const tree = PhyloAlgo.upgma(dist_matrix, names);
+    const dnas = uploaded ? dnaArr : exampleDnas;
+    const dnaNames = uploaded ? names : exampleNames;
+
+    const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
+    const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
     const treeXML = PhyloPrinter.xml_of_tree(tree);
     const element = (
       <a
@@ -150,13 +168,7 @@ export default function Generate() {
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button
-            onClick={() => {
-              !uploaded ? generateExamples() : generateTree(dnaArr, names);
-            }}
-          >
-            Generate tree
-          </Button>
+          <Button onClick={generateTree}>Generate tree</Button>
           <Popover
             content={<p>Information on Clustal and UPGMA</p>}
             title="Info"
@@ -168,13 +180,21 @@ export default function Generate() {
           </Popover>
         </Row>
         <Row className="centered-content">
-          <div>
-            <Button onClick={downloadTree}>Save tree as phyloXML</Button>
-            {download !== undefined ? (
-              <Row className="centered-content">{download}</Row>
-            ) : null}
-          </div>
+          <Button onClick={downloadTree}>Save tree as phyloXML</Button>
         </Row>
+        {download !== undefined ? (
+          <Row className="centered-content">
+            {download}
+            <Button
+              onClick={() => setDownload(undefined)}
+              className="hide-download"
+            >
+              <Tooltip title="Hide Download Link">
+                <DeleteOutlined style={{ color: 'firebrick' }} />
+              </Tooltip>
+            </Button>
+          </Row>
+        ) : null}
       </Content>
       <Row className="centered-content">
         <p className="example-text"> See our examples: </p>
