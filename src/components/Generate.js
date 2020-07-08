@@ -145,6 +145,13 @@ export default function Generate() {
     setDownload(element);
   };
 
+  const clean_file_name = (name) => {
+    return name
+      .split('.')
+      .slice(0, -1)
+      .join('.')
+      .toUpperCase();
+  }
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -158,13 +165,22 @@ export default function Generate() {
       while (defaultFileList.length > 0) {
         defaultFileList.pop();
       }
-      const file_name = file.name
-        .split('.')
-        .slice(0, -1)
-        .join('.')
-        .toUpperCase();
+      const file_name = clean_file_name(file.name);
       parseDNA(file, file_name);
     },
+
+    onRemove(file) {
+
+      const file_name = clean_file_name(file.name);
+      console.log(file_name);
+      const file_index = names.indexOf(file_name);
+      console.log(file_index);
+
+      setDnaArr(DnaArr => DnaArr.filter((dna, i) => i !== file_index));
+      setNames(names => names.filter((name, i) => i !== file_index));
+
+    }
+
   };
 
   return (
