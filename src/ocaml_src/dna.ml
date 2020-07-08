@@ -47,10 +47,34 @@ let from_fasta ?init_size:(init_size = 16384) (loc: string) : t =
   Stream.iter (fun str -> parse_line str dna_seq) dna_stream;
   dna_seq 
 
+let trim_name_line str : string =
+  let idx = try String.index str '\n' with Not_found -> 0 in 
+  let first_line = String.sub str 0 idx in 
+  if first_line = "" || is_name_line first_line 
+  then String.sub str (idx+1) (String.length str - idx - 1) 
+  else str
+
 let from_string str : t = 
   let dna_seq = Buffer.create 128 in 
-  parse_line str dna_seq; 
+  parse_line (trim_name_line str) dna_seq;
   dna_seq
+
+
+let rec multiple_helper str acc : t list =
+  if str = "" then acc else
+    let trimmed = trim_name_line str in
+    let idx = try String.index trimmed '\n' with Not_found -> String.length trimmed - 1 in
+    let next = String.sub trimmed 0 idx in
+    let left = 
+      try String.sub trimmed (idx + 1) (String.length trimmed - idx - 1) 
+      with _ -> "" in
+    let dna_seq = Buffer.create 128 in 
+    parse_line next dna_seq; 
+    multiple_helper left (dna_seq::acc)
+
+let multiple_from_string str : t list =
+  List.fold_left (fun a x -> x::a) [] (multiple_helper str [])
+
 
 let is_empty (dna_seq : t) : bool = 
   Buffer.length dna_seq = 0 
