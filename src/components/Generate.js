@@ -21,6 +21,9 @@ import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
 import * as PhyloPrinter from '../ocaml_src/phylo_printer.bs';
 import * as Msa from '../ocaml_src/msa.bs';
 import influenza from '../ocaml_src/Examples/Influenza.js';
+import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
+import capsid from '../ocaml_src/Examples/Capsid.js';
+
 import h1n1 from '../ocaml_src/Examples/h1n1.js';
 import h3n2 from '../ocaml_src/Examples/h3n2.js';
 import h5n1 from '../ocaml_src/Examples/h5n1.js';
@@ -80,7 +83,19 @@ export default function Generate() {
 
 
         const dna = Dna.from_string(reader.result);
-        updateSeq(dna, filename);
+
+        const dnaLines = Dna.to_string(dna).split('\n');
+        const firstLine = dnaLines[0];
+        console.log(firstLine);
+
+        if (firstLine.charAt(0) === "<") {
+          dnaLines.shift();
+          updateSeq(dnaLines.join(), filename)
+        }
+        else {
+          updateSeq(dnaLines.join(), filename);
+        }
+
       };
       reader.readAsText(file);
     } catch (e) {
@@ -94,6 +109,15 @@ export default function Generate() {
       case 'Influenza A Viruses':
         setPhyloVisible(true);
         setPhyloTree(influenza);
+        break;
+      case 'COXII':
+        setPhyloVisible(true);
+        setPhyloTree(cytochrome_c);
+        break;
+      case 'Virus Capsid':
+        setPhyloVisible(true);
+        setPhyloTree(capsid);
+        break;
     }
   };
 
@@ -194,6 +218,13 @@ export default function Generate() {
     setDownload(element);
   };
 
+  const clean_file_name = (name) => {
+    return name
+      .split('.')
+      .slice(0, -1)
+      .join('.')
+      .toUpperCase();
+  }
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -207,13 +238,22 @@ export default function Generate() {
       while (defaultFileList.length > 0) {
         defaultFileList.pop();
       }
-      const file_name = file.name
-        .split('.')
-        .slice(0, -1)
-        .join('.')
-        .toUpperCase();
+      const file_name = clean_file_name(file.name);
       parseDNA(file, file_name);
     },
+
+    onRemove(file) {
+
+      const file_name = clean_file_name(file.name);
+      console.log(file_name);
+      const file_index = names.indexOf(file_name);
+      console.log(file_index);
+
+      setDnaArr(DnaArr => DnaArr.filter((dna, i) => i !== file_index));
+      setNames(names => names.filter((name, i) => i !== file_index));
+
+    }
+
   };
 
   return (
@@ -276,12 +316,13 @@ export default function Generate() {
       </Row>
       <Row className="centered-content">
         <Radio.Group onChange={changeGenerateExamples}>
-          <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
-          <Radio.Button value="Influenza A Viruses">
-            Influenza A Viruses
+          <Radio.Button value="Virus Capsid">Virus Capsid Gene</Radio.Button>
+          <Radio.Button value="COXII">
+            Cytochrome C Oxidase Subunit II
           </Radio.Button>
-          <Radio.Button value="Example 1">Apaf-1 Gene Family Tree</Radio.Button>
-          <Radio.Button value="Example 2">Alcohol Dehydrogenases</Radio.Button>
+          <Radio.Button value="Influenza A Viruses">
+            Influenza A PB-2
+          </Radio.Button>
         </Radio.Group>
       </Row>
       {phyloVisible ? (

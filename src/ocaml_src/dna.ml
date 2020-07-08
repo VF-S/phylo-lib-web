@@ -19,11 +19,19 @@ let is_dna (c : char) : bool =
   | '_' | '-' -> true 
   | _ -> false 
 
+(** [is_protein c] is true if [c] is a protein, false otherwise.  *))
+let is_protein (c: char) : bool = 
+  match c with 
+  | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'| 'G'| 'H'| 'I'| 'K' | 'L'
+  | 'M'| 'N'| 'P'| 'Q'| 'R'| 'S'| 'T'| 'U'| 'V'| 'W'| 'Y'| 'Z' 
+  | 'X' -> true 
+  | _ -> false 
+
 (* Main Functions *)
 
 (** [parse_char c dna_seq] adds [c] to [dna_seq] if [c] is a DNA sequence. *)
 let parse_char (c: char) (dna_seq : Buffer.t) : unit = 
-  if is_dna c then Buffer.add_char dna_seq c else ()
+  if is_dna c || is_protein then Buffer.add_char dna_seq c else ()
 
 (** [parse_line str dna_seq] parses the string of DNA sequences and updates 
     dna_seq. *)
