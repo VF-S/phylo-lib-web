@@ -21,8 +21,8 @@ val from_fasta : ?init_size:int -> string -> t
 val from_string : string -> t
 
 (** [from_string] parses a .FASTA file with multiple labelled sequences and 
-    creates a list of DNA sequences. *)
-val multiple_from_string : string -> t list
+    creates an array of DNA sequences. *)
+val multiple_from_string : string -> t array
 
 (** [is_empty t ] is true iff. [t] is empty *)
 val is_empty : t -> bool 

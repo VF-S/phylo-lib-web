@@ -4,16 +4,16 @@ import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
 import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Dna$PhyloLibWeb from "./dna.bs.js";
 
-function align(dnas) {
-  return dnas;
-}
-
 function num_seq(msa) {
   return msa.length;
 }
 
 function seq_len(msa) {
   return Dna$PhyloLibWeb.length(Caml_array.caml_array_get(msa, 0));
+}
+
+function align(dnas) {
+  return dnas;
 }
 
 function get_seq(i, msa) {
