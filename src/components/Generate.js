@@ -80,13 +80,8 @@ export default function Generate() {
       reader.onload = () => {
         console.log(dnaString);
         concatDNA(reader.result);
-
-
         const dna = Dna.from_string(reader.result);
-
-
         updateSeq(dna, filename);
-
       };
       reader.readAsText(file);
     } catch (e) {
@@ -120,8 +115,6 @@ export default function Generate() {
       const dnas = uploaded ? dnaArr : exampleDnas;
       const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
       const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-
-
       const output = Tree.to_string(tree);
       setPhyloTree(output);
       setPhyloVisible(true);
@@ -243,7 +236,6 @@ export default function Generate() {
 
       setDnaArr(DnaArr => DnaArr.filter((dna, i) => i !== file_index));
       setNames(names => names.filter((name, i) => i !== file_index));
-
     }
 
   };
