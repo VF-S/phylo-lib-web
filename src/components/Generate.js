@@ -20,6 +20,9 @@ import * as Distance from '../ocaml_src/distance.bs';
 import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
 import * as PhyloPrinter from '../ocaml_src/phylo_printer.bs';
 import influenza from '../ocaml_src/Examples/Influenza.js';
+import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
+import capsid from '../ocaml_src/Examples/Capsid.js';
+
 import h1n1 from '../ocaml_src/Examples/h1n1.js';
 import h3n2 from '../ocaml_src/Examples/h3n2.js';
 import h5n1 from '../ocaml_src/Examples/h5n1.js';
@@ -69,7 +72,19 @@ export default function Generate() {
       const reader = new FileReader();
       reader.onload = () => {
         const dna = Dna.from_string(reader.result);
-        updateSeq(dna, filename);
+
+        const dnaLines = Dna.to_string(dna).split('\n');
+        const firstLine = dnaLines[0];
+        console.log(firstLine);
+
+        if (firstLine.charAt(0) === "<") {
+          dnaLines.shift();
+          updateSeq(dnaLines.join(), filename)
+        }
+        else {
+          updateSeq(dnaLines.join(), filename);
+        }
+
       };
       reader.readAsText(file);
     } catch (e) {
@@ -83,6 +98,15 @@ export default function Generate() {
       case 'Influenza A Viruses':
         setPhyloVisible(true);
         setPhyloTree(influenza);
+        break;
+      case 'COXII':
+        setPhyloVisible(true);
+        setPhyloTree(cytochrome_c);
+        break;
+      case 'Virus Capsid':
+        setPhyloVisible(true);
+        setPhyloTree(capsid);
+        break;
     }
   };
 
@@ -94,8 +118,9 @@ export default function Generate() {
     const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
     const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
     const output = Tree.to_string(tree);
-    setPhyloTree(output);
+    console.log(output);
     setPhyloVisible(true);
+    setPhyloTree(output);
   };
 
   const downloadTree = () => {
@@ -201,12 +226,13 @@ export default function Generate() {
       </Row>
       <Row className="centered-content">
         <Radio.Group onChange={changeGenerateExamples}>
-          <Radio.Button value="Coronaviruses">Coronaviruses</Radio.Button>
-          <Radio.Button value="Influenza A Viruses">
-            Influenza A Viruses
+          <Radio.Button value="Virus Capsid">Virus Capsid Gene</Radio.Button>
+          <Radio.Button value="COXII">
+            Cytochrome C Oxidase Subunit II
           </Radio.Button>
-          <Radio.Button value="Example 1">Apaf-1 Gene Family Tree</Radio.Button>
-          <Radio.Button value="Example 2">Alcohol Dehydrogenases</Radio.Button>
+          <Radio.Button value="Influenza A Viruses">
+            Influenza A PB-2
+          </Radio.Button>
         </Radio.Group>
       </Row>
       {phyloVisible ? (
