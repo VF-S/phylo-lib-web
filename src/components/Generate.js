@@ -81,20 +81,8 @@ export default function Generate() {
         console.log(dnaString);
         concatDNA(reader.result);
 
-
         const dna = Dna.from_string(reader.result);
-
-        const dnaLines = Dna.to_string(dna).split('\n');
-        const firstLine = dnaLines[0];
-        console.log(firstLine);
-
-        if (firstLine.charAt(0) === "<") {
-          dnaLines.shift();
-          updateSeq(dnaLines.join(), filename)
-        }
-        else {
-          updateSeq(dnaLines.join(), filename);
-        }
+        updateSeq(dna, filename);
 
       };
       reader.readAsText(file);
@@ -163,7 +151,7 @@ export default function Generate() {
                 const aligned_dnas = Dna.multiple_from_string(result);
                 // console.log(aligned_dnas);
                 const msa = Msa.align(aligned_dnas);
-                const dist_matrix = Distance.dist_msa(msa);
+                const dist_matrix = Distance.dist_msa(msa, 1);
                 const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
                 const output = Tree.to_string(tree);
                 setPhyloTree(output);

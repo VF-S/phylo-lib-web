@@ -43,10 +43,19 @@ function is_dna(c) {
   }
 }
 
+function is_protein(c) {
+  var switcher = c - 65 | 0;
+  if (switcher > 13 || switcher < 0) {
+    return !(switcher > 25 || switcher < 15);
+  } else {
+    return switcher !== 9;
+  }
+}
+
 function parse_line(str, dna_seq) {
   var str$1 = $$String.uppercase_ascii(str);
   return $$String.iter((function (c) {
-                if (is_dna(c)) {
+                if (is_dna(c) || is_protein(c)) {
                   return $$Buffer.add_char(dna_seq, c);
                 }
                 
