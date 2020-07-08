@@ -8,11 +8,11 @@ import * as PhyloParser from '../ocaml_src/phylo_parser.bs';
 const { Content } = Layout;
 
 export default function Visualize() {
+  const [fileList, setFileList] = useState([]);
+  const [currFile, setCurrFile] = useState(undefined);
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [asciiPhylo, setasciiPhylo] = useState('');
   const [currPhylo, setCurrPhylo] = useState('');
-  const [fileList, setFileList] = useState([]);
-  const [currFile, setCurrFile] = useState(undefined);
 
   const reader = new FileReader();
 
@@ -38,6 +38,7 @@ export default function Visualize() {
       );
       return;
     }
+    setCurrPhylo('');
     displayPhyloFile(currFile);
   };
 
@@ -91,7 +92,7 @@ export default function Visualize() {
           <p className="example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
-          <Radio.Group onChange={changeExamples}>
+          <Radio.Group onChange={changeExamples} value={currPhylo}>
             <Radio.Button value="amphi_frost">Amphibian Phylogeny</Radio.Button>
             <Radio.Button value="tol_156">The Tree of Life</Radio.Button>
             <Radio.Button value="apaf">Apaf-1 Gene Family Tree</Radio.Button>

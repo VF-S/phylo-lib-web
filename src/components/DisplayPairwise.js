@@ -11,7 +11,7 @@ export default function DisplayPairwise() {
   const [displayVisible, setDisplayVisible] = useState(false);
   const [alignment, setAlignment] = useState('');
   const [exampleArr, setExampleArr] = useState([]);
-  const [exampleFiles, setExampleFiles] = useState([]);
+  const [exampleFileNames, setExampleFileNames] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [dnaArr, setDnaArr] = useState([]);
 
@@ -70,7 +70,7 @@ export default function DisplayPairwise() {
   const changeExamples = (e) => {
     setExampleArr([]);
     const files = e.target.value.split(',');
-    setExampleFiles(files);
+    setExampleFileNames(files);
     files.map((file) => {
       const filePath =
         process.env.PUBLIC_URL + '/examples/FASTA/' + file + '.fasta';
@@ -105,7 +105,7 @@ export default function DisplayPairwise() {
               displayAlignment(dnaArr);
               if (dnaArr.length >= 2) {
                 setExampleArr([]);
-                setExampleFiles([]);
+                setExampleFileNames([]);
               }
             }}
           >
@@ -116,7 +116,10 @@ export default function DisplayPairwise() {
           <p className="example-text"> See our examples: </p>
         </Row>
         <Row className="centered-content">
-          <Radio.Group onChange={changeExamples}>
+          <Radio.Group
+            onChange={changeExamples}
+            value={exampleFileNames.join(',')}
+          >
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
             <Radio.Button value="h5n1,h7n7">H5N1 vs H7N7</Radio.Button>
             <Radio.Button value="mers,h7n9">MERS vs H7N9</Radio.Button>
@@ -143,33 +146,33 @@ export default function DisplayPairwise() {
                     NCBI Nucleotide
                   </a>
                   .
-                  {exampleFiles.length === 2 ? (
+                  {exampleFileNames.length === 2 ? (
                     <p>
                       See the sources for the current alignment:{' '}
                       <a
                         href={
                           process.env.PUBLIC_URL +
                           '/examples/FASTA/' +
-                          exampleFiles[0] +
+                          exampleFileNames[0] +
                           '.fasta'
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {exampleFiles[0] + '.fasta'}
+                        {exampleFileNames[0] + '.fasta'}
                       </a>{' '}
                       and{' '}
                       <a
                         href={
                           process.env.PUBLIC_URL +
                           '/examples/FASTA/' +
-                          exampleFiles[1] +
+                          exampleFileNames[1] +
                           '.fasta'
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {exampleFiles[1] + '.fasta'}
+                        {exampleFileNames[1] + '.fasta'}
                       </a>
                       .
                     </p>
