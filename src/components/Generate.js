@@ -37,7 +37,6 @@ export default function Generate() {
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [alignmentChecked, setAlignmentChecked] = useState(true);
   const [dnaArr, setDnaArr] = useState([]);
-  var [dnaString, setDnaString] = useState("");
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
   const [uploaded, setUploaded] = useState(false);
@@ -70,28 +69,12 @@ export default function Generate() {
     setNames((names) => names.concat(name));
   };
 
-  const concatDNA = (dna) => {
-    setDnaString((dnaString) => dnaString + dna + '\n');
-  };
-
   const parseDNA = async (file, filename) => {
     try {
       const reader = new FileReader();
       reader.onload = () => {
-        console.log(dnaString);
-        concatDNA(reader.result);
         const dna = Dna.from_string(reader.result);
-        const dnaLines = Dna.to_string(dna).split('\n');
-        const firstLine = dnaLines[0];
-        console.log(firstLine);
-
-        if (firstLine.charAt(0) === "<") {
-          dnaLines.shift();
-          updateSeq(dnaLines.join(), filename)
-        }
-        else {
-          updateSeq(dnaLines.join(), filename);
-        }
+        updateSeq(dna, filename);
       };
       reader.readAsText(file);
     } catch (e) {
@@ -130,65 +113,77 @@ export default function Generate() {
       setPhyloVisible(true);
       return;
     }
-    var job;
-    var aligned;
+    let job = '';
 
     const waitStatus = (numTries) => {
-      fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/status/" + job, {
-        method: 'GET',
-        redirect: 'follow'
-      })
-        .then(response => response.text())
-        .then(result => {
-          if (result != "FINISHED" && numTries < 50) {
+      fetch(
+        'https://www.ebi.ac.uk/Tools/services/rest/clustalo/status/' + job,
+        {
+          method: 'GET',
+          redirect: 'follow',
+        },
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          if (result != 'FINISHED' && numTries < 50) {
             setTimeout(waitStatus(numTries + 1), 1000);
-          }
-          else {
-            if (result != "FINISHED") {
+          } else {
+            if (result != 'FINISHED') {
               return;
             }
             console.log(result);
 
-            fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + job + "/aln-fasta", {
-              method: 'GET',
-              redirect: 'follow'
-            })
-              .then(response => response.text())
-              .then(result => {
+            fetch(
+              'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
+                job +
+                '/aln-fasta',
+              {
+                method: 'GET',
+                redirect: 'follow',
+              },
+            )
+              .then((response) => response.text())
+              .then((result) => {
                 const aligned_dnas = Dna.multiple_from_string(result);
-                // console.log(aligned_dnas);
                 const msa = Msa.align(aligned_dnas);
-                const dist_matrix = Distance.dist_msa(msa);
+                const dist_matrix = Distance.dist_msa(msa, 1);
                 const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
                 const output = Tree.to_string(tree);
                 setPhyloTree(output);
                 setPhyloVisible(true);
               })
-              .catch(error => console.log('error', error));
+              .catch((error) => console.log('error', error));
           }
         })
-        .catch(error => console.log('error', error))
-    }
+        .catch((error) => console.log('error', error));
+    };
 
     var urlencoded = new URLSearchParams();
-    urlencoded.append("email", "vg222@cornell.edu");
-    urlencoded.append("sequence", dnaString);
-    urlencoded.append("outfmt", "fa");
+    urlencoded.append('email', 'vg222@cornell.edu');
+    let dnaStr = '';
+    for (let i = 0; i < dnaArr.length; i++) {
+      dnaStr += '>';
+      dnaStr += names[i].split(' ').join('_');
+      dnaStr += '\n';
+      dnaStr += Dna.to_string(dnaArr[i]);
+      dnaStr += '\n';
+    }
+    urlencoded.append('sequence', dnaStr);
+    urlencoded.append('outfmt', 'fa');
 
-    fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/run", {
+    fetch('https://www.ebi.ac.uk/Tools/services/rest/clustalo/run', {
       method: 'POST',
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: urlencoded,
-      redirect: 'follow'
+      redirect: 'follow',
     })
-      .then(response => response.text())
-      .then(result => {
+      .then((response) => response.text())
+      .then((result) => {
         job = result;
         console.log(job);
         waitStatus(0);
       })
-      .catch(error => console.log('error', error));
-
+      .catch((error) => console.log('error', error));
   };
 
   const downloadTree = () => {
@@ -214,12 +209,8 @@ export default function Generate() {
   };
 
   const clean_file_name = (name) => {
-    return name
-      .split('.')
-      .slice(0, -1)
-      .join('.')
-      .toUpperCase();
-  }
+    return name.split('.').slice(0, -1).join('.').toUpperCase();
+  };
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -238,16 +229,16 @@ export default function Generate() {
     },
 
     onRemove(file) {
-
       const file_name = clean_file_name(file.name);
       console.log(file_name);
       const file_index = names.indexOf(file_name);
       console.log(file_index);
 
-      setDnaArr(DnaArr => DnaArr.filter((dna, i) => i !== file_index));
-      setNames(names => names.filter((name, i) => i !== file_index));
-    }
-
+      dnaArr.splice(file_index, 1);
+      names.splice(file_index, 1);
+      setDnaArr(dnaArr);
+      setNames(names);
+    },
   };
 
   return (
@@ -270,7 +261,9 @@ export default function Generate() {
             unCheckedChildren="UPGMA"
             className="generate-toggle"
             defaultChecked
-            onChange={(checked, event) => { setAlignmentChecked(checked) }}
+            onChange={(checked, event) => {
+              setAlignmentChecked(checked);
+            }}
           />
           <Upload {...fastaUploadProps}>
             <Button>
