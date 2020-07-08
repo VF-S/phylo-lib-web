@@ -11,12 +11,12 @@ import * as Pairwise$PhyloLibWeb from "./pairwise.bs.js";
 function dist_dna(dnas, align, misalign, indel) {
   var m = dnas.length;
   var dist_matrix = Hashtbl.create(undefined, m);
-  for(var i = 0; i < m; ++i){
-    for(var j = i + 1 | 0; j < m; ++j){
+  for (var i = 0; i < m; ++i) {
+    for (var j = i + 1 | 0; j < m; ++j) {
       Hashtbl.add(dist_matrix, /* tuple */[
-            i,
-            j
-          ], Pairwise$PhyloLibWeb.diff(Caml_array.caml_array_get(dnas, i), Caml_array.caml_array_get(dnas, j), align, misalign, indel));
+        i,
+        j
+      ], Pairwise$PhyloLibWeb.diff(Caml_array.caml_array_get(dnas, i), Caml_array.caml_array_get(dnas, j), align, misalign, indel));
     }
   }
   return dist_matrix;
@@ -26,21 +26,24 @@ function dist_msa(msa, gap) {
   var m = Msa$PhyloLibWeb.num_seq(msa);
   var n = Msa$PhyloLibWeb.seq_len(msa);
   var dist_matrix = Hashtbl.create(undefined, m);
-  for(var i = 0; i < m; ++i){
+  for (var i = 0; i < m; ++i) {
     var diff = 0;
-    for(var j = i + 1 | 0; j < m; ++j){
-      for(var k = 0; k < n; ++k){
+    for (var j = i + 1 | 0; j < m; ++j) {
+      for (var k = 0; k < n; ++k) {
+        console.log();
+        Msa$PhyloLibWeb.get_base(i, k, msa);
+        Msa$PhyloLibWeb.get_base(j, k, msa);
         if (Msa$PhyloLibWeb.get_base(i, k, msa) === /* "_" */95 || Msa$PhyloLibWeb.get_base(j, k, msa) === /* "_" */95) {
           diff = diff + gap | 0;
         } else if (Msa$PhyloLibWeb.get_base(i, k, msa) !== Msa$PhyloLibWeb.get_base(j, k, msa)) {
           diff = diff + 1 | 0;
         }
-        
+
       }
       Hashtbl.add(dist_matrix, /* tuple */[
-            i,
-            j
-          ], diff);
+        i,
+        j
+      ], diff);
     }
   }
   return dist_matrix;
@@ -50,11 +53,11 @@ function min_pos(dist) {
   if (Hashtbl.length(dist) === 0) {
     return /* tuple */[
             /* tuple */[
-              0,
-              0
-            ],
-            0
-          ];
+        0,
+        0
+      ],
+      0
+    ];
   }
   var acc_000 = /* tuple */[
     0,
@@ -65,15 +68,15 @@ function min_pos(dist) {
     Pervasives.max_float
   ];
   return Hashtbl.fold((function (k, v, acc) {
-                if (v < acc[1]) {
-                  return /* tuple */[
-                          k,
-                          v
-                        ];
-                } else {
-                  return acc;
-                }
-              }), dist, acc);
+    if (v < acc[1]) {
+      return /* tuple */[
+        k,
+        v
+      ];
+    } else {
+      return acc;
+    }
+  }), dist, acc);
 }
 
 function min_diff(dist) {
@@ -90,19 +93,19 @@ function diff(index, dist) {
 
 function remove(i, dist) {
   return Hashtbl.filter_map_inplace((function (k, v) {
-                if (Caml_obj.caml_equal(k[0], i) || Caml_obj.caml_equal(k[1], i)) {
-                  return ;
-                } else {
-                  return Caml_option.some(v);
-                }
-              }), dist);
+    if (Caml_obj.caml_equal(k[0], i) || Caml_obj.caml_equal(k[1], i)) {
+      return;
+    } else {
+      return Caml_option.some(v);
+    }
+  }), dist);
 }
 
 function avg_helper(j, k, dist) {
   return Hashtbl.find(dist, /* tuple */[
-              Caml_obj.caml_min(j, k),
-              Caml_obj.caml_max(j, k)
-            ]);
+    Caml_obj.caml_min(j, k),
+    Caml_obj.caml_max(j, k)
+  ]);
 }
 
 function average(i, j, dist) {
@@ -133,12 +136,12 @@ function combine(i, j, dist) {
 
 function dim(dist) {
   return Hashtbl.fold((function (k, v, acc) {
-                if (k[0] === 0) {
-                  return acc + 1 | 0;
-                } else {
-                  return acc;
-                }
-              }), dist, 1);
+    if (k[0] === 0) {
+      return acc + 1 | 0;
+    } else {
+      return acc;
+    }
+  }), dist, 1);
 }
 
 function is_done(dist) {
@@ -146,14 +149,14 @@ function is_done(dist) {
 }
 
 export {
-  dist_dna ,
-  dist_msa ,
-  min_index ,
-  min_diff ,
-  diff ,
-  combine ,
-  dim ,
-  is_done ,
-  
+  dist_dna,
+  dist_msa,
+  min_index,
+  min_diff,
+  diff,
+  combine,
+  dim,
+  is_done,
+
 }
 /* No side effect */
