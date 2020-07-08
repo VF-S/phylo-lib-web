@@ -73,17 +73,8 @@ export default function Generate() {
       reader.onload = () => {
         const dna = Dna.from_string(reader.result);
 
-        const dnaLines = Dna.to_string(dna).split('\n');
-        const firstLine = dnaLines[0];
-        console.log(firstLine);
 
-        if (firstLine.charAt(0) === "<") {
-          dnaLines.shift();
-          updateSeq(dnaLines.join(), filename)
-        }
-        else {
-          updateSeq(dnaLines.join(), filename);
-        }
+        updateSeq(dna, filename);
 
       };
       reader.readAsText(file);
@@ -105,6 +96,7 @@ export default function Generate() {
         break;
       case 'Virus Capsid':
         setPhyloVisible(true);
+        console.log(capsid);
         setPhyloTree(capsid);
         break;
     }

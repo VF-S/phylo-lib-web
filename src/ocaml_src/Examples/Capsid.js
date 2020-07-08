@@ -1,64 +1,64 @@
 const capsid = `
-  C
+C
+|
+o-PEPPER VEINAL MOTTLE VIRUS
+|
+o-C
   |
-  o - PEPPER VEINAL MOTTLE VIRUS
-    |
-    o - C
-    |
-    o - C
-    | |
-  | o - BEAK AND FEATHER DISEASE
+  o-C
   | |
-  | o - C
+  | o-BEAK AND FEATHER DISEASE
+  | |
+  | o-C
   |   |
-  | o - AVIAN NEPHRITIS VIRUS
+  |   o-AVIAN NEPHRITIS VIRUS
   |   |
-  | o - C
+  |   o-C
   |     |
-  | o - C
+  |     o-C
   |     | |
-  |     | o - C
+  |     | o-C
   |     | | |
-  |     | | o - DENGUE VIRUS
+  |     | | o-DENGUE VIRUS
   |     | | |
-  |     | | o - C
+  |     | | o-C
   |     | |   |
-  |     | | o - BOVINE VIRAL DIARRHEA VIRUS
+  |     | |   o-BOVINE VIRAL DIARRHEA VIRUS
   |     | |   |
-  |     | | o - HUMAN RHINOVIRUS
+  |     | |   o-HUMAN RHINOVIRUS
   |     | |
-  |     | o - C
+  |     | o-C
   |     |   |
-  |     | o - NOROVIRUS
+  |     |   o-NOROVIRUS
   |     |   |
-  |     | o - C
+  |     |   o-C
   |     |     |
-  |     | o - FELINE IMMUNODEFICIENCY VIRUS
+  |     |     o-FELINE IMMUNODEFICIENCY VIRUS
   |     |     |
-  |     | o - REDSPOTTED GROUPER NERVOUS NECROSIS VIRUS
+  |     |     o-REDSPOTTED GROUPER NERVOUS NECROSIS VIRUS
   |     |
-  | o - C
+  |     o-C
   |       |
-  | o - HEPATITIS E
+  |       o-HEPATITIS E
   |       |
-  | o - C
+  |       o-C
   |         |
-  | o - HEPATITIS C
+  |         o-HEPATITIS C
   |         |
-  | o - NORWALK VIRUS
+  |         o-NORWALK VIRUS
   |
-  o - C
-  |
-  o - EASTERN EQUINE ENCEPHALITIS VIRUS
+  o-C
     |
-    o - C
+    o-EASTERN EQUINE ENCEPHALITIS VIRUS
     |
-    o - JAPANESE ENCEPHALITIS VIRUS
+    o-C
       |
-      o - C
+      o-JAPANESE ENCEPHALITIS VIRUS
       |
-      o - COXSACKIEVIRUS
-      |
-      o - SINDBIS VIRUS STRAIN
-      `
+      o-C
+        |
+        o-COXSACKIEVIRUS
+        |
+        o-SINDBIS VIRUS STRAIN
+`
 export default capsid 
