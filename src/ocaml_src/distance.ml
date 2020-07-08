@@ -27,12 +27,15 @@ let dist_dna (dnas: Dna.t array) align misalign indel : t =
 
 let dist_msa (msa: Msa.t) (gap: int) : t = 
   let m = num_seq msa in
+  print_int m;
   let n = seq_len msa in
+  print_int n;
   let dist_matrix = Hashtbl.create m in 
   (for i = 0 to (m - 1) do
      let diff = ref 0 in
      (for j = i + 1 to (m - 1) do
         (for k = 0 to (n - 1) do
+           print_int i;
            if (get_base i k msa) = '_' ||  (get_base j k msa) = '_' then
              diff := !diff + gap
            else if (get_base i k msa) <> (get_base j k msa) then

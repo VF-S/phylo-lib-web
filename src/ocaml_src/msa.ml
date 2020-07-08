@@ -2,12 +2,12 @@ open Dna
 
 type t = Dna.t array
 
-let align dnas = dnas
-
 let num_seq msa = Array.length msa
 
 let seq_len msa = 
   Dna.length msa.(0)
+
+let align dnas = dnas
 
 let get_seq i msa = 
   msa.(i)

@@ -19,6 +19,7 @@ import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
 import * as PhyloAlgo from '../ocaml_src/phylo_algo.bs';
 import * as PhyloPrinter from '../ocaml_src/phylo_printer.bs';
+import * as Msa from '../ocaml_src/msa.bs';
 import influenza from '../ocaml_src/Examples/Influenza.js';
 import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
 import capsid from '../ocaml_src/Examples/Capsid.js';
@@ -27,17 +28,19 @@ import h1n1 from '../ocaml_src/Examples/h1n1.js';
 import h3n2 from '../ocaml_src/Examples/h3n2.js';
 import h5n1 from '../ocaml_src/Examples/h5n1.js';
 import '../App.css';
+import { variance } from 'd3';
 
 const { Content } = Layout;
 
 export default function Generate() {
   const [PhyloTree, setPhyloTree] = useState('');
   const [phyloVisible, setPhyloVisible] = useState(false);
+  const [alignmentChecked, setAlignmentChecked] = useState(true);
   const [dnaArr, setDnaArr] = useState([]);
+  var [dnaString, setDnaString] = useState("");
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
   const [uploaded, setUploaded] = useState(false);
-
   const exampleDnas = [h1n1, h3n2, h5n1];
   const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
 
@@ -67,10 +70,18 @@ export default function Generate() {
     setNames((names) => names.concat(name));
   };
 
+  const concatDNA = (dna) => {
+    setDnaString((dnaString) => dnaString + dna + '\n');
+  };
+
   const parseDNA = async (file, filename) => {
     try {
       const reader = new FileReader();
       reader.onload = () => {
+        console.log(dnaString);
+        concatDNA(reader.result);
+
+
         const dna = Dna.from_string(reader.result);
 
 
@@ -104,15 +115,77 @@ export default function Generate() {
 
   const generateTree = () => {
     // use default files if no other files have been uploaded
-    const dnas = uploaded ? dnaArr : exampleDnas;
     const dnaNames = uploaded ? names : exampleNames;
+    if (!alignmentChecked) {
+      const dnas = uploaded ? dnaArr : exampleDnas;
+      const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
+      const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
 
-    const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
-    const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-    const output = Tree.to_string(tree);
-    console.log(output);
-    setPhyloVisible(true);
-    setPhyloTree(output);
+
+      const output = Tree.to_string(tree);
+      setPhyloTree(output);
+      setPhyloVisible(true);
+      return;
+    }
+    var job;
+    var aligned;
+
+    const waitStatus = (numTries) => {
+      fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/status/" + job, {
+        method: 'GET',
+        redirect: 'follow'
+      })
+        .then(response => response.text())
+        .then(result => {
+          if (result != "FINISHED" && numTries < 50) {
+            setTimeout(waitStatus(numTries + 1), 1000);
+          }
+          else {
+            if (result != "FINISHED") {
+              return;
+            }
+            console.log(result);
+
+            fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/" + job + "/aln-fasta", {
+              method: 'GET',
+              redirect: 'follow'
+            })
+              .then(response => response.text())
+              .then(result => {
+                const aligned_dnas = Dna.multiple_from_string(result);
+                // console.log(aligned_dnas);
+                const msa = Msa.align(aligned_dnas);
+                const dist_matrix = Distance.dist_msa(msa);
+                const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
+                const output = Tree.to_string(tree);
+                setPhyloTree(output);
+                setPhyloVisible(true);
+              })
+              .catch(error => console.log('error', error));
+          }
+        })
+        .catch(error => console.log('error', error))
+    }
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("email", "vg222@cornell.edu");
+    urlencoded.append("sequence", dnaString);
+    urlencoded.append("outfmt", "fa");
+
+    fetch("https://www.ebi.ac.uk/Tools/services/rest/clustalo/run", {
+      method: 'POST',
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: urlencoded,
+      redirect: 'follow'
+    })
+      .then(response => response.text())
+      .then(result => {
+        job = result;
+        console.log(job);
+        waitStatus(0);
+      })
+      .catch(error => console.log('error', error));
+
   };
 
   const downloadTree = () => {
@@ -195,6 +268,7 @@ export default function Generate() {
             unCheckedChildren="UPGMA"
             className="generate-toggle"
             defaultChecked
+            onChange={(checked, event) => { setAlignmentChecked(checked) }}
           />
           <Upload {...fastaUploadProps}>
             <Button>
