@@ -2,7 +2,7 @@
 
 ### by Shiyuan Huang, Felix Hohne, Vaishnavi Gupta
 
-Currently under development.
+A website showcasing the functionality of [phylo-lib](https://github.com/FelixHohne/phylo-lib), a phylogenetic library for OCaml. Currently under development.
 
 See our progress [here](https://shiyuan-huang-23.github.io/phylo-lib-web/).
 
