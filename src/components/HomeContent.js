@@ -14,14 +14,14 @@ export default function HomeContents() {
             <h1>Welcome to PhyloML</h1>
             <h2>A phylogenetic library written in OCaml.</h2>
             <h2>
-              Inferring Evolutionary History through modern genetic similarity.
+              Inferring Evolutionary History through Modern Genetic Similarity.
             </h2>
           </div>
         </Row>
         <Row justify="center" gutter={[16, 40]}>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/generate">
-              Generate Phylogenetic Trees
+            <Link className="offset" to="/pairwise">
+              Visualize Pairwise DNA Alignments
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
@@ -30,8 +30,8 @@ export default function HomeContents() {
             </Link>
           </Col>
           <Col lg={7} md={10} sm={12}>
-            <Link className="offset" to="/pairwise">
-              Visualize Pairwise DNA Alignments
+            <Link className="offset" to="/generate">
+              Generate Phylogenetic Trees
             </Link>
           </Col>
         </Row>

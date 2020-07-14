@@ -1,43 +1,4 @@
 @import '~antd/dist/antd.css';
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 /**
  * Site header
  */
@@ -55,7 +16,6 @@
 
 .site-title {
   align-content: center;
-  background-color: white;
   border: none;
   color: black;
   display: flex;
@@ -73,6 +33,19 @@
   color: black;
 }
 
+.tooltip {
+  float: right;
+  justify-self: flex-end;
+  position: absolute;
+  right: 5%;
+  font-weight: 350;
+  color: black;
+}
+
+a.tooltip {
+  color: black;
+}
+
 .main-contents {
   /* display: flex; */
   align-items: center;
@@ -83,7 +56,7 @@
 .intro,
 .page {
   padding-top: 5vh;
-  padding-bottom: 10vh;
+  padding-bottom: 5vh;
   width: 100%;
   text-align: center;
   color: black;
@@ -102,28 +75,30 @@
   padding: 0 10%;
 }
 
-.intro h1 {
-  font-size: 9vmin;
+h1 {
   font-weight: 700;
 }
 
-.intro h2,
-.page h2 {
-  font-weight: 300;
+.intro h1 {
+  font-size: 5em;
 }
 
-.page h2 {
-  font-size: 3vmin;
+.intro h2 {
+  font-size: 2em;
+  font-weight: 500;
 }
 
 .page h1 {
-  font-size: 6vmin;
-  font-weight: 700;
+  font-size: 3.5em;
+}
+
+.page h2 {
+  font-size: 1.5em;
 }
 
 .offset {
   background-color: white;
-  border: 1px solid rgb(68, 150, 122);
+  border: 1.5px solid rgb(68, 150, 122);
   color: black;
   display: flex;
   justify-content: center;
@@ -152,19 +127,6 @@
 
 .ant-col {
   width: 80%;
-}
-
-.tooltip {
-  float: right;
-  justify-self: flex-end;
-  position: absolute;
-  right: 5%;
-  font-weight: 300;
-  font-size: 2.7vmin;
-}
-
-a.tooltip {
-  color: black;
 }
 
 /* Visualize */
@@ -204,7 +166,16 @@ a.tooltip {
 }
 
 .example-text {
+  margin-bottom: 2vmin;
+}
+
+.upload-text {
   margin-top: 2vmin;
+  margin-bottom: 2vmin;
+}
+
+h3 {
+  font-size: 1.25em;
 }
 
 .ant-popover-inner {

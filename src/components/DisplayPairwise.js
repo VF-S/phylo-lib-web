@@ -93,27 +93,8 @@ export default function DisplayPairwise() {
             </h2>
           </div>
         </Row>
-        <Row className="horizontally-centered">
-          <Upload {...uploadProps}>
-            <Button>
-              <UploadOutlined />
-              Upload .FASTA Files
-            </Button>
-          </Upload>
-          <Button
-            onClick={() => {
-              displayAlignment(dnaArr);
-              if (dnaArr.length >= 2) {
-                setExampleArr([]);
-                setExampleFileNames([]);
-              }
-            }}
-          >
-            Display Alignment
-          </Button>
-        </Row>
         <Row className="centered-content">
-          <p className="example-text"> See our examples: </p>
+          <h3 className="example-text">See some examples:</h3>
         </Row>
         <Row className="centered-content">
           <Radio.Group
@@ -187,6 +168,28 @@ export default function DisplayPairwise() {
               <InfoCircleOutlined />
             </div>
           </Popover>
+        </Row>
+        <Row className="centered-content">
+          <h3 className="upload-text">Or upload your own FASTA files:</h3>
+        </Row>
+        <Row className="horizontally-centered">
+          <Upload {...uploadProps}>
+            <Button>
+              <UploadOutlined />
+              Upload .FASTA Files
+            </Button>
+          </Upload>
+          <Button
+            onClick={() => {
+              displayAlignment(dnaArr);
+              if (dnaArr.length >= 2) {
+                setExampleArr([]);
+                setExampleFileNames([]);
+              }
+            }}
+          >
+            Display Alignment
+          </Button>
         </Row>
         {displayVisible ? (
           <Row justify="center">
