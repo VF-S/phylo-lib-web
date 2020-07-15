@@ -13,7 +13,7 @@ function dist_dna(dnas, align, misalign, indel) {
   var dist_matrix = Hashtbl.create(undefined, m);
   for(var i = 0; i < m; ++i){
     for(var j = i + 1 | 0; j < m; ++j){
-      Hashtbl.add(dist_matrix, /* tuple */[
+      Hashtbl.add(dist_matrix, [
             i,
             j
           ], Pairwise$PhyloLibWeb.diff(Caml_array.caml_array_get(dnas, i), Caml_array.caml_array_get(dnas, j), align, misalign, indel));
@@ -40,7 +40,7 @@ function dist_msa(msa, gap) {
         }
         
       }
-      Hashtbl.add(dist_matrix, /* tuple */[
+      Hashtbl.add(dist_matrix, [
             i,
             j
           ], diff);
@@ -51,25 +51,25 @@ function dist_msa(msa, gap) {
 
 function min_pos(dist) {
   if (Hashtbl.length(dist) === 0) {
-    return /* tuple */[
-            /* tuple */[
+    return [
+            [
               0,
               0
             ],
             0
           ];
   }
-  var acc_000 = /* tuple */[
+  var acc_0 = [
     0,
     0
   ];
-  var acc = /* tuple */[
-    acc_000,
+  var acc = [
+    acc_0,
     Pervasives.max_float
   ];
   return Hashtbl.fold((function (k, v, acc) {
                 if (v < acc[1]) {
-                  return /* tuple */[
+                  return [
                           k,
                           v
                         ];
@@ -102,7 +102,7 @@ function remove(i, dist) {
 }
 
 function avg_helper(j, k, dist) {
-  return Hashtbl.find(dist, /* tuple */[
+  return Hashtbl.find(dist, [
               Caml_obj.caml_min(j, k),
               Caml_obj.caml_max(j, k)
             ]);

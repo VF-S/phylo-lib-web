@@ -4,7 +4,6 @@ import * as Char from "bs-platform/lib/es6/char.js";
 import * as $$Array from "bs-platform/lib/es6/array.js";
 import * as Caml_obj from "bs-platform/lib/es6/caml_obj.js";
 import * as Caml_array from "bs-platform/lib/es6/caml_array.js";
-import * as Caml_int32 from "bs-platform/lib/es6/caml_int32.js";
 import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Caml_primitive from "bs-platform/lib/es6/caml_primitive.js";
 import * as Dna$PhyloLibWeb from "./dna.bs.js";
@@ -16,10 +15,10 @@ function max_three(a, b, c) {
 function init_matrix(d1, d2, indel, m, n) {
   var mat = $$Array.make_matrix(m, n, -1000000000);
   for(var r = 0; r < m; ++r){
-    Caml_array.caml_array_set(Caml_array.caml_array_get(mat, r), 0, Caml_int32.imul(r, indel));
+    Caml_array.caml_array_set(Caml_array.caml_array_get(mat, r), 0, Math.imul(r, indel));
   }
   for(var c = 0; c < n; ++c){
-    Caml_array.caml_array_set(Caml_array.caml_array_get(mat, 0), c, Caml_int32.imul(c, indel));
+    Caml_array.caml_array_set(Caml_array.caml_array_get(mat, 0), c, Math.imul(c, indel));
   }
   return mat;
 }
@@ -34,7 +33,7 @@ function neighbors(d1, d2, r, c, mat, align, misalign, indel) {
                 0 > c.contents ? 0 : c.contents
               ) - 1 | 0)) ? align : misalign
     ) | 0;
-  return /* tuple */[
+  return [
           left,
           up,
           diagonal
@@ -97,7 +96,7 @@ function align_pair(d1, d2, align, misalign, indel) {
   var mat = fill_matrix(d1, d2, align, misalign, indel, m, n);
   var score = Caml_array.caml_array_get(Caml_array.caml_array_get(mat, m - 1 | 0), n - 1 | 0);
   var alignment = backtrack(d1, d2, mat, align, misalign, indel);
-  return /* tuple */[
+  return [
           alignment,
           score
         ];
@@ -143,18 +142,17 @@ function print_char(c) {
 function print_endline(s) {
   if (printing.contents) {
     console.log(s);
-    return ;
   } else {
     print_output.contents = print_output.contents + (s + "\n");
-    return ;
   }
+  
 }
 
 function print_alignment_helper(d1, d2) {
   var n = Dna$PhyloLibWeb.length(d1);
   for(var i = 0 ,i_finish = (n - 1 | 0) / 80 | 0; i <= i_finish; ++i){
-    print_endline(Dna$PhyloLibWeb.string_of_range(d1, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
-    for(var j = Caml_int32.imul(80, i) ,j_finish = Caml_primitive.caml_int_min(n - 1 | 0, Caml_int32.imul(80, i + 1 | 0) - 1 | 0); j <= j_finish; ++j){
+    print_endline(Dna$PhyloLibWeb.string_of_range(d1, Math.imul(80, i), Caml_primitive.caml_int_min(n, Math.imul(80, i + 1 | 0))));
+    for(var j = Math.imul(80, i) ,j_finish = Caml_primitive.caml_int_min(n - 1 | 0, Math.imul(80, i + 1 | 0) - 1 | 0); j <= j_finish; ++j){
       if (Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d1, j), Dna$PhyloLibWeb.get(d2, j))) {
         print_char(/* "*" */42);
       } else if (Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d1, j), /* "_" */95) || Caml_obj.caml_equal(Dna$PhyloLibWeb.get(d2, j), /* "_" */95)) {
@@ -164,7 +162,7 @@ function print_alignment_helper(d1, d2) {
       }
     }
     print_endline("");
-    print_endline(Dna$PhyloLibWeb.string_of_range(d2, Caml_int32.imul(80, i), Caml_primitive.caml_int_min(n, Caml_int32.imul(80, i + 1 | 0))));
+    print_endline(Dna$PhyloLibWeb.string_of_range(d2, Math.imul(80, i), Caml_primitive.caml_int_min(n, Math.imul(80, i + 1 | 0))));
     print_endline("");
   }
   

@@ -162,6 +162,7 @@ h1 {
 }
 
 .example-credits {
+  font-size: 1.5em;
   padding-left: 2vmin;
 }
 
@@ -197,4 +198,13 @@ h3 {
 
 .hide-download {
   margin-left: 0.5vmin;
+}
+
+/* Subpages */
+.radio-button {
+  font-weight: bold;
+}
+
+.action-button {
+  font-weight: bolder;
 }

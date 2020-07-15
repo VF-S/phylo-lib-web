@@ -100,6 +100,7 @@ export default function DisplayPairwise() {
           <Radio.Group
             onChange={changeExamples}
             value={exampleFileNames.join(',')}
+            className="radio-button"
           >
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
             <Radio.Button value="h5n1,h7n7">H5N1 vs H7N7</Radio.Button>
@@ -162,7 +163,7 @@ export default function DisplayPairwise() {
               </div>
             }
             title="Information and Credits"
-            trigger="click"
+            trigger="hover"
           >
             <div className="example-credits">
               <InfoCircleOutlined />
@@ -187,6 +188,7 @@ export default function DisplayPairwise() {
                 setExampleFileNames([]);
               }
             }}
+            className="action-button"
           >
             Display Alignment
           </Button>

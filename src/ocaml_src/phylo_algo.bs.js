@@ -14,64 +14,64 @@ function add_species(species, i, j, acc) {
   if (match !== undefined) {
     if (match$1 !== undefined) {
       var r = List.remove_assoc(j, List.remove_assoc(i, acc));
-      return /* :: */[
-              /* tuple */[
+      return {
+              hd: [
                 i < j ? i : j,
-                Tree$PhyloLibWeb.zip_no_params(/* :: */[
-                      match,
-                      /* :: */[
-                        match$1,
-                        /* [] */0
-                      ]
-                    ])
+                Tree$PhyloLibWeb.zip_no_params({
+                      hd: match,
+                      tl: {
+                        hd: match$1,
+                        tl: /* [] */0
+                      }
+                    })
               ],
-              r
-            ];
+              tl: r
+            };
     }
     var r$1 = List.remove_assoc(i, acc);
-    return /* :: */[
-            /* tuple */[
+    return {
+            hd: [
               i < j ? i : j,
-              Tree$PhyloLibWeb.zip_no_params(/* :: */[
-                    Tree$PhyloLibWeb.leaf_no_params(s2),
-                    /* :: */[
-                      match,
-                      /* [] */0
-                    ]
-                  ])
+              Tree$PhyloLibWeb.zip_no_params({
+                    hd: Tree$PhyloLibWeb.leaf_no_params(s2),
+                    tl: {
+                      hd: match,
+                      tl: /* [] */0
+                    }
+                  })
             ],
-            r$1
-          ];
+            tl: r$1
+          };
   }
   if (match$1 === undefined) {
-    return /* :: */[
-            /* tuple */[
+    return {
+            hd: [
               i < j ? i : j,
-              Tree$PhyloLibWeb.zip_no_params(/* :: */[
-                    Tree$PhyloLibWeb.leaf_no_params(s1),
-                    /* :: */[
-                      Tree$PhyloLibWeb.leaf_no_params(s2),
-                      /* [] */0
-                    ]
-                  ])
+              Tree$PhyloLibWeb.zip_no_params({
+                    hd: Tree$PhyloLibWeb.leaf_no_params(s1),
+                    tl: {
+                      hd: Tree$PhyloLibWeb.leaf_no_params(s2),
+                      tl: /* [] */0
+                    }
+                  })
             ],
-            acc
-          ];
+            tl: acc
+          };
   }
   var r$2 = List.remove_assoc(j, acc);
-  return /* :: */[
-          /* tuple */[
+  return {
+          hd: [
             i < j ? i : j,
-            Tree$PhyloLibWeb.zip_no_params(/* :: */[
-                  Tree$PhyloLibWeb.leaf_no_params(s1),
-                  /* :: */[
-                    match$1,
-                    /* [] */0
-                  ]
-                ])
+            Tree$PhyloLibWeb.zip_no_params({
+                  hd: Tree$PhyloLibWeb.leaf_no_params(s1),
+                  tl: {
+                    hd: match$1,
+                    tl: /* [] */0
+                  }
+                })
           ],
-          r$2
-        ];
+          tl: r$2
+        };
 }
 
 function upgma(dist, species) {

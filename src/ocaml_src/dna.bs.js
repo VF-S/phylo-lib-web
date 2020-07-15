@@ -7,7 +7,7 @@ import * as Stream from "bs-platform/lib/es6/stream.js";
 import * as $$String from "bs-platform/lib/es6/string.js";
 import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Caml_exceptions from "bs-platform/lib/es6/caml_exceptions.js";
-import * as Caml_builtin_exceptions from "bs-platform/lib/es6/caml_builtin_exceptions.js";
+import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
 
 var Empty = Caml_exceptions.create("Dna-PhyloLibWeb.Empty");
 
@@ -71,7 +71,10 @@ function parse_first_line(dna_stream) {
       return ;
     }
   }
-  throw Empty;
+  throw {
+        RE_EXN_ID: Empty,
+        Error: new Error()
+      };
 }
 
 var to_string = $$Buffer.contents;
@@ -83,8 +86,9 @@ function from_fasta(init_sizeOpt, loc) {
     try {
       return Pervasives.input_line(f);
     }
-    catch (exn){
-      if (exn === Caml_builtin_exceptions.end_of_file) {
+    catch (raw_exn){
+      var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+      if (exn.RE_EXN_ID === "End_of_file") {
         return ;
       }
       throw exn;
@@ -104,8 +108,9 @@ function trim_name_line(str) {
   try {
     idx = $$String.index(str, /* "\n" */10);
   }
-  catch (exn){
-    if (exn === Caml_builtin_exceptions.not_found) {
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "Not_found") {
       idx = 0;
     } else {
       throw exn;
@@ -139,8 +144,9 @@ function multiple_helper(_str, _acc) {
     try {
       idx = $$String.index(trimmed, /* ">" */62);
     }
-    catch (exn){
-      if (exn === Caml_builtin_exceptions.not_found) {
+    catch (raw_exn){
+      var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+      if (exn.RE_EXN_ID === "Not_found") {
         idx = trimmed.length - 1 | 0;
       } else {
         throw exn;
@@ -156,10 +162,10 @@ function multiple_helper(_str, _acc) {
     }
     var dna_seq = $$Buffer.create(128);
     parse_line(next, dna_seq);
-    _acc = /* :: */[
-      dna_seq,
-      acc
-    ];
+    _acc = {
+      hd: dna_seq,
+      tl: acc
+    };
     _str = left;
     continue ;
   };
@@ -168,10 +174,10 @@ function multiple_helper(_str, _acc) {
 function multiple_from_string(str) {
   var lst = multiple_helper(str, /* [] */0);
   return $$Array.of_list(List.fold_left((function (a, x) {
-                    return /* :: */[
-                            x,
-                            a
-                          ];
+                    return {
+                            hd: x,
+                            tl: a
+                          };
                   }), /* [] */0, lst));
 }
 

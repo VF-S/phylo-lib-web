@@ -125,10 +125,10 @@ export default function Generate() {
       )
         .then((response) => response.text())
         .then((result) => {
-          if (result != 'FINISHED' && numTries < 50) {
+          if (result !== 'FINISHED' && numTries < 50) {
             setTimeout(waitStatus(numTries + 1), 1000);
           } else {
-            if (result != 'FINISHED') {
+            if (result !== 'FINISHED') {
               return;
             }
             console.log(result);

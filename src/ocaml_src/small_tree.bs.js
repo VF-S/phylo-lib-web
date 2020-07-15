@@ -8,29 +8,29 @@ var cat = Tree$PhyloLibWeb.leaf_no_params("cat");
 
 var mouse = Tree$PhyloLibWeb.leaf_no_params("mouse");
 
-var dog_cat = Tree$PhyloLibWeb.zip_no_params(/* :: */[
-      dog,
-      /* :: */[
-        cat,
-        /* [] */0
-      ]
-    ]);
+var dog_cat = Tree$PhyloLibWeb.zip_no_params({
+      hd: dog,
+      tl: {
+        hd: cat,
+        tl: /* [] */0
+      }
+    });
 
-var dog_cat_mouse = Tree$PhyloLibWeb.zip_no_params(/* :: */[
-      dog_cat,
-      /* :: */[
-        mouse,
-        /* [] */0
-      ]
-    ]);
+var dog_cat_mouse = Tree$PhyloLibWeb.zip_no_params({
+      hd: dog_cat,
+      tl: {
+        hd: mouse,
+        tl: /* [] */0
+      }
+    });
 
-var z = Tree$PhyloLibWeb.zip_no_params(/* :: */[
-      mouse,
-      /* :: */[
-        dog_cat,
-        /* [] */0
-      ]
-    ]);
+var z = Tree$PhyloLibWeb.zip_no_params({
+      hd: mouse,
+      tl: {
+        hd: dog_cat,
+        tl: /* [] */0
+      }
+    });
 
 var SmallTree = {
   dog: dog,

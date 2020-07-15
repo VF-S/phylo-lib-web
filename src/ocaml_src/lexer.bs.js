@@ -2,7 +2,6 @@
 
 import * as Char from "bs-platform/lib/es6/char.js";
 import * as List from "bs-platform/lib/es6/list.js";
-import * as Block from "bs-platform/lib/es6/block.js";
 import * as Curry from "bs-platform/lib/es6/curry.js";
 import * as Stream from "bs-platform/lib/es6/stream.js";
 import * as $$String from "bs-platform/lib/es6/string.js";
@@ -10,7 +9,6 @@ import * as Hashtbl from "bs-platform/lib/es6/hashtbl.js";
 import * as Pervasives from "bs-platform/lib/es6/pervasives.js";
 import * as Caml_format from "bs-platform/lib/es6/caml_format.js";
 import * as Caml_js_exceptions from "bs-platform/lib/es6/caml_js_exceptions.js";
-import * as Caml_builtin_exceptions from "bs-platform/lib/es6/caml_builtin_exceptions.js";
 
 function is_word(t) {
   if (typeof t === "number") {
@@ -26,10 +24,10 @@ function is_word(t) {
 
 function to_string(t) {
   if (typeof t !== "number") {
-    if (t.tag) {
-      return t[0];
+    if (t.TAG) {
+      return t._0;
     } else {
-      return String(t[0]);
+      return String(t._0);
     }
   }
   switch (t) {
@@ -115,7 +113,10 @@ function get_next_line(s, _acc) {
       continue ;
     }
     if (acc === "") {
-      throw Caml_builtin_exceptions.end_of_file;
+      throw {
+            RE_EXN_ID: "End_of_file",
+            Error: new Error()
+          };
     }
     return acc;
   };
@@ -125,30 +126,32 @@ function make_stream_helper(s, is_file) {
   var stream;
   if (is_file) {
     var in_channel = Pervasives.open_in(s);
-    stream = Stream.from((function (param) {
-            try {
-              return Pervasives.input_line(in_channel);
+    stream = Stream.from(function (param) {
+          try {
+            return Pervasives.input_line(in_channel);
+          }
+          catch (raw_exn){
+            var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+            if (exn.RE_EXN_ID === "End_of_file") {
+              return ;
             }
-            catch (exn){
-              if (exn === Caml_builtin_exceptions.end_of_file) {
-                return ;
-              }
-              throw exn;
-            }
-          }));
+            throw exn;
+          }
+        });
   } else {
     var char_stream = Stream.of_string(s);
-    stream = Stream.from((function (param) {
-            try {
-              return get_next_line(char_stream, "");
+    stream = Stream.from(function (param) {
+          try {
+            return get_next_line(char_stream, "");
+          }
+          catch (raw_exn){
+            var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+            if (exn.RE_EXN_ID === "End_of_file") {
+              return ;
             }
-            catch (exn){
-              if (exn === Caml_builtin_exceptions.end_of_file) {
-                return ;
-              }
-              throw exn;
-            }
-          }));
+            throw exn;
+          }
+        });
   }
   var s$1 = Stream.peek(stream);
   if (s$1 === undefined) {
@@ -160,7 +163,7 @@ function make_stream_helper(s, is_file) {
   }
   catch (raw_exn){
     var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
-    if (exn[0] === Caml_builtin_exceptions.invalid_argument) {
+    if (exn.RE_EXN_ID === "Invalid_argument") {
       return stream;
     }
     throw exn;
@@ -185,9 +188,13 @@ function stream_of_line(stream) {
   try {
     str = Stream.next(stream);
   }
-  catch (exn){
-    if (exn === Stream.Failure) {
-      throw Caml_builtin_exceptions.end_of_file;
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === Stream.Failure) {
+      throw {
+            RE_EXN_ID: "End_of_file",
+            Error: new Error()
+          };
     }
     throw exn;
   }
@@ -209,8 +216,9 @@ function lex_keyword(stream, acc) {
     try {
       val = c;
     }
-    catch (exn){
-      if (exn === Stream.Failure) {
+    catch (raw_exn){
+      var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+      if (exn.RE_EXN_ID === Stream.Failure) {
         return lex_keyword_helper(acc);
       }
       throw exn;
@@ -219,7 +227,10 @@ function lex_keyword(stream, acc) {
       if (Hashtbl.mem(word_token_map, acc)) {
         return Hashtbl.find(word_token_map, acc);
       } else if (is_special_char(c)) {
-        return /* Word */Block.__(1, [acc]);
+        return {
+                TAG: /* Word */1,
+                _0: acc
+              };
       } else {
         Stream.junk(stream);
         return lex_keyword(stream, acc + Char.escaped(c));
@@ -236,7 +247,10 @@ function lex_keyword_helper(acc) {
   if (Hashtbl.mem(word_token_map, acc)) {
     return Hashtbl.find(word_token_map, acc);
   } else {
-    return /* Word */Block.__(1, [acc]);
+    return {
+            TAG: /* Word */1,
+            _0: acc
+          };
   }
 }
 
@@ -249,10 +263,16 @@ function lex_number(stream, _acc) {
     var acc = _acc;
     var c = Stream.peek(stream);
     if (c === undefined) {
-      return /* Num */Block.__(0, [Caml_format.caml_int_of_string(acc)]);
+      return {
+              TAG: /* Num */0,
+              _0: Caml_format.caml_int_of_string(acc)
+            };
     }
     if (!is_number(c)) {
-      return /* Num */Block.__(0, [Caml_format.caml_int_of_string(acc)]);
+      return {
+              TAG: /* Num */0,
+              _0: Caml_format.caml_int_of_string(acc)
+            };
     }
     Stream.junk(stream);
     _acc = acc + Char.escaped(c);
@@ -265,12 +285,13 @@ function tokenize_next_line(stream) {
   try {
     x = stream_of_line(stream);
   }
-  catch (exn){
-    if (exn === Caml_builtin_exceptions.end_of_file) {
-      return /* :: */[
-              /* EOF */17,
-              /* [] */0
-            ];
+  catch (raw_exn){
+    var exn = Caml_js_exceptions.internalToOCamlException(raw_exn);
+    if (exn.RE_EXN_ID === "End_of_file") {
+      return {
+              hd: /* EOF */17,
+              tl: /* [] */0
+            };
     }
     throw exn;
   }
@@ -283,15 +304,16 @@ function tokenize_next_line(stream) {
       c = Stream.next(x);
       exit = 1;
     }
-    catch (exn$1){
-      if (exn$1 === Stream.Failure) {
+    catch (raw_exn$1){
+      var exn$1 = Caml_js_exceptions.internalToOCamlException(raw_exn$1);
+      if (exn$1.RE_EXN_ID === Stream.Failure) {
         return List.rev(acc);
       }
-      if (exn$1 === Caml_builtin_exceptions.end_of_file) {
-        return /* :: */[
-                /* EOF */17,
-                /* [] */0
-              ];
+      if (exn$1.RE_EXN_ID === "End_of_file") {
+        return {
+                hd: /* EOF */17,
+                tl: /* [] */0
+              };
       }
       throw exn$1;
     }
@@ -307,35 +329,35 @@ function tokenize_next_line(stream) {
                 case 0 :
                     var n = Stream.peek(x);
                     if (n === undefined) {
-                      return List.rev(/* :: */[
-                                  /* LAngle */9,
-                                  acc
-                                ]);
+                      return List.rev({
+                                  hd: /* LAngle */9,
+                                  tl: acc
+                                });
                     }
                     if (n === /* "/" */47) {
                       Stream.junk(x);
-                      _acc = /* :: */[
-                        /* LAngleSlash */10,
-                        acc
-                      ];
+                      _acc = {
+                        hd: /* LAngleSlash */10,
+                        tl: acc
+                      };
                       continue ;
                     }
-                    _acc = /* :: */[
-                      /* LAngle */9,
-                      acc
-                    ];
+                    _acc = {
+                      hd: /* LAngle */9,
+                      tl: acc
+                    };
                     continue ;
                 case 1 :
-                    _acc = /* :: */[
-                      /* Eq */13,
-                      acc
-                    ];
+                    _acc = {
+                      hd: /* Eq */13,
+                      tl: acc
+                    };
                     continue ;
                 case 2 :
-                    _acc = /* :: */[
-                      /* RAngle */11,
-                      acc
-                    ];
+                    _acc = {
+                      hd: /* RAngle */11,
+                      tl: acc
+                    };
                     continue ;
                 
               }
@@ -350,19 +372,19 @@ function tokenize_next_line(stream) {
                   exit$1 = 2;
                   break;
               case 2 :
-                  _acc = /* :: */[
-                    /* Quote */12,
-                    acc
-                  ];
+                  _acc = {
+                    hd: /* Quote */12,
+                    tl: acc
+                  };
                   continue ;
               
             }
           }
         } else {
-          _acc = /* :: */[
-            /* Dot */14,
-            acc
-          ];
+          _acc = {
+            hd: /* Dot */14,
+            tl: acc
+          };
           continue ;
         }
       } else if (c >= 11) {
@@ -379,16 +401,16 @@ function tokenize_next_line(stream) {
       }
       if (exit$1 === 2) {
         if (is_number(c)) {
-          _acc = /* :: */[
-            lex_number(x, Char.escaped(c)),
-            acc
-          ];
+          _acc = {
+            hd: lex_number(x, Char.escaped(c)),
+            tl: acc
+          };
           continue ;
         }
-        _acc = /* :: */[
-          lex_keyword(x, Char.escaped(c)),
-          acc
-        ];
+        _acc = {
+          hd: lex_keyword(x, Char.escaped(c)),
+          tl: acc
+        };
         continue ;
       }
       
@@ -408,26 +430,26 @@ function token_function_builder(stream) {
   };
   token_function.contents = (function (b) {
       if (b) {
-        return (function (param) {
-            var match = tokens_in_line.contents;
-            if (match) {
-              return match[0];
-            } else {
-              tokens_in_line.contents = tokenize_next_line(stream);
-              return Curry._2(token_function.contents, true, undefined);
-            }
-          });
+        return function (param) {
+          var match = tokens_in_line.contents;
+          if (match) {
+            return match.hd;
+          } else {
+            tokens_in_line.contents = tokenize_next_line(stream);
+            return Curry._2(token_function.contents, true, undefined);
+          }
+        };
       } else {
-        return (function (param) {
-            var match = tokens_in_line.contents;
-            if (match) {
-              tokens_in_line.contents = match[1];
-              return /* Unit */18;
-            } else {
-              tokens_in_line.contents = tokenize_next_line(stream);
-              return /* Unit */18;
-            }
-          });
+        return function (param) {
+          var match = tokens_in_line.contents;
+          if (match) {
+            tokens_in_line.contents = match.tl;
+            return /* Unit */18;
+          } else {
+            tokens_in_line.contents = tokenize_next_line(stream);
+            return /* Unit */18;
+          }
+        };
       }
     });
   return token_function.contents;

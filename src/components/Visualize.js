@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
@@ -14,6 +14,8 @@ export default function Visualize() {
   const [asciiPhylo, setasciiPhylo] = useState('');
   const [currPhylo, setCurrPhylo] = useState('');
 
+  const phyloContainer = useRef(null);
+
   const reader = new FileReader();
 
   const displayPhyloFile = (file) => {
@@ -23,6 +25,14 @@ export default function Visualize() {
         const str = Tree.to_string(phylo.tree);
         setasciiPhylo(str);
         setPhyloVisible(true);
+        window.scrollTo({
+          behavior: 'smooth',
+          top: phyloContainer.current.offsetTop,
+        });
+        phyloContainer.current.scrollTo({
+          behavior: 'smooth',
+          top: 1000,
+        });
       };
       reader.readAsText(file);
     } catch (e) {
@@ -141,7 +151,7 @@ export default function Visualize() {
         </Row>
         {phyloVisible ? (
           <Row justify="center">
-            <div className="ascii-phylo-container">
+            <div className="ascii-phylo-container" ref={phyloContainer}>
               <p className="ascii-phylo">{asciiPhylo}</p>
             </div>
           </Row>
