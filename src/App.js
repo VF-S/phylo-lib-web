@@ -2,13 +2,13 @@ import React from 'react';
 import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Popover } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import HomeContent from './components/HomeContent';
 import Generate from './components/Generate';
 import Visualize from './components/Visualize';
 import DisplayPairwise from './components/DisplayPairwise';
 
-const Header = () => {
+const Header = ({ useBack }) => {
   const content = (
     <div>
       <p>
@@ -32,13 +32,17 @@ const Header = () => {
   return (
     <header className="site-header">
       <Link className="site-title" to="/">
+        {useBack ? (
+          <ArrowLeftOutlined
+            style={{ alignSelf: 'center', paddingRight: '10px' }}
+          />
+        ) : null}
         PhyloML
       </Link>
       <Popover
         className="clickable"
         content={content}
         className="tooltip"
-        // title="Title"
         trigger="click"
       >
         <a className="tooltip">
@@ -51,16 +55,36 @@ const Header = () => {
   );
 };
 
+const Page = ({ useBack, body }) => {
+  return (
+    <div>
+      <Header useBack={useBack} />
+      {body}
+    </div>
+  );
+};
+
 export default function App() {
   return (
     <Router>
       <div>
-        <Header />
         <Switch>
-          <Route path="/generate" component={() => <Generate />} />
-          <Route path="/visualize" component={() => <Visualize />} />
-          <Route path="/pairwise" component={() => <DisplayPairwise />} />
-          <Route path="/" component={() => <HomeContent />} />
+          <Route
+            path="/generate"
+            component={() => <Page useBack={true} body={<Generate />} />}
+          />
+          <Route
+            path="/visualize"
+            component={() => <Page useBack={true} body={<Visualize />} />}
+          />
+          <Route
+            path="/pairwise"
+            component={() => <Page useBack={true} body={<DisplayPairwise />} />}
+          />
+          <Route
+            path="/"
+            component={() => <Page useBack={false} body={<HomeContent />} />}
+          />
         </Switch>
       </div>
     </Router>
