@@ -28,7 +28,6 @@ import h1n1 from '../ocaml_src/Examples/h1n1.js';
 import h3n2 from '../ocaml_src/Examples/h3n2.js';
 import h5n1 from '../ocaml_src/Examples/h5n1.js';
 import '../App.css';
-import { variance } from 'd3';
 
 const { Content } = Layout;
 
@@ -135,8 +134,8 @@ export default function Generate() {
 
             fetch(
               'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
-                job +
-                '/aln-fasta',
+              job +
+              '/aln-fasta',
               {
                 method: 'GET',
                 redirect: 'follow',
