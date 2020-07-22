@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
+import HoverVocab from './HoverVocab';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as PhyloParser from '../ocaml_src/phylo_parser.bs';
 
@@ -84,8 +85,30 @@ export default function Visualize() {
           <div>
             <h1>Visualize PhyloXML</h1>
             <h2>
-              Visualize an existing phylogenetic tree. Begin by uploading a
-              phyloXML file, or use our example files.
+              Visualize an existing{' '}
+              <HoverVocab
+                content={
+                  <p>
+                    A tree that displays the evolutionary relationships between
+                    various organisms.
+                  </p>
+                }
+                vocab="phylogenetic tree"
+                link="https://en.wikipedia.org/wiki/Phylogenetic_tree"
+              />
+              . Begin by uploading a{' '}
+              <HoverVocab
+                content={
+                  <p>
+                    A tree that displays the evolutionary relationships between
+                    various organisms.
+                  </p>
+                }
+                vocab="phyloXML"
+                link="http://phyloxml.org/"
+                linkText=" the phyloXML website "
+              />{' '}
+              file, or use our example files.
             </h2>
           </div>
         </Row>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
+import HoverVocab from './HoverVocab';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Pairwise from '../ocaml_src/pairwise.bs';
 
@@ -89,56 +90,31 @@ export default function DisplayPairwise() {
             <h1>Visualize Pairwise DNA Alignments</h1>
             <h2>
               Visualize an{' '}
-              <Popover
-                className="hover-vocab"
+              <HoverVocab
                 content={
                   <p>
                     A DNA sequence alignment arranges the DNA in such a way as
                     to identify regions of similarity, helping reveal
-                    evolutionary relations between the sequences. See{' '}
-                    <a
-                      href="https://en.wikipedia.org/wiki/Sequence_alignment"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Wikipedia
-                    </a>{' '}
-                    for more details.
+                    evolutionary relations between the sequences.
                   </p>
                 }
-                placement="top"
-                title="Vocabulary"
-                trigger="hover"
-              >
-                <div>alignment</div>
-              </Popover>{' '}
+                vocab="alignment"
+                link="https://en.wikipedia.org/wiki/Sequence_alignment"
+              />{' '}
               of two DNA sequences. Begin by uploading two{' '}
-              <Popover
-                className="hover-vocab"
+              <HoverVocab
                 content={
                   <p>
                     The FASTA format is a way of representing nucleotide
-                    sequences. See{' '}
-                    <a
-                      href="https://en.wikipedia.org/wiki/FASTA_format"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Wikipedia
-                    </a>{' '}
-                    for more details.
+                    sequences.
                   </p>
                 }
-                placement="top"
-                title="Vocabulary"
-                trigger="hover"
-              >
-                <div>.FASTA</div>
-              </Popover>{' '}
+                vocab=".FASTA"
+                link="https://en.wikipedia.org/wiki/FASTA_format"
+              />{' '}
               files, or use our example files.
             </h2>
           </div>
-          {/* https://en.wikipedia.org/wiki/FASTA_format */}
         </Row>
         <Row className="centered-content">
           <h3 className="example-text">See some examples:</h3>
