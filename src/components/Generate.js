@@ -14,6 +14,7 @@ import {
   InfoCircleOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
+import HoverVocab from './HoverVocab';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Tree from '../ocaml_src/tree.bs';
 import * as Distance from '../ocaml_src/distance.bs';
@@ -134,8 +135,8 @@ export default function Generate() {
 
             fetch(
               'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
-              job +
-              '/aln-fasta',
+                job +
+                '/aln-fasta',
               {
                 method: 'GET',
                 redirect: 'follow',
@@ -248,9 +249,22 @@ export default function Generate() {
             <h1>Generate a Phylogenetic Tree</h1>
             <h2>
               By computing similarity scores for DNA samples of species, we can
-              infer their species' evolutionary history through time. Begin by
-              uploading .FASTA files that contain DNA sequences, or use our
-              example DNA sequences.
+              infer their species' evolutionary history through time.
+            </h2>
+            <h2>
+              Begin by uploading{' '}
+              <HoverVocab
+                content={
+                  <p>
+                    The FASTA format is a way of representing nucleotide
+                    sequences.
+                  </p>
+                }
+                vocab=".FASTA"
+                link="https://en.wikipedia.org/wiki/FASTA_format"
+              />{' '}
+              files that contain DNA sequences, or use our example DNA
+              sequences.
             </h2>
           </div>
         </Row>
