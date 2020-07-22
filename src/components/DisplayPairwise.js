@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
+import HoverVocab from './HoverVocab';
 import * as Dna from '../ocaml_src/dna.bs';
 import * as Pairwise from '../ocaml_src/pairwise.bs';
 
@@ -88,8 +89,30 @@ export default function DisplayPairwise() {
           <div>
             <h1>Visualize Pairwise DNA Alignments</h1>
             <h2>
-              Visualize an alignment of two DNA sequences. Begin by uploading
-              two .FASTA files, or use our example files.
+              Visualize an{' '}
+              <HoverVocab
+                content={
+                  <p>
+                    A DNA sequence alignment arranges the DNA in such a way as
+                    to identify regions of similarity, helping reveal
+                    evolutionary relations between the sequences.
+                  </p>
+                }
+                vocab="alignment"
+                link="https://en.wikipedia.org/wiki/Sequence_alignment"
+              />{' '}
+              of two DNA sequences. Begin by uploading two{' '}
+              <HoverVocab
+                content={
+                  <p>
+                    The FASTA format is a way of representing nucleotide
+                    sequences.
+                  </p>
+                }
+                vocab=".FASTA"
+                link="https://en.wikipedia.org/wiki/FASTA_format"
+              />{' '}
+              files, or use our example files.
             </h2>
           </div>
         </Row>
