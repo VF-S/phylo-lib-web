@@ -208,3 +208,8 @@ h3 {
 .action-button {
   font-weight: bolder;
 }
+
+.hover-vocab {
+  display: inline;
+  text-decoration: underline;
+}
