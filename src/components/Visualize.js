@@ -119,7 +119,7 @@ export default function Visualize() {
               Upload PhyloXML Files
             </Button>
           </Upload>
-          <Button onClick={handleVisualize}>Visualize</Button>
+          <Button onClick={handleVisualize} className="action-button">Visualize</Button>
         </Row>
         <Row className="centered-content">
           <p className="example-text"> See our examples: </p>
@@ -150,8 +150,8 @@ export default function Visualize() {
                       href={
                         currPhylo !== 'adh'
                           ? 'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
-                            currPhylo +
-                            '.xml'
+                          currPhylo +
+                          '.xml'
                           : 'http://www.phyloxml.org/examples/adh.xml'
                       }
                       target="_blank"

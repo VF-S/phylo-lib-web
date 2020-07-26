@@ -43,27 +43,6 @@ export default function Generate() {
   const exampleDnas = [h1n1, h3n2, h5n1];
   const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
 
-  const defaultFileList = [
-    {
-      uid: '1',
-      name: 'h1n1.fasta',
-      status: 'done',
-      url: process.env.PUBLIC_URL + '/examples/FASTA/h1n1.fasta',
-    },
-    {
-      uid: '2',
-      name: 'h3n2.fasta',
-      status: 'done',
-      url: process.env.PUBLIC_URL + '/examples/FASTA/h3n2.fasta',
-    },
-    {
-      uid: '3',
-      name: 'h5n1.fasta',
-      status: 'done',
-      url: process.env.PUBLIC_URL + '/examples/FASTA/h5n1.fasta',
-    },
-  ];
-
   const updateSeq = (dna, name) => {
     setDnaArr((dnaArr) => dnaArr.concat(dna));
     setNames((names) => names.concat(name));
@@ -126,6 +105,7 @@ export default function Generate() {
         .then((response) => response.text())
         .then((result) => {
           if (result !== 'FINISHED' && numTries < 50) {
+            console.log("querying");
             setTimeout(waitStatus(numTries + 1), 1000);
           } else {
             if (result !== 'FINISHED') {
@@ -135,8 +115,8 @@ export default function Generate() {
 
             fetch(
               'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
-                job +
-                '/aln-fasta',
+              job +
+              '/aln-fasta',
               {
                 method: 'GET',
                 redirect: 'follow',
@@ -144,15 +124,20 @@ export default function Generate() {
             )
               .then((response) => response.text())
               .then((result) => {
+                console.log("got result")
+                console.log(result)
                 const aligned_dnas = Dna.multiple_from_string(result);
+                console.log("got dnas")
                 const msa = Msa.align(aligned_dnas);
+                console.log("got msa")
                 const dist_matrix = Distance.dist_msa(msa, 1);
+                console.log("got dist mat")
                 const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
                 const output = Tree.to_string(tree);
                 setPhyloTree(output);
                 setPhyloVisible(true);
               })
-              .catch((error) => console.log('error', error));
+              .catch((error) => console.log('error1', error));
           }
         })
         .catch((error) => console.log('error', error));
@@ -208,22 +193,19 @@ export default function Generate() {
     setDownload(element);
   };
 
+
   const clean_file_name = (name) => {
     return name.split('.').slice(0, -1).join('.').toUpperCase();
   };
   const fastaUploadProps = {
     accept: '.FASTA, .txt, .fasta',
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-    defaultFileList: defaultFileList,
     headers: {
       authorization: 'authorization-text',
     },
     multiple: true,
     transformFile(file) {
       setUploaded(true);
-      while (defaultFileList.length > 0) {
-        defaultFileList.pop();
-      }
       const file_name = clean_file_name(file.name);
       parseDNA(file, file_name);
     },
@@ -283,7 +265,8 @@ export default function Generate() {
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <Button onClick={generateTree}>Generate tree</Button>
+          <a id="download_link" href={process.env.PUBLIC_URL + "/examples/FASTA/phylo_examples.zip"}>Download as Text File</a>
+          <Button onClick={generateTree} className="action-button">Generate tree</Button>
           <Popover
             content={<p>Information on Clustal and UPGMA</p>}
             title="Info"
