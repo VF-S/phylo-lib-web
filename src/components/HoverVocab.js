@@ -19,7 +19,6 @@ export default function HoverVocab({ content, vocab, link, linkText }) {
         </div>
       }
       placement="top"
-      title="Vocabulary"
       trigger="hover"
     >
       <div>{vocab}</div>

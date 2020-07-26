@@ -140,7 +140,7 @@ h1 {
 .ascii-phylo-container {
   background-color: #eeeeee;
   max-width: 125vw;
-  max-height: 100vh;
+  max-height: 95vh;
   overflow-x: auto;
   overflow-y: auto;
   margin-top: 5vmin;
@@ -148,6 +148,7 @@ h1 {
 
 .centered-content {
   align-items: center;
+  display: flex;
   justify-content: center;
   padding-top: 1vmin;
   padding-bottom: 1vmin;
@@ -194,10 +195,15 @@ h3 {
 .generate-info {
   margin-top: 0.5vmin;
   margin-left: 1vmin;
+  margin-right: 1vmin;
 }
 
 .hide-download {
   margin-left: 0.5vmin;
+}
+
+.spinner {
+  margin-left: 1vmin;
 }
 
 /* Subpages */

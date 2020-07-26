@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
@@ -15,6 +15,8 @@ export default function DisplayPairwise() {
   const [exampleFileNames, setExampleFileNames] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [dnaArr, setDnaArr] = useState([]);
+
+  const phyloContainer = useRef(null);
 
   const parseDNA = (file, arr, displayOnFinish) => {
     try {
@@ -35,6 +37,13 @@ export default function DisplayPairwise() {
     }
   };
 
+  const scrollDown = () => {
+    window.scrollTo({
+      behavior: 'smooth',
+      top: phyloContainer.current.offsetTop - 15,
+    });
+  };
+
   const displayAlignment = (arr) => {
     if (arr.length < 2) {
       alert('Not enough DNA sequences to perform pairwise alignment');
@@ -43,6 +52,13 @@ export default function DisplayPairwise() {
       const str = Pairwise.to_string(pair[0], pair[1]);
       setAlignment(str.trim());
       setDisplayVisible(true);
+      if (phyloContainer.current !== null) {
+        scrollDown();
+      } else {
+        setTimeout(() => {
+          scrollDown();
+        }, 1000);
+      }
     }
   };
 
@@ -123,7 +139,6 @@ export default function DisplayPairwise() {
           <Radio.Group
             onChange={changeExamples}
             value={exampleFileNames.join(',')}
-            className="radio-button"
           >
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
             <Radio.Button value="h5n1,h7n7">H5N1 vs H7N7</Radio.Button>
@@ -218,7 +233,7 @@ export default function DisplayPairwise() {
         </Row>
         {displayVisible ? (
           <Row justify="center">
-            <div className="ascii-phylo-container">
+            <div className="ascii-phylo-container" ref={phyloContainer}>
               <p className="ascii-phylo">{alignment}</p>
             </div>
           </Row>
