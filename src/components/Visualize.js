@@ -28,7 +28,7 @@ export default function Visualize() {
         setPhyloVisible(true);
         window.scrollTo({
           behavior: 'smooth',
-          top: phyloContainer.current.offsetTop,
+          top: phyloContainer.current.offsetTop - 15,
         });
         phyloContainer.current.scrollTo({
           behavior: 'smooth',
@@ -119,7 +119,9 @@ export default function Visualize() {
               Upload PhyloXML Files
             </Button>
           </Upload>
-          <Button onClick={handleVisualize} className="action-button">Visualize</Button>
+          <Button onClick={handleVisualize} className="action-button">
+            Visualize
+          </Button>
         </Row>
         <Row className="centered-content">
           <p className="example-text"> See our examples: </p>
@@ -129,7 +131,6 @@ export default function Visualize() {
             <Radio.Button value="amphi_frost">Amphibian Phylogeny</Radio.Button>
             <Radio.Button value="tol_156">The Tree of Life</Radio.Button>
             <Radio.Button value="apaf">Apaf-1 Gene Family Tree</Radio.Button>
-            <Radio.Button value="adh">Alcohol Dehydrogenases</Radio.Button>
           </Radio.Group>
           <Popover
             content={
@@ -148,11 +149,9 @@ export default function Visualize() {
                     See the phyloXML source for the current tree{' '}
                     <a
                       href={
-                        currPhylo !== 'adh'
-                          ? 'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
-                          currPhylo +
-                          '.xml'
-                          : 'http://www.phyloxml.org/examples/adh.xml'
+                        'http://phyloxml.org/archaeopteryx-js/phyloxml_trees/' +
+                        currPhylo +
+                        '.xml'
                       }
                       target="_blank"
                       rel="noopener noreferrer"

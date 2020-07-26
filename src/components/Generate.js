@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Button,
+  Col,
   Layout,
   Popover,
   Radio,
   Row,
+  Spin,
   Switch,
   Tooltip,
   Upload,
@@ -12,6 +14,7 @@ import {
 import {
   DeleteOutlined,
   InfoCircleOutlined,
+  LoadingOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
 import HoverVocab from './HoverVocab';
@@ -40,8 +43,13 @@ export default function Generate() {
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
   const [uploaded, setUploaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const exampleDnas = [h1n1, h3n2, h5n1];
   const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
+
+  const phyloContainer = useRef(null);
+
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const updateSeq = (dna, name) => {
     setDnaArr((dnaArr) => dnaArr.concat(dna));
@@ -80,16 +88,38 @@ export default function Generate() {
     }
   };
 
+  const scrollDown = () => {
+    window.scrollTo({
+      behavior: 'smooth',
+      top: phyloContainer.current.offsetTop - 15,
+    });
+  };
+
+  const scrollToPhylo = () => {
+    if (phyloContainer.current !== null) {
+      scrollDown();
+    } else {
+      setTimeout(() => {
+        scrollDown();
+      }, 1000);
+    }
+  };
+
   const generateTree = () => {
     // use default files if no other files have been uploaded
+    setLoading(true);
     const dnaNames = uploaded ? names : exampleNames;
     if (!alignmentChecked) {
-      const dnas = uploaded ? dnaArr : exampleDnas;
-      const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
-      const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-      const output = Tree.to_string(tree);
-      setPhyloTree(output);
-      setPhyloVisible(true);
+      setTimeout(() => {
+        const dnas = uploaded ? dnaArr : exampleDnas;
+        const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
+        const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
+        const output = Tree.to_string(tree);
+        setPhyloTree(output);
+        setPhyloVisible(true);
+        setLoading(false);
+        scrollToPhylo();
+      }, 500);
       return;
     }
     let job = '';
@@ -105,7 +135,7 @@ export default function Generate() {
         .then((response) => response.text())
         .then((result) => {
           if (result !== 'FINISHED' && numTries < 50) {
-            console.log("querying");
+            console.log('querying');
             setTimeout(waitStatus(numTries + 1), 1000);
           } else {
             if (result !== 'FINISHED') {
@@ -115,8 +145,8 @@ export default function Generate() {
 
             fetch(
               'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
-              job +
-              '/aln-fasta',
+                job +
+                '/aln-fasta',
               {
                 method: 'GET',
                 redirect: 'follow',
@@ -124,18 +154,20 @@ export default function Generate() {
             )
               .then((response) => response.text())
               .then((result) => {
-                console.log("got result")
-                console.log(result)
+                console.log('got result');
+                console.log(result);
                 const aligned_dnas = Dna.multiple_from_string(result);
-                console.log("got dnas")
+                console.log('got dnas');
                 const msa = Msa.align(aligned_dnas);
-                console.log("got msa")
+                console.log('got msa');
                 const dist_matrix = Distance.dist_msa(msa, 1);
-                console.log("got dist mat")
+                console.log('got dist mat');
                 const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
                 const output = Tree.to_string(tree);
                 setPhyloTree(output);
                 setPhyloVisible(true);
+                setLoading(false);
+                scrollToPhylo();
               })
               .catch((error) => console.log('error1', error));
           }
@@ -193,7 +225,6 @@ export default function Generate() {
     setDownload(element);
   };
 
-
   const clean_file_name = (name) => {
     return name.split('.').slice(0, -1).join('.').toUpperCase();
   };
@@ -250,7 +281,49 @@ export default function Generate() {
             </h2>
           </div>
         </Row>
+        <Row className="centered-content">
+          <h3 className="example-text">See some examples:</h3>
+        </Row>
+        <Row className="centered-content" gutter={[5, 5]}>
+          <Col lg={1}></Col>
+          <Col lg={10} md={12} className="centered-content">
+            <Radio.Group onChange={changeGenerateExamples}>
+              <Radio.Button value="Virus Capsid">
+                Virus Capsid Gene
+              </Radio.Button>
+              <Radio.Button value="COXII">
+                Cytochrome C Oxidase Subunit II
+              </Radio.Button>
+              <Radio.Button value="Influenza A Viruses">
+                Influenza A PB-2
+              </Radio.Button>
+            </Radio.Group>
+          </Col>
+          <Col lg={1} md={12}>
+            <Button>
+              <a
+                href={
+                  process.env.PUBLIC_URL + '/examples/FASTA/phylo_examples.zip'
+                }
+              >
+                Download Examples
+              </a>
+            </Button>
+          </Col>
+        </Row>
+        <Row className="centered-content">
+          <h3 className="upload-text">Or upload your own FASTA files:</h3>
+        </Row>
         <Row className="horizontally-centered">
+          <Popover
+            content={<p>Information on Clustal and UPGMA</p>}
+            title="Info"
+            trigger="click"
+          >
+            <div className="generate-info">
+              <InfoCircleOutlined />
+            </div>
+          </Popover>
           <Switch
             checkedChildren="Clustal"
             unCheckedChildren="UPGMA"
@@ -265,21 +338,21 @@ export default function Generate() {
               <UploadOutlined /> Upload .FASTA files
             </Button>
           </Upload>
-          <a id="download_link" href={process.env.PUBLIC_URL + "/examples/FASTA/phylo_examples.zip"}>Download as Text File</a>
-          <Button onClick={generateTree} className="action-button">Generate tree</Button>
-          <Popover
-            content={<p>Information on Clustal and UPGMA</p>}
-            title="Info"
-            trigger="click"
+          <Button
+            onClick={generateTree}
+            className="action-button"
+            disabled={dnaArr.length === 0}
           >
-            <div className="generate-info">
-              <InfoCircleOutlined />
-            </div>
-          </Popover>
+            Generate tree
+          </Button>
+          {loading ? <Spin className="spinner" indicator={antIcon} /> : null}
         </Row>
-        <Row className="centered-content">
-          <Button onClick={downloadTree}>Save tree as phyloXML</Button>
-        </Row>
+        {dnaArr.length === 0 ? null : (
+          <Row className="centered-content">
+            <Button onClick={downloadTree}>Save tree as phyloXML</Button>
+          </Row>
+        )}
+
         {download !== undefined ? (
           <Row className="centered-content">
             {download}
@@ -294,23 +367,9 @@ export default function Generate() {
           </Row>
         ) : null}
       </Content>
-      <Row className="centered-content">
-        <p className="example-text"> See our examples: </p>
-      </Row>
-      <Row className="centered-content">
-        <Radio.Group onChange={changeGenerateExamples}>
-          <Radio.Button value="Virus Capsid">Virus Capsid Gene</Radio.Button>
-          <Radio.Button value="COXII">
-            Cytochrome C Oxidase Subunit II
-          </Radio.Button>
-          <Radio.Button value="Influenza A Viruses">
-            Influenza A PB-2
-          </Radio.Button>
-        </Radio.Group>
-      </Row>
       {phyloVisible ? (
         <Row justify="center">
-          <div className="ascii-phylo-container">
+          <div className="ascii-phylo-container" ref={phyloContainer}>
             <p className="ascii-phylo">{PhyloTree}</p>
           </div>
         </Row>
