@@ -69,10 +69,10 @@ export default function HomeContents() {
             <h3>
               {' '}
             Scientists often wish to infer the evolutionary history between
-            different organisms. In order to determine the closeness of species
-            such as birds or fish, historically the similarity in physical
+            different organisms. Historically, in order to determine the closeness of species
+            such as birds or fish,the similarity in physical
             characteristics was analyzed. With the advent of modern computers
-            and DNA analysis, the field has moved towards using DNA. Two species
+            and DNA analysis, the field has moved towards using DNA similarity. Two species
             with more similar DNA are assumed to be more closely related. By
             analyzing these similarities and differences in the DNA, we can
             generate a hypothetical evolutionary tree, called a phylogenetic
