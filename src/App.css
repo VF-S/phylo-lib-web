@@ -39,11 +39,11 @@
   position: absolute;
   right: 5%;
   font-weight: 350;
-  color: black;
 }
 
 a.tooltip {
   color: black;
+  font-size: max(3vmin, 14px);
 }
 
 .main-contents {

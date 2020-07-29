@@ -46,7 +46,6 @@ const Header = ({ useBack }) => {
         trigger="click"
       >
         <a className="tooltip">
-          {' '}
           <InfoCircleOutlined style={{ paddingRight: '0.5em' }} />
           Confused by all the terms?
         </a>
