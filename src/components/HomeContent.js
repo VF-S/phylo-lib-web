@@ -66,10 +66,10 @@ export default function HomeContents() {
           <h3>
             {' '}
             Scientists often wish to infer the evolutionary history between
-            different organisms. In order to determine the closeness of species
-            such as birds or fish, historically the similarity in physical
+            different organisms. Historically, in order to determine the closeness of species
+            such as birds or fish,the similarity in physical
             characteristics was analyzed. With the advent of modern computers
-            and DNA analysis, the field has moved towards using DNA. Two species
+            and DNA analysis, the field has moved towards using DNA similarity. Two species
             with more similar DNA are assumed to be more closely related. By
             analyzing these similarities and differences in the DNA, we can
             generate a hypothetical evolutionary tree, called a phylogenetic
@@ -85,7 +85,7 @@ export default function HomeContents() {
             alignment, where two DNA sequences are compared. Only once the
             alignment scores of all DNA sequences with one another is known is
             it possible to determine genetic similarity and through that,
-            evolutionary history. The pairwise Alignment is performed using the
+            evolutionary history. The pairwise alignment is performed using the
             Needleman-Wunsch algorithm, a globally optimal dynamic programming
             algorithm that computes a loss for the most optimal alignment. Here
             * represents a DNA base pair match, _ a gap, often used if a DNA
