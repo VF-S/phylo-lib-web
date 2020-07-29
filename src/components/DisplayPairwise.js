@@ -109,24 +109,30 @@ export default function DisplayPairwise() {
               <HoverVocab
                 content={
                   <p>
-                    A DNA sequence alignment arranges the DNA in such a way as
-                    to identify regions of similarity, helping reveal
-                    evolutionary relations between the sequences.
+                    A DNA sequence alignment arranges DNA to identify regions of
+                    similarity, helping reveal evolutionary relations between
+                    the sequences.
+                    <br />A pairwise alignment is an alignment of 2 sequences,
+                    and PhyloML utilizes the Needleman-Wunsch algorithm to
+                    conduct this alignment.
                   </p>
                 }
                 vocab="alignment"
-                link="https://en.wikipedia.org/wiki/Sequence_alignment"
+                link="https://www.sciencedirect.com/science/article/abs/pii/0022283670900574?via%3Dihub"
+                linkText="the original paper on the Needleman-Wunsch algorithm"
               />{' '}
               of two DNA sequences. Begin by uploading two{' '}
               <HoverVocab
                 content={
                   <p>
                     The FASTA format is a way of representing nucleotide
-                    sequences.
+                    sequences. It was popularized by the FASTA software
+                    developed by David J. Lipman and William R. Pearson.
                   </p>
                 }
                 vocab=".FASTA"
-                link="https://en.wikipedia.org/wiki/FASTA_format"
+                link="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC280013/"
+                linkText="the original paper on the FASTA program"
               />{' '}
               files, or use our example files.
             </h2>

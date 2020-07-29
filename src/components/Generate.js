@@ -270,11 +270,13 @@ export default function Generate() {
                 content={
                   <p>
                     The FASTA format is a way of representing nucleotide
-                    sequences.
+                    sequences. It was popularized by the FASTA software
+                    developed by David J. Lipman and William R. Pearson.
                   </p>
                 }
                 vocab=".FASTA"
-                link="https://en.wikipedia.org/wiki/FASTA_format"
+                link="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC280013/"
+                linkText="the original paper on the FASTA program"
               />{' '}
               files that contain DNA sequences, or use our example DNA
               sequences.

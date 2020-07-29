@@ -94,15 +94,13 @@ export default function Visualize() {
                   </p>
                 }
                 vocab="phylogenetic tree"
-                link="https://en.wikipedia.org/wiki/Phylogenetic_tree"
+                link="https://www.khanacademy.org/science/high-school-biology/hs-evolution/hs-phylogeny/a/phylogenetic-trees"
+                linkText="Khan Academy"
               />
               . Begin by uploading a{' '}
               <HoverVocab
                 content={
-                  <p>
-                    A tree that displays the evolutionary relationships between
-                    various organisms.
-                  </p>
+                  <p>An XML format for describing phylogenetic trees.</p>
                 }
                 vocab="phyloXML"
                 link="http://phyloxml.org/"
