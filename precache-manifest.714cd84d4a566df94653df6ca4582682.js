@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "fcf459d86ef927dcff3fb3a019df87cf",
+    "revision": "a0698738425957dfeca366c659f4babe",
     "url": "/phylo-lib-web/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/phylo-lib-web/static/css/2.4c4477be.chunk.css"
   },
   {
-    "revision": "73a9ae2f4647da968896",
+    "revision": "a4cb3907c92ba415605c",
     "url": "/phylo-lib-web/static/css/main.149e02e0.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/phylo-lib-web/static/js/2.8f85eb6d.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "73a9ae2f4647da968896",
-    "url": "/phylo-lib-web/static/js/main.59854122.chunk.js"
+    "revision": "a4cb3907c92ba415605c",
+    "url": "/phylo-lib-web/static/js/main.6457cc22.chunk.js"
   },
   {
     "revision": "a44e621cdec2a1660f2c",
