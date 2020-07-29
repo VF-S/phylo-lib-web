@@ -43,12 +43,6 @@ export default function Visualize() {
   };
 
   const handleVisualize = function () {
-    if (fileList.length < 1) {
-      alert(
-        'At least one phyloXML file must be uploaded for tree visualization.',
-      );
-      return;
-    }
     setCurrPhylo('');
     displayPhyloFile(currFile);
   };
@@ -110,19 +104,8 @@ export default function Visualize() {
             </h2>
           </div>
         </Row>
-        <Row className="horizontally-centered">
-          <Upload {...uploadProps}>
-            <Button>
-              <UploadOutlined />
-              Upload PhyloXML Files
-            </Button>
-          </Upload>
-          <Button onClick={handleVisualize} className="action-button">
-            Visualize
-          </Button>
-        </Row>
         <Row className="centered-content">
-          <p className="example-text"> See our examples: </p>
+          <h3 className="example-text">See some examples:</h3>
         </Row>
         <Row className="centered-content">
           <Radio.Group onChange={changeExamples} value={currPhylo}>
@@ -168,6 +151,24 @@ export default function Visualize() {
               <InfoCircleOutlined />
             </div>
           </Popover>
+        </Row>
+        <Row className="centered-content">
+          <h3 className="example-text">Or upload your own PhyloXML file:</h3>
+        </Row>
+        <Row className="horizontally-centered">
+          <Upload {...uploadProps}>
+            <Button>
+              <UploadOutlined />
+              Upload PhyloXML Files
+            </Button>
+          </Upload>
+          <Button
+            onClick={handleVisualize}
+            className="action-button"
+            disabled={fileList.length < 1}
+          >
+            Visualize
+          </Button>
         </Row>
         {phyloVisible ? (
           <Row justify="center">

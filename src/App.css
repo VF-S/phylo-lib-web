@@ -1,4 +1,7 @@
 @import '~antd/dist/antd.css';
+html {
+  scroll-behavior: smooth;
+}
 /**
  * Site header
  */
@@ -66,9 +69,14 @@ a.tooltip {
   color: black;
 }
 
-.page, .explanation {
+.page,
+.explanation {
   padding-left: 5%;
   padding-right: 5%;
+}
+
+.home-down {
+  margin-top: 10vh;
 }
 
 h3 {

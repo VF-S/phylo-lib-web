@@ -45,20 +45,16 @@ export default function DisplayPairwise() {
   };
 
   const displayAlignment = (arr) => {
-    if (arr.length < 2) {
-      alert('Not enough DNA sequences to perform pairwise alignment');
+    const [pair] = Pairwise.align_pair(arr[0], arr[1], 1, -1, -1);
+    const str = Pairwise.to_string(pair[0], pair[1]);
+    setAlignment(str.trim());
+    setDisplayVisible(true);
+    if (phyloContainer.current !== null) {
+      scrollDown();
     } else {
-      const [pair] = Pairwise.align_pair(arr[0], arr[1], 1, -1, -1);
-      const str = Pairwise.to_string(pair[0], pair[1]);
-      setAlignment(str.trim());
-      setDisplayVisible(true);
-      if (phyloContainer.current !== null) {
+      setTimeout(() => {
         scrollDown();
-      } else {
-        setTimeout(() => {
-          scrollDown();
-        }, 1000);
-      }
+      }, 1000);
     }
   };
 
@@ -215,7 +211,7 @@ export default function DisplayPairwise() {
           </Popover>
         </Row>
         <Row className="centered-content">
-          <h3 className="upload-text">Or upload your own FASTA files:</h3>
+          <h3 className="upload-text">Or upload 2 FASTA files:</h3>
         </Row>
         <Row className="horizontally-centered">
           <Upload {...uploadProps}>
@@ -233,6 +229,7 @@ export default function DisplayPairwise() {
               }
             }}
             className="action-button"
+            disabled={dnaArr.length < 2}
           >
             Display Alignment
           </Button>

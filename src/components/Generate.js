@@ -39,6 +39,7 @@ export default function Generate() {
   const [PhyloTree, setPhyloTree] = useState('');
   const [phyloVisible, setPhyloVisible] = useState(false);
   const [alignmentChecked, setAlignmentChecked] = useState(true);
+  const [treeMethod, setTreeMethod] = useState(true);
   const [dnaArr, setDnaArr] = useState([]);
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
@@ -46,6 +47,7 @@ export default function Generate() {
   const [loading, setLoading] = useState(false);
   const exampleDnas = [h1n1, h3n2, h5n1];
   const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
+  const BAYESIAN_EXISTS = false;
 
   const phyloContainer = useRef(null);
 
@@ -314,27 +316,75 @@ export default function Generate() {
           </Col>
         </Row>
         <Row className="centered-content">
-          <h3 className="upload-text">Or upload your own FASTA files:</h3>
+          <h3 className="upload-text">Or upload 3 or more FASTA files:</h3>
         </Row>
         <Row className="horizontally-centered">
           <Popover
-            content={<p>Information on Clustal and UPGMA</p>}
-            title="Info"
+            content={
+              <div>
+                <p>
+                  Clustal and DP are two techniques of aligning DNA sequences.
+                  Clustal is a software package used for multiple sequence
+                  alignment, utilizing heuristics for faster alignments. The
+                  dynamic programming (DP) technique generates a globally
+                  optimum alignment, but may be situationally slower than
+                  Clustal.
+                </p>
+                {BAYESIAN_EXISTS ? (
+                  <p>
+                    UPGMA and Bayesian inference are two ways of generating
+                    phylogenetic trees from sequence alignments. UPGMA
+                    (unweighted pair group method with arithmetic mean) is an
+                    agglomerative clustering method that groups sequences based
+                    on pairwise similarity. Bayesian inference uses prior
+                    information and Markov Chain Monte Carlo sampling to
+                    construct a chain of trees and get a sample of the final
+                    tree distribution, thereby finding the most likely
+                    phylogenetic tree. Bayesian inference is slower than UPGMA,
+                    but more accurate and customizable.
+                  </p>
+                ) : null}
+              </div>
+            }
+            title="MSA Information"
             trigger="click"
           >
             <div className="generate-info">
               <InfoCircleOutlined />
             </div>
           </Popover>
-          <Switch
-            checkedChildren="Clustal"
-            unCheckedChildren="UPGMA"
-            className="generate-toggle"
-            defaultChecked
-            onChange={(checked, event) => {
-              setAlignmentChecked(checked);
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
             }}
-          />
+          >
+            <Switch
+              checkedChildren="Clustal"
+              unCheckedChildren="DP"
+              className="generate-toggle"
+              defaultChecked
+              onChange={(checked, event) => {
+                setAlignmentChecked(checked);
+                if (!checked) {
+                  setTreeMethod(true);
+                }
+              }}
+            />
+            {BAYESIAN_EXISTS ? (
+              <Switch
+                checked={treeMethod}
+                checkedChildren="UPGMA"
+                unCheckedChildren="Bayesian"
+                className="generate-toggle"
+                defaultChecked
+                disabled={!alignmentChecked}
+                onChange={(checked, event) => {
+                  setTreeMethod(checked);
+                }}
+              />
+            ) : null}
+          </div>
           <Upload {...fastaUploadProps}>
             <Button>
               <UploadOutlined /> Upload .FASTA files
@@ -343,13 +393,13 @@ export default function Generate() {
           <Button
             onClick={generateTree}
             className="action-button"
-            disabled={dnaArr.length === 0}
+            disabled={dnaArr.length < 3}
           >
             Generate tree
           </Button>
           {loading ? <Spin className="spinner" indicator={antIcon} /> : null}
         </Row>
-        {dnaArr.length === 0 ? null : (
+        {dnaArr.length < 3 ? null : (
           <Row className="centered-content">
             <Button onClick={downloadTree}>Save tree as phyloXML</Button>
           </Row>
