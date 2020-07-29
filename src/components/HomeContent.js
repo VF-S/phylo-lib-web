@@ -92,6 +92,7 @@ export default function HomeContents() {
             algorithm that computes a loss for the most optimal alignment. Here
              {" "} <span className="highlight">*</span> represents a DNA base pair match, <span className="highlight">_</span> a gap, often used if a DNA sequence is shorter than the other, and <span className="highlight">|</span> a mismatch.
           </h3>
+            <br></br>
             <h3>
               <b> Visualize Phylogenetic Trees: </b>
             When a phylogenetic tree has already been constructed, whether
@@ -100,6 +101,7 @@ export default function HomeContents() {
             built a tokenizer, lexer, and parser to read PhyloXML, an extension
             of the popular XML format designed to encode phylogenetic trees.
           </h3>
+            <br></br>
             <h3>
               <b> Generate Phylogenetic Trees: </b>
             We construct phylogenetic genetic trees from DNA sequences encoded
@@ -108,8 +110,8 @@ export default function HomeContents() {
             each with their respective tradeoffs regarding speed and accuracy.
             Each algorithm reads in the .FASTA files, constructs pairwise
             alignments, and then uses respective techniques to find an optimal
-            rooted tree.<br></br><br></br>
-            The first step in UPGMA consists of creating an <i>n</i> by <i>n</i> distance matrix which records the genetic distance between each pair of sequences in the alignment. Then, we pick the 2 sequeneces with the least distance and combine them to form a 'clade' (a branching point in the tree). Then we do the same thing with the next two most similar sequences. We keep doing this until we are left with one clade - our final phylogenetic tree. <br></br><br></br>
+            rooted tree.<br></br>
+            The first step in UPGMA consists of creating an <i>n</i> by <i>n</i> distance matrix which records the genetic distance between each pair of sequences in the alignment. Then, we pick the 2 sequeneces with the least distance and combine them to form a 'clade' (a branching point in the tree). Then we do the same thing with the next two most similar sequences. We keep doing this until we are left with one clade - our final phylogenetic tree. <br></br>
             The essence of Bayesian inference is using prior information about the genetic data to predict the likelihood that a certain tree is te correct phylogenetic tree, given our aligned sequence data. Since finding this likelihood for every possible tree structure takes an unfeasibly large amount of time, we use a technique called Markov Chain Monte Carlo sampling to construct a chain of trees and get a sample of the final tree distribution. By getting a sample of the tree distribution, we can find out the most likely phylogenetic tree given our genetic data. The advantage of this method is that it can be tweaked considerably to account for various genetic substituion models, based on the existing knowledge that we have about the genetic sequences. It is, however, slower than UPGMA.
             </h3>
           </Row>
