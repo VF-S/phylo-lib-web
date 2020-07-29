@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Divider, Layout, Radio } from 'antd';
 import '../App.css';
+import HoverVocab from './HoverVocab';
 import influenza from '../ocaml_src/Examples/Influenza.js';
 import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
 import capsid from '../ocaml_src/Examples/Capsid.js';
+
 const { Content } = Layout;
 
 export default function HomeContents() {
@@ -111,8 +113,24 @@ export default function HomeContents() {
             Each algorithm reads in the .FASTA files, constructs pairwise
             alignments, and then uses respective techniques to find an optimal
             rooted tree.<br></br>
-            The first step in UPGMA consists of creating an <i>n</i> by <i>n</i> distance matrix which records the genetic distance between each pair of sequences in the alignment. Then, we pick the 2 sequeneces with the least distance and combine them to form a 'clade' (a branching point in the tree). Then we do the same thing with the next two most similar sequences. We keep doing this until we are left with one clade - our final phylogenetic tree. <br></br>
-            The essence of Bayesian inference is using prior information about the genetic data to predict the likelihood that a certain tree is te correct phylogenetic tree, given our aligned sequence data. Since finding this likelihood for every possible tree structure takes an unfeasibly large amount of time, we use a technique called Markov Chain Monte Carlo sampling to construct a chain of trees and get a sample of the final tree distribution. By getting a sample of the tree distribution, we can find out the most likely phylogenetic tree given our genetic data. The advantage of this method is that it can be tweaked considerably to account for various genetic substituion models, based on the existing knowledge that we have about the genetic sequences. It is, however, slower than UPGMA.
+            The first step in <HoverVocab
+                vocab="UPGMA"
+                link="https://en.wikipedia.org/wiki/UPGMA"
+                linkText="the Wikipedia page"
+              />{' '} consists of creating an <i>n</i> by <i>n</i> distance matrix which records the <HoverVocab
+                vocab="genetic distance"
+                link="https://en.wikipedia.org/wiki/Genetic_distance"
+                linkText="the Wikipedia page on genetic distance measures"
+              />{' '}between each pair of sequences in the alignment. Then, we pick the 2 sequeneces with the least distance and combine them to form a 'clade' (a branching point in the tree). Then we do the same thing with the next two most similar sequences. We keep doing this until we are left with one clade - our final phylogenetic tree. <br></br>
+            The essence of <HoverVocab
+                vocab="Bayesian inference"
+                link="https://www.sciencemag.org/site/feature/data/1050262.pdf"
+                linkText="a paper on phylogenetic Bayesian inference"
+              />{' '}is using prior information about the genetic data to predict the likelihood that a certain tree is te correct phylogenetic tree, given our aligned sequence data. Since finding this likelihood for every possible tree structure takes an unfeasibly large amount of time, we use a technique called <HoverVocab
+                vocab="Markov Chain Monte Carlo sampling"
+                link="http://pages.stat.wisc.edu/~larget/phylogeny/larget-simon-MBE-1999.pdf"
+                linkText="a paper on phylogenetic MCMC methods"
+              />{' '} to construct a chain of trees and get a sample of the final tree distribution. By getting a sample of the tree distribution, we can find out the most likely phylogenetic tree given our genetic data. The advantage of this method is that it can be tweaked considerably to account for various genetic substituion models, based on the existing knowledge that we have about the genetic sequences. It is, however, slower than UPGMA.
             </h3>
           </Row>
 
