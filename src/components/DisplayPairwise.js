@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Layout, Popover, Radio, Row, Upload } from 'antd';
 import { InfoCircleOutlined, UploadOutlined } from '@ant-design/icons';
 import '../App.css';
@@ -15,6 +15,8 @@ export default function DisplayPairwise() {
   const [exampleFileNames, setExampleFileNames] = useState([]);
   const [fileList, setFileList] = useState([]);
   const [dnaArr, setDnaArr] = useState([]);
+
+  const phyloContainer = useRef(null);
 
   const parseDNA = (file, arr, displayOnFinish) => {
     try {
@@ -35,6 +37,13 @@ export default function DisplayPairwise() {
     }
   };
 
+  const scrollDown = () => {
+    window.scrollTo({
+      behavior: 'smooth',
+      top: phyloContainer.current.offsetTop - 15,
+    });
+  };
+
   const displayAlignment = (arr) => {
     if (arr.length < 2) {
       alert('Not enough DNA sequences to perform pairwise alignment');
@@ -43,6 +52,13 @@ export default function DisplayPairwise() {
       const str = Pairwise.to_string(pair[0], pair[1]);
       setAlignment(str.trim());
       setDisplayVisible(true);
+      if (phyloContainer.current !== null) {
+        scrollDown();
+      } else {
+        setTimeout(() => {
+          scrollDown();
+        }, 1000);
+      }
     }
   };
 
@@ -93,24 +109,30 @@ export default function DisplayPairwise() {
               <HoverVocab
                 content={
                   <p>
-                    A DNA sequence alignment arranges the DNA in such a way as
-                    to identify regions of similarity, helping reveal
-                    evolutionary relations between the sequences.
+                    A DNA sequence alignment arranges DNA to identify regions of
+                    similarity, helping reveal evolutionary relations between
+                    the sequences.
+                    <br />A pairwise alignment is an alignment of 2 sequences,
+                    and PhyloML utilizes the Needleman-Wunsch algorithm to
+                    conduct this alignment.
                   </p>
                 }
                 vocab="alignment"
-                link="https://en.wikipedia.org/wiki/Sequence_alignment"
+                link="https://www.sciencedirect.com/science/article/abs/pii/0022283670900574?via%3Dihub"
+                linkText="the original paper on the Needleman-Wunsch algorithm"
               />{' '}
               of two DNA sequences. Begin by uploading two{' '}
               <HoverVocab
                 content={
                   <p>
                     The FASTA format is a way of representing nucleotide
-                    sequences.
+                    sequences. It was popularized by the FASTA software
+                    developed by David J. Lipman and William R. Pearson.
                   </p>
                 }
                 vocab=".FASTA"
-                link="https://en.wikipedia.org/wiki/FASTA_format"
+                link="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC280013/"
+                linkText="the original paper on the FASTA program"
               />{' '}
               files, or use our example files.
             </h2>
@@ -123,7 +145,6 @@ export default function DisplayPairwise() {
           <Radio.Group
             onChange={changeExamples}
             value={exampleFileNames.join(',')}
-            className="radio-button"
           >
             <Radio.Button value="h1n1,h3n2">H1N1 vs H3N2</Radio.Button>
             <Radio.Button value="h5n1,h7n7">H5N1 vs H7N7</Radio.Button>
@@ -218,7 +239,7 @@ export default function DisplayPairwise() {
         </Row>
         {displayVisible ? (
           <Row justify="center">
-            <div className="ascii-phylo-container">
+            <div className="ascii-phylo-container" ref={phyloContainer}>
               <p className="ascii-phylo">{alignment}</p>
             </div>
           </Row>
