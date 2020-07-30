@@ -8,11 +8,9 @@ import {
   Row,
   Spin,
   Switch,
-  Tooltip,
   Upload,
 } from 'antd';
 import {
-  DeleteOutlined,
   InfoCircleOutlined,
   LoadingOutlined,
   UploadOutlined,
@@ -38,8 +36,8 @@ export default function Generate() {
   const [treeMethodChecked, setTreeMethodChecked] = useState(true);
   const [dnaArr, setDnaArr] = useState([]);
   const [names, setNames] = useState([]);
-  const [download, setDownload] = useState(undefined);
   const [loading, setLoading] = useState(false);
+  const [generateClicked, setGenerateClicked] = useState(false);
   const BAYESIAN_EXISTS = false;
 
   const phyloContainer = useRef(null);
@@ -77,6 +75,7 @@ export default function Generate() {
         setPhyloTree(capsid);
         break;
     }
+    setGenerateClicked(false);
   };
 
   const scrollDown = () => {
@@ -105,6 +104,7 @@ export default function Generate() {
         setCurrTree(tree);
         setPhyloTree(Tree.to_string(tree));
         setLoading(false);
+        setGenerateClicked(true);
         scrollToPhylo();
       }, 500);
       return;
@@ -153,6 +153,7 @@ export default function Generate() {
                 setCurrTree(tree);
                 setPhyloTree(Tree.to_string(tree));
                 setLoading(false);
+                setGenerateClicked(true);
                 scrollToPhylo();
               })
               .catch((error) => console.log('error1', error));
@@ -189,17 +190,9 @@ export default function Generate() {
       .catch((error) => console.log('error', error));
   };
 
-  const downloadTree = () => {
+  const downloadTreeLink = () => {
     const treeXML = PhyloPrinter.xml_of_tree(currTree);
-    const element = (
-      <a
-        href={'data:text/xml;charset=utf-8,' + encodeURIComponent(treeXML)}
-        download="tree.xml"
-      >
-        Click to Download
-      </a>
-    );
-    setDownload(element);
+    return 'data:text/xml;charset=utf-8,' + encodeURIComponent(treeXML);
   };
 
   const clean_file_name = (name) => {
@@ -219,10 +212,7 @@ export default function Generate() {
 
     onRemove(file) {
       const file_name = clean_file_name(file.name);
-      console.log(file_name);
       const file_index = names.indexOf(file_name);
-      console.log(file_index);
-
       dnaArr.splice(file_index, 1);
       names.splice(file_index, 1);
       setDnaArr(dnaArr);
@@ -375,23 +365,12 @@ export default function Generate() {
             <Spin className="spinner" indicator={loadingIcon} />
           ) : null}
         </Row>
-        {phyloTree ? (
+        {generateClicked ? (
           <Row className="centered-content">
-            <Button onClick={downloadTree}>
-              Save Displayed Tree as PhyloXML
-            </Button>
-          </Row>
-        ) : null}
-        {download !== undefined ? (
-          <Row className="centered-content">
-            {download}
-            <Button
-              onClick={() => setDownload(undefined)}
-              className="hide-download"
-            >
-              <Tooltip title="Hide Download Link">
-                <DeleteOutlined style={{ color: 'firebrick' }} />
-              </Tooltip>
+            <Button>
+              <a href={downloadTreeLink()} download="tree.xml">
+                Save Displayed Tree as PhyloXML
+              </a>
             </Button>
           </Row>
         ) : null}
