@@ -27,31 +27,24 @@ import * as Msa from '../ocaml_src/msa.bs';
 import influenza from '../ocaml_src/Examples/Influenza.js';
 import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
 import capsid from '../ocaml_src/Examples/Capsid.js';
-
-import h1n1 from '../ocaml_src/Examples/h1n1.js';
-import h3n2 from '../ocaml_src/Examples/h3n2.js';
-import h5n1 from '../ocaml_src/Examples/h5n1.js';
 import '../App.css';
 
 const { Content } = Layout;
 
 export default function Generate() {
-  const [PhyloTree, setPhyloTree] = useState('');
-  const [phyloVisible, setPhyloVisible] = useState(false);
+  const [currTree, setCurrTree] = useState(null);
+  const [phyloTree, setPhyloTree] = useState('');
   const [alignmentChecked, setAlignmentChecked] = useState(true);
-  const [treeMethod, setTreeMethod] = useState(true);
+  const [treeMethodChecked, setTreeMethodChecked] = useState(true);
   const [dnaArr, setDnaArr] = useState([]);
   const [names, setNames] = useState([]);
   const [download, setDownload] = useState(undefined);
-  const [uploaded, setUploaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const exampleDnas = [h1n1, h3n2, h5n1];
-  const exampleNames = ['H1N1', 'H3N2', 'H5N1'];
   const BAYESIAN_EXISTS = false;
 
   const phyloContainer = useRef(null);
 
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+  const loadingIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const updateSeq = (dna, name) => {
     setDnaArr((dnaArr) => dnaArr.concat(dna));
@@ -67,24 +60,20 @@ export default function Generate() {
       };
       reader.readAsText(file);
     } catch (e) {
-      console.log(e);
       console.log('File printing failed');
+      console.log(e);
     }
   };
 
   const changeGenerateExamples = (e) => {
     switch (e.target.value) {
       case 'Influenza A Viruses':
-        setPhyloVisible(true);
         setPhyloTree(influenza);
         break;
       case 'COXII':
-        setPhyloVisible(true);
         setPhyloTree(cytochrome_c);
         break;
       case 'Virus Capsid':
-        setPhyloVisible(true);
-        console.log(capsid);
         setPhyloTree(capsid);
         break;
     }
@@ -108,17 +97,13 @@ export default function Generate() {
   };
 
   const generateTree = () => {
-    // use default files if no other files have been uploaded
     setLoading(true);
-    const dnaNames = uploaded ? names : exampleNames;
     if (!alignmentChecked) {
       setTimeout(() => {
-        const dnas = uploaded ? dnaArr : exampleDnas;
-        const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
-        const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-        const output = Tree.to_string(tree);
-        setPhyloTree(output);
-        setPhyloVisible(true);
+        const distMatrix = Distance.dist_dna(dnaArr, 1, -1, -1);
+        const tree = PhyloAlgo.upgma(distMatrix, names);
+        setCurrTree(tree);
+        setPhyloTree(Tree.to_string(tree));
         setLoading(false);
         scrollToPhylo();
       }, 500);
@@ -164,10 +149,9 @@ export default function Generate() {
                 console.log('got msa');
                 const dist_matrix = Distance.dist_msa(msa, 1);
                 console.log('got dist mat');
-                const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-                const output = Tree.to_string(tree);
-                setPhyloTree(output);
-                setPhyloVisible(true);
+                const tree = PhyloAlgo.upgma(dist_matrix, names);
+                setCurrTree(tree);
+                setPhyloTree(Tree.to_string(tree));
                 setLoading(false);
                 scrollToPhylo();
               })
@@ -206,16 +190,7 @@ export default function Generate() {
   };
 
   const downloadTree = () => {
-    if (uploaded && dnaArr.length < 1) {
-      alert('At least one FASTA file must be uploaded for tree generation.');
-      return;
-    }
-    const dnas = uploaded ? dnaArr : exampleDnas;
-    const dnaNames = uploaded ? names : exampleNames;
-
-    const dist_matrix = Distance.dist_dna(dnas, 1, -1, -1);
-    const tree = PhyloAlgo.upgma(dist_matrix, dnaNames);
-    const treeXML = PhyloPrinter.xml_of_tree(tree);
+    const treeXML = PhyloPrinter.xml_of_tree(currTree);
     const element = (
       <a
         href={'data:text/xml;charset=utf-8,' + encodeURIComponent(treeXML)}
@@ -238,7 +213,6 @@ export default function Generate() {
     },
     multiple: true,
     transformFile(file) {
-      setUploaded(true);
       const file_name = clean_file_name(file.name);
       parseDNA(file, file_name);
     },
@@ -367,20 +341,20 @@ export default function Generate() {
               onChange={(checked, event) => {
                 setAlignmentChecked(checked);
                 if (!checked) {
-                  setTreeMethod(true);
+                  setTreeMethodChecked(true);
                 }
               }}
             />
             {BAYESIAN_EXISTS ? (
               <Switch
-                checked={treeMethod}
+                checked={treeMethodChecked}
                 checkedChildren="UPGMA"
                 unCheckedChildren="Bayesian"
                 className="generate-toggle"
                 defaultChecked
                 disabled={!alignmentChecked}
                 onChange={(checked, event) => {
-                  setTreeMethod(checked);
+                  setTreeMethodChecked(checked);
                 }}
               />
             ) : null}
@@ -397,14 +371,17 @@ export default function Generate() {
           >
             Generate tree
           </Button>
-          {loading ? <Spin className="spinner" indicator={antIcon} /> : null}
+          {loading ? (
+            <Spin className="spinner" indicator={loadingIcon} />
+          ) : null}
         </Row>
-        {dnaArr.length < 3 ? null : (
+        {phyloTree ? (
           <Row className="centered-content">
-            <Button onClick={downloadTree}>Save tree as phyloXML</Button>
+            <Button onClick={downloadTree}>
+              Save Displayed Tree as PhyloXML
+            </Button>
           </Row>
-        )}
-
+        ) : null}
         {download !== undefined ? (
           <Row className="centered-content">
             {download}
@@ -419,10 +396,10 @@ export default function Generate() {
           </Row>
         ) : null}
       </Content>
-      {phyloVisible ? (
+      {phyloTree ? (
         <Row justify="center">
           <div className="ascii-phylo-container" ref={phyloContainer}>
-            <p className="ascii-phylo">{PhyloTree}</p>
+            <p className="ascii-phylo">{phyloTree}</p>
           </div>
         </Row>
       ) : null}
