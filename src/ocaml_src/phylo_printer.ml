@@ -2,6 +2,7 @@ open Tree
 open Phylo_parser
 open Printf
 
+(** Type of phyloXML start tag attributes *)
 type attr = (string * string) list
 
 (** Whether the printing helpers print to a file or append to 
@@ -26,6 +27,10 @@ let print_f (s : string) : unit =
 let print_tabs (n : int) : unit =
   for x = 1 to n do print_f "  " done
 
+(** [print_attr attr] prints the key-value pairs in [attr] as space-separated
+    attributes in a phyloXML start-tag for the file currently being written to.
+    Example: [print_attr [("attr_a", "val_a"), ("attr_b", "val_b")]] would
+    print "attr_a="val_a" attr_b="val_b"" to the current file. *)
 let rec print_attr (attr : attr) : unit =
   match attr with 
   | [] -> ()
@@ -34,6 +39,9 @@ let rec print_attr (attr : attr) : unit =
     print_f (k ^ "=\"" ^ v ^ "\"" ^ (if space then " " else ""));
     print_attr t
 
+(** [print_start_tag tag attr tabs newline] prints a phyloXML start tag with
+    name [tag] and attributes [attr] to the current file, indented by [tabs] 
+    tabs. A newline is printed after the start tag if [newline] is true. *)
 let print_start_tag (tag : string) (attr : attr) (tabs : int) (newline : bool) 
   : unit =
   print_tabs tabs;
@@ -41,10 +49,17 @@ let print_start_tag (tag : string) (attr : attr) (tabs : int) (newline : bool)
   print_attr attr;
   print_f (if newline then ">\n" else ">")
 
+(** [print_end_tag tag tabs] prints a phyloXML end tag with name [tag] 
+    to the current file, indented by [tabs] tabs. *)
 let print_end_tag (tag : string) (tabs : int) : unit =
   print_tabs tabs;
   print_f ("</" ^ tag ^ ">\n")
 
+(** [print_inline_tag tag tabs s] prints the phyloXML start and end tag
+    indented by [tabs] tabs to the current file in one line, with the content 
+    between the tags given by [s]. This is followed by a newline.
+    Example: [print_inline_tag "example" 0 "name"] would print 
+    "<example>name</example>\n" to the current file. *)
 let print_inline_tag (tag : string) (tabs : int) (s : string) : unit =
   print_tabs tabs;
   print_f ("<" ^ tag ^ ">");
@@ -58,6 +73,9 @@ let print_inline_opt (tag : string) (tabs : int) (info : string option) : unit =
   | Some s -> print_inline_tag tag tabs s
   | None -> ()
 
+(** [print_tree_helper tree tabs] prints the phyloXML representation of 
+    [tree] to the current file, with the entire tree being indented by [tabs] 
+    tabs. *)
 let rec print_tree_helper (tree : Tree.t) (tabs : int) : unit =
   match tree with 
   | Clade info -> 
