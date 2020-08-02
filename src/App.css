@@ -117,7 +117,6 @@ h1 {
   font-size: 3.7vmin;
 }
 
-
 .offset {
   background-color: white;
   border: 1.5px solid rgb(68, 150, 122);
@@ -166,6 +165,20 @@ h1 {
   overflow-x: auto;
   overflow-y: auto;
   margin-top: 5vmin;
+}
+
+.ascii-example-container {
+  background-color: #eeeeee;
+  max-width: 125vw;
+  max-height: 95vh;
+  overflow-x: auto;
+  overflow-y: auto;
+  margin-top: 1vmin;
+  margin-bottom: 5vmin;
+}
+
+#pairwise-example-container {
+  max-height: 50vh;
 }
 
 .centered-content {

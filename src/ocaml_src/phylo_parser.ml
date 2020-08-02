@@ -61,7 +61,7 @@ let empty_start_tag (t : token) : start_tag = {
 }
 
 (** Flag that determines whether debug messages are printed. *)
-let debug = false
+let debug = true
 
 (** [print_debug s] prints [s] to standard output followed by a newline if
     [debug] is true. *)

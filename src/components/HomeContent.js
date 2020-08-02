@@ -1,36 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, Divider, Layout, Radio } from 'antd';
+import { Button, Row, Col, Divider, Layout } from 'antd';
 import { ArrowDownOutlined, SelectOutlined } from '@ant-design/icons';
 import '../App.css';
 import HoverVocab from './HoverVocab';
-import influenza from '../ocaml_src/Examples/Influenza.js';
-import cytochrome_c from '../ocaml_src/Examples/cytochrome_c.js';
-import capsid from '../ocaml_src/Examples/Capsid.js';
+import small_flu from '../ocaml_src/Examples/small_influenza.js';
+import hominids from '../ocaml_src/Examples/hominids.js';
+import mitochondria from '../ocaml_src/Examples/mitochondria.js';
 
 const { Content } = Layout;
 
 export default function HomeContents() {
-  const [PhyloTree, setPhyloTree] = useState(cytochrome_c);
-  const [phyloVisible, setPhyloVisible] = useState(true);
-
-  const changeGenerateExamples = (e) => {
-    switch (e.target.value) {
-      case 'Influenza A Viruses':
-        setPhyloTree(influenza);
-        break;
-      case 'COXII':
-        setPhyloTree(cytochrome_c);
-        break;
-      case 'Virus Capsid':
-        setPhyloVisible(true);
-        console.log(capsid);
-        setPhyloTree(capsid);
-        break;
-    }
-  };
-
-  console.log(process.env.PUBLIC_URL);
   return (
     <div className="wrapper">
       <Content justify="center">
@@ -96,7 +76,7 @@ export default function HomeContents() {
           </Row>
         </div>
         <div className="explanation">
-          <Row justify="center" >
+          <Row justify="center">
             <Divider id="explanation" />
             <h1> Explanations and Examples </h1>
           </Row>
@@ -147,6 +127,21 @@ export default function HomeContents() {
               DNA sequence is shorter than the other, and{' '}
               <span className="highlight">|</span> a mismatch.
             </h3>
+            <Divider />
+            <h3>
+              Example of pairwise alignment of mitochondrial genome of Homo
+              sapiens sapiens and Homo sapiens neanderthalensis. Sequences
+              obtained from the National Center for Biotechnology Information
+              (NCBI).
+            </h3>
+            <Row justify="center" className="centered-content">
+              <div
+                className="ascii-example-container"
+                id="pairwise-example-container"
+              >
+                <p className="ascii-phylo">{mitochondria}</p>
+              </div>
+            </Row>
             <br></br>
             <h3>
               <b> Visualize Phylogenetic Trees: </b>
@@ -157,7 +152,26 @@ export default function HomeContents() {
               extension of the popular XML format designed to encode
               phylogenetic trees.
             </h3>
-            <br></br>
+            <Divider />
+            <h3>
+              Example of tree constructed using a PhyloXML file based on the one
+              from{' '}
+              <a
+                href="http://phyloxml.org/archaeopteryx-js/phyloxml_trees/multiple_support.xml"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                phyloxml.org
+              </a>
+              .
+            </h3>
+            <Row justify="center" className="centered-content">
+              <div className="ascii-example-container">
+                <p className="ascii-phylo">{hominids}</p>
+              </div>
+            </Row>
+            <br />
+            <br />
             <h3>
               <b> Generate Phylogenetic Trees: </b>
               We construct phylogenetic genetic trees from DNA sequences encoded
@@ -180,12 +194,12 @@ export default function HomeContents() {
                 link="https://en.wikipedia.org/wiki/Genetic_distance"
                 linkText="the Wikipedia page on genetic distance measures"
               />{' '}
-              between each pair of sequences in the alignment. Then, the algorithm picks
-              2 sequences with the least distance and combine them to form a
-              'clade' (a branching point in the tree). Then we do the same thing
-              with the next two most similar sequences. We keep doing this until
-              we are left with one clade - our final phylogenetic tree.{' '}
-              <br></br>
+              between each pair of sequences in the alignment. Then, the
+              algorithm picks 2 sequences with the least distance and combine
+              them to form a 'clade' (a branching point in the tree). Then we do
+              the same thing with the next two most similar sequences. We keep
+              doing this until we are left with one clade - our final
+              phylogenetic tree. <br></br>
               The essence of{' '}
               <HoverVocab
                 vocab="Bayesian inference"
@@ -195,48 +209,32 @@ export default function HomeContents() {
               is using prior information about the genetic data to predict the
               likelihood that a certain tree is the correct phylogenetic tree,
               given our aligned sequence data. Since finding this likelihood for
-              every possible tree structure is computationally intractible, we use a technique called{' '}
+              every possible tree structure is computationally intractible, we
+              use a technique called{' '}
               <HoverVocab
                 vocab="Markov Chain Monte Carlo sampling"
                 link="http://pages.stat.wisc.edu/~larget/phylogeny/larget-simon-MBE-1999.pdf"
                 linkText="a paper on phylogenetic MCMC methods"
               />{' '}
               to construct a chain of trees and sample from the final tree
-              distribution. By this doing this, we can
-              find out the most likely phylogenetic tree given our genetic data.
-              The advantage of this method is that it can be improved
-              considerably to account for various genetic substituion models,
-              based on the existing knowledge that we have about the genetic
-              sequences. It is, however, less performant than UPGMA.
+              distribution. By this doing this, we can find out the most likely
+              phylogenetic tree given our genetic data. The advantage of this
+              method is that it can be improved considerably to account for
+              various genetic substituion models, based on the existing
+              knowledge that we have about the genetic sequences. It is,
+              however, less performant than UPGMA.
             </h3>
           </Row>
-
-          <h2> Examples: </h2>
-
+          <Divider />
           <h3>
             Examples of constructed phylogenetic trees using DNA sequences from
-            the National Center for Biotechnology Information (NCBI).
+            NCBI.
           </h3>
-          <Row className="centered-content">
-            <Radio.Group onChange={changeGenerateExamples} defaultValue="COXII">
-              <Radio.Button value="Virus Capsid">
-                Virus Capsid Gene
-              </Radio.Button>
-              <Radio.Button value="COXII">
-                Cytochrome C Oxidase Subunit II
-              </Radio.Button>
-              <Radio.Button value="Influenza A Viruses">
-                Influenza A PB-2
-              </Radio.Button>
-            </Radio.Group>
+          <Row justify="center">
+            <div className="ascii-example-container">
+              <p className="ascii-phylo">{small_flu}</p>
+            </div>
           </Row>
-          {phyloVisible ? (
-            <Row justify="center">
-              <div className="ascii-phylo-container">
-                <p className="ascii-phylo">{PhyloTree}</p>
-              </div>
-            </Row>
-          ) : null}
         </div>
       </Content>
     </div>

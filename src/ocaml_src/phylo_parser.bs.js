@@ -32,6 +32,7 @@ function empty_start_tag(t) {
 }
 
 function print_debug(s) {
+  console.log(s);
   
 }
 
