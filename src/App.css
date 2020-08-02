@@ -13,7 +13,7 @@ html {
   padding-left: 5%;
   padding-right: 5%;
   font-size: 26px;
-  min-height: 2em;
+  min-height: 10vh;
   position: relative;
 }
 
@@ -76,7 +76,7 @@ a.tooltip {
 }
 
 .home-down {
-  margin-top: 10vh;
+  margin-top: 2vh;
 }
 
 h3 {
@@ -117,9 +117,6 @@ h1 {
   font-size: 1.5em;
 }
 
-.x {
-  color: hsl(159, 39%, 96%)
-}
 
 .offset {
   background-color: white;
