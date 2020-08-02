@@ -132,8 +132,8 @@ export default function Generate() {
 
             fetch(
               'https://www.ebi.ac.uk/Tools/services/rest/clustalo/result/' +
-                job +
-                '/aln-fasta',
+              job +
+              '/aln-fasta',
               {
                 method: 'GET',
                 redirect: 'follow',
@@ -242,7 +242,7 @@ export default function Generate() {
                 }
                 vocab=".FASTA"
                 link="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC280013/"
-                linkText="the original paper on the FASTA program"
+                linkText="Pearson et. al, 1988"
               />{' '}
               files that contain DNA sequences, or use our example DNA
               sequences.

@@ -38,7 +38,7 @@ export default function HomeContents() {
           <Row className="intro" justify="center">
             <div>
               <h1>Welcome to PhyloML</h1>
-              <h2>A phylogenetic library written in OCaml.</h2>
+              <h2>A phylogenetic tree library written in OCaml.</h2>
               <h2>
                 Inferring Evolutionary History through Modern Genetic
                 Similarity.
