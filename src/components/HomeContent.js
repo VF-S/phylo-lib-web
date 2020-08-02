@@ -69,7 +69,7 @@ export default function HomeContents() {
                 icon={<ArrowDownOutlined />}
                 size="large"
                 style={{
-                  backgroundColor: '#ffffff',
+                  backgroundColor: '#f1f9f6',
                   borderColor: '#44967a',
                   color: '#000000',
                   borderWidth: '1.5pt'
