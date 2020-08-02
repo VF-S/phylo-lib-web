@@ -12,7 +12,7 @@ html {
   align-items: center;
   padding-left: 5%;
   padding-right: 5%;
-  font-size: 26px;
+  font-size: 5vmin;
   min-height: 10vh;
   position: relative;
 }
@@ -76,7 +76,7 @@ a.tooltip {
 }
 
 .home-down {
-  margin-top: 2vh;
+  margin-top: 8vh;
 }
 
 h3 {
@@ -101,20 +101,20 @@ h1 {
 }
 
 .intro h1 {
-  font-size: 5em;
+  font-size: 10vmin;
 }
 
 .intro h2 {
-  font-size: 2em;
+  font-size: 4.3vmin;
   font-weight: 500;
 }
 
 .page h1 {
-  font-size: 3.5em;
+  font-size: 7vmin;
 }
 
 .page h2 {
-  font-size: 1.5em;
+  font-size: 3.7vmin;
 }
 
 
@@ -125,7 +125,7 @@ h1 {
   display: flex;
   justify-content: center;
   flex: 1;
-  font-size: 16px;
+  font-size: 2.7vmin;
   padding: 0.5em 1em;
   text-align: center;
   transition: all 0.1s ease-in-out;

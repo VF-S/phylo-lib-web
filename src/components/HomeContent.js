@@ -78,9 +78,9 @@ export default function HomeContents() {
             </a>
           </Row>
         </div>
-        <div className="explanation" id="explanation">
-          <Row justify="center">
-            <Divider />
+        <div className="explanation">
+          <Row justify="center" >
+            <Divider id="explanation" />
             <h1> Explanations and Examples </h1>
           </Row>
           <Row>
