@@ -180,8 +180,8 @@ export default function HomeContents() {
                 link="https://en.wikipedia.org/wiki/Genetic_distance"
                 linkText="the Wikipedia page on genetic distance measures"
               />{' '}
-              between each pair of sequences in the alignment. Then, we pick the
-              2 sequeneces with the least distance and combine them to form a
+              between each pair of sequences in the alignment. Then, the algorithm picks
+              2 sequences with the least distance and combine them to form a
               'clade' (a branching point in the tree). Then we do the same thing
               with the next two most similar sequences. We keep doing this until
               we are left with one clade - our final phylogenetic tree.{' '}
@@ -195,20 +195,19 @@ export default function HomeContents() {
               is using prior information about the genetic data to predict the
               likelihood that a certain tree is the correct phylogenetic tree,
               given our aligned sequence data. Since finding this likelihood for
-              every possible tree structure takes an unfeasibly large amount of
-              time, we use a technique called{' '}
+              every possible tree structure is computationally intractible, we use a technique called{' '}
               <HoverVocab
                 vocab="Markov Chain Monte Carlo sampling"
                 link="http://pages.stat.wisc.edu/~larget/phylogeny/larget-simon-MBE-1999.pdf"
                 linkText="a paper on phylogenetic MCMC methods"
               />{' '}
-              to construct a chain of trees and get a sample of the final tree
-              distribution. By getting a sample of the tree distribution, we can
+              to construct a chain of trees and sample from the final tree
+              distribution. By this doing this, we can
               find out the most likely phylogenetic tree given our genetic data.
-              The advantage of this method is that it can be tweaked
+              The advantage of this method is that it can be improved
               considerably to account for various genetic substituion models,
               based on the existing knowledge that we have about the genetic
-              sequences. It is, however, slower than UPGMA.
+              sequences. It is, however, less performant than UPGMA.
             </h3>
           </Row>
 
