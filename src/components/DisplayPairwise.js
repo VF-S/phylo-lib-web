@@ -128,7 +128,7 @@ export default function DisplayPairwise() {
                 }
                 vocab=".FASTA"
                 link="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC280013/"
-                linkText="the original paper on the FASTA program"
+                linkText="Needleman, Wunsch, 1970"
               />{' '}
               files, or use our example files.
             </h2>
