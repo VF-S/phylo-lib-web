@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, Divider, Layout, Radio } from 'antd';
-import { ArrowDownOutlined } from '@ant-design/icons';
+import { ArrowDownOutlined, SelectOutlined } from '@ant-design/icons';
 import '../App.css';
 import HoverVocab from './HoverVocab';
 import influenza from '../ocaml_src/Examples/Influenza.js';
@@ -38,7 +38,24 @@ export default function HomeContents() {
           <Row className="intro" justify="center">
             <div>
               <h1>Welcome to PhyloML</h1>
-              <h2>A phylogenetic tree library written in OCaml.</h2>
+              <h2>
+                A phylogenetic library written in OCaml.{'  '}
+                <span
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 14,
+                  }}
+                >
+                  <a
+                    href="https://github.com/VF-S/phyloML"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SelectOutlined rotate={90} />
+                  </a>
+                </span>
+              </h2>
               <h2>
                 Inferring Evolutionary History through Modern Genetic
                 Similarity.
@@ -72,7 +89,7 @@ export default function HomeContents() {
                   backgroundColor: '#f1f9f6',
                   borderColor: '#44967a',
                   color: '#000000',
-                  borderWidth: '1.5pt'
+                  borderWidth: '1.5pt',
                 }}
               ></Button>
             </a>

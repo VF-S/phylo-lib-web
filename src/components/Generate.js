@@ -63,21 +63,6 @@ export default function Generate() {
     }
   };
 
-  const changeGenerateExamples = (e) => {
-    switch (e.target.value) {
-      case 'Influenza A Viruses':
-        setPhyloTree(influenza);
-        break;
-      case 'COXII':
-        setPhyloTree(cytochrome_c);
-        break;
-      case 'Virus Capsid':
-        setPhyloTree(capsid);
-        break;
-    }
-    setGenerateClicked(false);
-  };
-
   const scrollDown = () => {
     window.scrollTo({
       behavior: 'smooth',
@@ -93,6 +78,22 @@ export default function Generate() {
         scrollDown();
       }, 1000);
     }
+  };
+
+  const changeGenerateExamples = (e) => {
+    switch (e.target.value) {
+      case 'Influenza A Viruses':
+        setPhyloTree(influenza);
+        break;
+      case 'COXII':
+        setPhyloTree(cytochrome_c);
+        break;
+      case 'Virus Capsid':
+        setPhyloTree(capsid);
+        break;
+    }
+    setGenerateClicked(false);
+    scrollToPhylo();
   };
 
   const generateTree = () => {
