@@ -154,8 +154,8 @@ export default function HomeContents() {
             </h3>
             <Divider />
             <h3>
-              Example of tree constructed using a PhyloXML file based on the one
-              from{' '}
+              Example of phylogenetic tree of select hominids constructed using
+              a PhyloXML file based on the one from{' '}
               <a
                 href="http://phyloxml.org/archaeopteryx-js/phyloxml_trees/multiple_support.xml"
                 target="_blank"
@@ -227,8 +227,8 @@ export default function HomeContents() {
           </Row>
           <Divider />
           <h3>
-            Examples of constructed phylogenetic trees using DNA sequences from
-            NCBI.
+            Examples of a phylogenetic tree constructed using influenza virus
+            DNA sequences from NCBI.
           </h3>
           <Row justify="center">
             <div className="ascii-example-container">
